@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useProfile } from "../user/useProfile";
+import { useUser } from "../user/useUser";
 import { useNavigate } from "react-router-dom";
 import "./home.css";
 
@@ -81,7 +83,8 @@ const TOTAL_COUNT   = ALL_LESSONS.length;
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
-function Sidebar() {
+function Sidebar({ profile }: { profile: any }) {
+  const navigate = useNavigate();
   const pct = Math.round((DONE_COUNT / TOTAL_COUNT) * 100);
 
   return (
@@ -92,15 +95,15 @@ function Sidebar() {
         <div className="lang-pair">
           <div className="lang-chip from">
             <span className="lang-chip-icon">🐍</span>
-            <span>Python</span>
+            <span>{profile?.source_language ?? "Python"}</span>
           </div>
           <span className="lang-arrow">→</span>
           <div className="lang-chip to">
             <span className="lang-chip-icon">⚙️</span>
-            <span>Rust</span>
+            <span>{profile?.target_language ?? "Rust"}</span>
           </div>
         </div>
-        <button className="lang-change-btn">Change language pair</button>
+        <button className="lang-change-btn" onClick={() => navigate("/settings")}>Change language pair</button>
       </div>
 
       {/* Streak */}
@@ -108,7 +111,7 @@ function Sidebar() {
         <div className="streak-top">
           <span className="streak-flame">🔥</span>
           <div>
-            <p className="streak-number">3</p>
+            <p className="streak-number">{profile?.current_streak ?? 0}</p>
             <p className="streak-label">day streak</p>
           </div>
         </div>
@@ -234,6 +237,8 @@ function SectionBlock({ section, onSelect }: { section: Section; onSelect: (l: L
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useUser();
+  const { profile } = useProfile();
   const [selected, setSelected] = useState<Lesson | null>(null);
 
   return (
@@ -251,9 +256,10 @@ export default function Home() {
           <a href="#" className="nav-link">Leaderboard</a>
         </nav>
         <div className="home-header-right">
-          <div className="home-xp-pill"><span>⚡</span><span>140 XP</span></div>
-          <div className="home-streak-pill"><span>🔥</span><span>3</span></div>
-          <div className="home-avatar">JD</div>
+          <div className="home-streak-pill"><span>🔥</span><span>{profile?.current_streak ?? 0}</span></div>
+          <div className="home-avatar" style={{cursor:"pointer"}} onClick={() => navigate("/settings")}>
+            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
+          </div>
         </div>
       </header>
 
@@ -261,7 +267,7 @@ export default function Home() {
         {/* Left: skill tree */}
         <main className="tree-main">
           <div className="tree-main-header">
-            <h1 className="home-greeting">Hey Jamie 👋</h1>
+            <h1 className="home-greeting">Hey {profile?.username ?? user?.email?.split("@")[0] ?? "there"} 👋</h1>
             <p className="home-greeting-sub">Keep going — you're building real muscle memory</p>
           </div>
 
@@ -273,7 +279,7 @@ export default function Home() {
         </main>
 
         {/* Right: sticky sidebar */}
-        <Sidebar />
+        <Sidebar profile={profile} />
       </div>
 
       <footer className="home-footer">
