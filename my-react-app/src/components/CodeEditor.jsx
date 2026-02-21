@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 
 const LANGUAGES = [
@@ -8,15 +8,20 @@ const LANGUAGES = [
   { label: "C++", value: "cpp", version: "10.2.0" },
 ];
 
-export default function CodeEditor({ language: initialLanguage }) {
+export default function CodeEditor({ language: initialLanguage, starterCode = "" }) {
   const initial = LANGUAGES.find((l) => l.value === initialLanguage)
     || LANGUAGES[0];
 
   const [language, setLanguage] = useState(initial);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(starterCode);
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
   const [error, setError] = useState(false);
+
+  // Update code when starterCode prop changes (i.e. after API call)
+  useEffect(() => {
+    setCode(starterCode);
+  }, [starterCode]);
 
   const handleLanguageChange = (e) => {
     const selected = LANGUAGES.find((l) => l.value === e.target.value);
