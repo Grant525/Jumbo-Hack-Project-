@@ -13,15 +13,30 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
 
         {/* Protected */}
-        <Route path="/" element={
-          <ProtectedRoute><Home /></ProtectedRoute>
-        } />
-        <Route path="/lessons" element={
-          <ProtectedRoute><Lessons /></ProtectedRoute>
-        } />
-        <Route path="/question/:id" element={
-          <ProtectedRoute><Question /></ProtectedRoute>
-        } />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lessons"
+          element={
+            <ProtectedRoute>
+              <Lessons />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route
+          path="/question/:id"
+          element={
+            <ProtectedRoute>
+              <Question />
+            </ProtectedRoute>
+          }
+        /> */}
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
