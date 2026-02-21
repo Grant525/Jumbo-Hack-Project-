@@ -14,7 +14,8 @@ export interface Question {
   starter_code_prompt: string;
 }
 
-const questions: Question[] = questionsData as unknown as Question[];
+const raw = (questionsData as any).default ?? questionsData;
+const questions: Question[] = Array.isArray(raw) ? raw : [];
 
 export function groupByChapter(qs: Question[]): Record<string, Question[]> {
   return qs.reduce((acc, q) => {
