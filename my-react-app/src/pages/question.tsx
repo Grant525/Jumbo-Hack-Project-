@@ -14,7 +14,7 @@ export interface Question {
   starter_code_prompt: string;
 }
 
-const questions: Question[] = questionsData.questions as Question[];
+const questions: Question[] = (questionsData as any).questions;
 
 export function groupByChapter(qs: Question[]): Record<string, Question[]> {
   return qs.reduce((acc, q) => {
