@@ -1,19 +1,7 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../user/useUser";
 import Auth from "../Auth";
 import "./sign-in.css";
 
 export default function SignIn() {
-  const { user, loading } = useUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && user) navigate("/", { replace: true });
-  }, [user, loading, navigate]);
-
-  if (loading) return null;
-
   return (
     <div className="signin-root">
       <div className="signin-bg-grid" />
