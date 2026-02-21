@@ -38,15 +38,15 @@ function App() {
               </ProtectedRoute>
           } 
         />
-        {/* <Route
+        <Route
           path="/question/:id"
           element={
             <ProtectedRoute>
               <Question />
             </ProtectedRoute>
           }
-        /> */}
-        <Route path="*" element={<Navigate to="/sign-in" replace />} />
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
