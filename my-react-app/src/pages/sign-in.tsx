@@ -8,7 +8,6 @@ export default function SignIn() {
   const { user, loading } = useUser();
   const navigate = useNavigate();
 
-  // Already logged in → go home
   useEffect(() => {
     if (!loading && user) navigate("/", { replace: true });
   }, [user, loading, navigate]);
