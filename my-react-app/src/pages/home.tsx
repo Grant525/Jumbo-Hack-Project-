@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./home.css";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -182,6 +183,7 @@ function LessonNode({ lesson, onClick }: { lesson: Lesson; onClick: () => void }
 }
 
 function LessonTooltip({ lesson, onClose }: { lesson: Lesson; onClose: () => void }) {
+  const navigate = useNavigate();
   return (
     <div className="tooltip-overlay" onClick={onClose}>
       <div className="lesson-tooltip" onClick={e => e.stopPropagation()}>
@@ -191,9 +193,9 @@ function LessonTooltip({ lesson, onClose }: { lesson: Lesson; onClose: () => voi
           <p className="tt-desc">{lesson.description}</p>
           <p className="tt-xp">+{lesson.xp} XP on completion</p>
         </div>
-        <a href="/lessons" className="tt-btn">
+        <button className="tt-btn" onClick={() => navigate("/lessons")}>
           {lesson.status === "complete" ? "Practice again" : "Start lesson"} →
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -231,6 +233,7 @@ function SectionBlock({ section, onSelect }: { section: Section; onSelect: (l: L
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<Lesson | null>(null);
 
   return (
