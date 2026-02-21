@@ -1,0 +1,45 @@
+.signin-root {
+  width: 100%; min-height: 100vh;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  position: relative;
+}
+
+.signin-bg-grid {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(124,106,245,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,106,245,.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.signin-card {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.signin-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+
+.signin-logo-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--accent);
+  background: rgba(124,106,245,.12);
+  padding: 5px 10px; border-radius: 8px;
+  border: 1px solid rgba(124,106,245,.25);
+}
+
+.signin-logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: -.4px; }
+
+.signin-tagline {
+  font-size: .85rem; color: var(--muted);
+  margin-bottom: 28px; line-height: 1.5;
+}
