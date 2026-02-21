@@ -9,13 +9,7 @@ const Pages = [
 ];
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <h1>Home</h1>
-    </>
-  );
+  return <>Hello World1</>;
 }
 
 export default App;
