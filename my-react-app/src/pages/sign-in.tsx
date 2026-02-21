@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { useUser } from "../user/useUser";
 import Auth from "../Auth";
 import "./sign-in.css";
 

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useUser } from "./hooks/useUser";
+import { useUser } from "./user/useUser";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useUser();
