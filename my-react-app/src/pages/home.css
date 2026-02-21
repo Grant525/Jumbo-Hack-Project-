@@ -1,4 +1,9 @@
 /* ===== HOME PAGE — FULL WIDTH DESKTOP ===== */
+
+
+/* we put home body and section tree to set max widths */
+
+
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
 :root {
@@ -29,6 +34,12 @@ html, body {
 }
 
 /* ─── Root ───────────────────────────────────────────────────────────────── */
+
+.home-body {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .home-root {
   width: 100%;
   min-height: 100vh;
@@ -160,9 +171,8 @@ html, body {
     col=3 → grid-column: 5/8
 */
 .section-tree {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .tree-row {
