@@ -1,0 +1,387 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg:        #0d0f14;
+  --surface:   #161920;
+  --surface2:  #1e2130;
+  --border:    #2a2f45;
+  --text:      #e8ecf8;
+  --muted:     #5a607a;
+  --accent:    #7c6af5;
+  --accent2:   #f5a623;
+  --green:     #22c55e;
+  --red:       #ef4444;
+  --radius:    16px;
+
+  /* node status colours */
+  --col-complete:  #22c55e;
+  --col-active:    #7c6af5;
+  --col-available: #f5a623;
+  --col-locked:    #2a2f45;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Root ──────────────────────────────────────────────────────────────── */
+.home-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.home-bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(124,106,245,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,106,245,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────── */
+.home-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(13,15,20,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.home-logo { display: flex; align-items: center; gap: 10px; }
+
+.home-logo-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem; color: var(--accent);
+  background: rgba(124,106,245,.12);
+  padding: 5px 10px; border-radius: 8px;
+  border: 1px solid rgba(124,106,245,.3);
+}
+
+.home-logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: -.5px; }
+
+.home-header-right { display: flex; align-items: center; gap: 10px; }
+
+.home-xp-pill, .home-streak-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 13px; border-radius: 99px;
+  background: var(--surface2); border: 1px solid var(--border);
+  font-size: .82rem; font-weight: 600;
+}
+.home-xp-pill     { color: var(--accent2); }
+.home-streak-pill { color: #ff6b35; }
+
+.home-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .72rem; font-weight: 700; cursor: pointer;
+}
+
+/* ─── Main container ────────────────────────────────────────────────────── */
+.home-main {
+  position: relative; z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+/* ─── Topbar ────────────────────────────────────────────────────────────── */
+.home-topbar {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  animation: fadeUp .45s ease both;
+}
+
+.home-greeting     { font-size: 1.8rem; font-weight: 800; letter-spacing: -.6px; }
+.home-greeting-sub { font-size: .9rem; color: var(--muted); margin-top: 4px; }
+
+/* Language badge */
+.lang-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 14px;
+  white-space: nowrap;
+}
+
+.lang-badge-from { font-size: .9rem; font-weight: 600; color: var(--muted); }
+.lang-badge-arrow { color: var(--accent); font-size: 1rem; }
+.lang-badge-to   { font-size: .9rem; font-weight: 700; color: var(--accent); }
+
+.lang-badge-change {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: .85rem; padding: 2px 4px;
+  border-radius: 4px; transition: color .15s;
+}
+.lang-badge-change:hover { color: var(--text); }
+
+/* ─── Streak bar ────────────────────────────────────────────────────────── */
+.streak-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  animation: fadeUp .45s .05s ease both;
+}
+
+.streak-bar-left { display: flex; align-items: center; gap: 14px; }
+
+.streak-fire { font-size: 2rem; line-height: 1; }
+
+.streak-count { font-size: 1.1rem; font-weight: 700; }
+.streak-sub   { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+
+.streak-days { display: flex; gap: 6px; }
+
+.streak-pip {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 10px;
+  min-width: 38px; transition: border-color .2s;
+}
+
+.streak-pip.done {
+  background: rgba(255,107,53,.08);
+  border-color: rgba(255,107,53,.3);
+}
+
+.streak-pip.today { border-color: var(--accent); }
+
+.streak-pip-icon  { font-size: 1rem; line-height: 1; }
+.streak-pip-label { font-size: .62rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.streak-pip.done .streak-pip-label { color: #ff6b35; }
+
+/* ─── Overall progress ──────────────────────────────────────────────────── */
+.overall-progress {
+  animation: fadeUp .45s .1s ease both;
+}
+
+.overall-progress-labels {
+  display: flex; justify-content: space-between;
+  font-size: .8rem; color: var(--muted); margin-bottom: 8px;
+}
+
+.overall-progress-track {
+  height: 8px; background: var(--surface2);
+  border-radius: 99px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #a78bfa);
+  border-radius: 99px;
+  transition: width .8s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ─── Skill tree ────────────────────────────────────────────────────────── */
+.skill-tree {
+  display: flex; flex-direction: column; gap: 32px;
+  animation: fadeUp .45s .15s ease both;
+}
+
+/* ─── Section block ─────────────────────────────────────────────────────── */
+.section-block {
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+
+.section-title { font-size: 1rem; font-weight: 700; letter-spacing: -.2px; }
+
+.section-badge {
+  font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 99px;
+}
+
+.done-badge   { background: rgba(34,197,94,.12);  color: var(--green); border: 1px solid rgba(34,197,94,.25); }
+.locked-badge { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+/* ─── Tree rows & zigzag ────────────────────────────────────────────────── */
+/*
+  We use a 5-column grid:
+    col 1 = left      (grid-column: 1/3)
+    col 2 = center    (grid-column: 2/4)
+    col 3 = right     (grid-column: 3/5)
+  connector lives in the same column, above the node.
+*/
+
+.section-tree {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 0;
+}
+
+.tree-row {
+  grid-column: calc(var(--col)) / calc(var(--col) + 3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Connector line ─────────────────────────────────────────────────────── */
+.connector {
+  width: 2px; height: 28px;
+  background: var(--border);
+  border-radius: 2px;
+  transition: background .3s;
+}
+
+.connector-lit { background: var(--accent); opacity: .5; }
+
+/* ─── Lesson node ────────────────────────────────────────────────────────── */
+.lesson-node {
+  position: relative;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  background: var(--surface);
+  font-family: 'Syne', sans-serif;
+  margin-bottom: 6px;
+}
+
+/* Status colours */
+.lesson-node.status-complete {
+  border-color: var(--col-complete);
+  background: rgba(34,197,94,.1);
+}
+.lesson-node.status-active {
+  border-color: var(--col-active);
+  background: rgba(124,106,245,.12);
+  box-shadow: 0 0 0 4px rgba(124,106,245,.15);
+}
+.lesson-node.status-available {
+  border-color: var(--col-available);
+  background: rgba(245,166,35,.08);
+}
+.lesson-node.status-locked {
+  border-color: var(--col-locked);
+  background: var(--surface);
+  cursor: default; opacity: .55;
+}
+
+.lesson-node:not(:disabled):hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+.lesson-node-icon  { font-size: 1.5rem; line-height: 1; }
+.lesson-node-label {
+  position: absolute;
+  bottom: -26px;
+  font-size: .62rem; font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  pointer-events: none;
+  text-align: center;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Check badge */
+.lesson-node-check {
+  position: absolute; top: -4px; right: -4px;
+  width: 18px; height: 18px;
+  background: var(--col-complete); color: #fff;
+  border-radius: 50%; font-size: .65rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+
+/* Active pulse ring */
+.lesson-node-pulse {
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: .5;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);    opacity: .5; }
+  50%       { transform: scale(1.12); opacity: .15; }
+}
+
+/* ─── Tooltip overlay ────────────────────────────────────────────────────── */
+.tooltip-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 24px;
+  animation: fadeIn .2s ease;
+}
+
+.lesson-tooltip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%; max-width: 480px;
+  display: flex; align-items: center; gap: 16px;
+  animation: slideUp .25s cubic-bezier(.34,1.56,.64,1);
+}
+
+.tooltip-icon { font-size: 2.4rem; flex-shrink: 0; }
+
+.tooltip-body { flex: 1; }
+.tooltip-title { font-size: 1.05rem; font-weight: 700; }
+.tooltip-desc  { font-size: .85rem; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+.tooltip-xp    { font-size: .78rem; color: var(--accent2); font-weight: 700; margin-top: 6px; }
+
+.tooltip-btn {
+  flex-shrink: 0;
+  padding: 11px 20px;
+  background: var(--accent);
+  color: #fff; font-family: 'Syne', sans-serif;
+  font-size: .88rem; font-weight: 700;
+  border-radius: 12px; text-decoration: none;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 18px rgba(124,106,245,.4);
+  white-space: nowrap;
+}
+.tooltip-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,106,245,.55); }
+
+/* ─── Footer ────────────────────────────────────────────────────────────── */
+.home-footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 24px;
+  font-size: .78rem; color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+.home-footer em { color: var(--accent); font-style: normal; }
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .home-header  { padding: 12px 16px; }
+  .home-main    { padding: 28px 16px 80px; }
+  .home-greeting { font-size: 1.5rem; }
+  .streak-bar   { flex-direction: column; align-items: flex-start; }
+  .lesson-node  { width: 68px; height: 68px; }
+  .lesson-node-icon { font-size: 1.25rem; }
+}
