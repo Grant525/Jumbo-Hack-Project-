@@ -20,7 +20,7 @@ interface Section {
   lessons: Lesson[];
 }
 
-// ─── Mock data ─────────────────────────────────────────────────────────────────
+// ─── Mock data ────────────────────────────────────────────────────────────────
 
 const SECTIONS: Section[] = [
   {
@@ -37,7 +37,7 @@ const SECTIONS: Section[] = [
     id: 2,
     title: "Ownership & Memory",
     lessons: [
-      { id: 5,  title: "Ownership Rules",    description: "Move, copy, and drop",                  icon: "🧠", status: "locked",    xp: 30 },
+      { id: 5,  title: "Ownership Rules",    description: "Move, copy, and drop semantics",        icon: "🧠", status: "locked",    xp: 30 },
       { id: 6,  title: "Borrowing",          description: "References and the borrow checker",     icon: "🔗", status: "locked",    xp: 30 },
       { id: 7,  title: "Lifetimes",          description: "Annotating reference lifetimes",        icon: "⏳", status: "locked",    xp: 30 },
     ],
@@ -46,7 +46,7 @@ const SECTIONS: Section[] = [
     id: 3,
     title: "Data Structures",
     lessons: [
-      { id: 8,  title: "Structs",            description: "Custom data types",                     icon: "🏗️", status: "locked",    xp: 25 },
+      { id: 8,  title: "Structs",            description: "Custom composite data types",           icon: "🏗️", status: "locked",    xp: 25 },
       { id: 9,  title: "Enums",              description: "Algebraic types and pattern matching",  icon: "🎭", status: "locked",    xp: 25 },
       { id: 10, title: "Collections",        description: "Vec, HashMap, HashSet",                 icon: "🗂️", status: "locked",    xp: 25 },
     ],
@@ -72,63 +72,96 @@ const SECTIONS: Section[] = [
 
 const STREAK_DAYS = ["M","T","W","T","F","S","S"];
 const STREAK_DONE = [true, true, true, false, false, false, false];
+const ZIGZAG      = [2, 1, 2, 3, 2, 1, 2, 3]; // column 1–3
 
 const ALL_LESSONS   = SECTIONS.flatMap(s => s.lessons);
-const DONE_LESSONS  = ALL_LESSONS.filter(l => l.status === "complete").length;
-const TOTAL_LESSONS = ALL_LESSONS.length;
+const DONE_COUNT    = ALL_LESSONS.filter(l => l.status === "complete").length;
+const TOTAL_COUNT   = ALL_LESSONS.length;
 
-// Zigzag column positions (1 = left, 2 = center, 3 = right)
-const ZIGZAG = [2, 1, 2, 3, 2, 1, 2, 3];
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
 
-// ─── Sub-components ────────────────────────────────────────────────────────────
+function Sidebar() {
+  const pct = Math.round((DONE_COUNT / TOTAL_COUNT) * 100);
 
-function StreakBar() {
   return (
-    <div className="streak-bar">
-      <div className="streak-bar-left">
-        <span className="streak-fire">🔥</span>
-        <div>
-          <p className="streak-count">3-day streak</p>
-          <p className="streak-sub">Keep it going — don't break the chain</p>
+    <aside className="sidebar">
+      {/* Language pair */}
+      <div className="sidebar-card lang-card">
+        <p className="sidebar-label">Current path</p>
+        <div className="lang-pair">
+          <div className="lang-chip from">
+            <span className="lang-chip-icon">🐍</span>
+            <span>Python</span>
+          </div>
+          <span className="lang-arrow">→</span>
+          <div className="lang-chip to">
+            <span className="lang-chip-icon">⚙️</span>
+            <span>Rust</span>
+          </div>
+        </div>
+        <button className="lang-change-btn">Change language pair</button>
+      </div>
+
+      {/* Streak */}
+      <div className="sidebar-card streak-card">
+        <div className="streak-top">
+          <span className="streak-flame">🔥</span>
+          <div>
+            <p className="streak-number">3</p>
+            <p className="streak-label">day streak</p>
+          </div>
+        </div>
+        <div className="streak-week">
+          {STREAK_DAYS.map((d, i) => (
+            <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""} ${i === 3 ? "today" : ""}`}>
+              <span>{STREAK_DONE[i] ? "🔥" : "·"}</span>
+              <span className="pip-day">{d}</span>
+            </div>
+          ))}
+        </div>
+        <p className="streak-sub">Complete today's lesson to keep your streak alive</p>
+      </div>
+
+      {/* Progress */}
+      <div className="sidebar-card progress-card">
+        <p className="sidebar-label">Overall progress</p>
+        <div className="progress-nums">
+          <span className="progress-done">{DONE_COUNT}</span>
+          <span className="progress-total"> / {TOTAL_COUNT} lessons</span>
+        </div>
+        <div className="progress-track">
+          <div className="progress-fill" style={{ width: `${pct}%` }} />
+        </div>
+        <p className="progress-pct">{pct}% complete</p>
+      </div>
+
+      {/* Stats */}
+      <div className="sidebar-card stats-card">
+        <p className="sidebar-label">This week</p>
+        <div className="stats-grid">
+          <div className="stat-item">
+            <span className="stat-val">140</span>
+            <span className="stat-key">XP earned</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-val">12</span>
+            <span className="stat-key">Drills done</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-val">94%</span>
+            <span className="stat-key">Accuracy</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-val">🥇</span>
+            <span className="stat-key">Gold league</span>
+          </div>
         </div>
       </div>
-      <div className="streak-days">
-        {STREAK_DAYS.map((d, i) => (
-          <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""} ${i === 3 ? "today" : ""}`}>
-            <span className="streak-pip-icon">{STREAK_DONE[i] ? "🔥" : "·"}</span>
-            <span className="streak-pip-label">{d}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+    </aside>
   );
 }
 
-function LangBadge() {
-  return (
-    <div className="lang-badge">
-      <span className="lang-badge-from">Python</span>
-      <span className="lang-badge-arrow">→</span>
-      <span className="lang-badge-to">Rust</span>
-      <button className="lang-badge-change" title="Change language">✎</button>
-    </div>
-  );
-}
-
-function ProgressSummary() {
-  const pct = Math.round((DONE_LESSONS / TOTAL_LESSONS) * 100);
-  return (
-    <div className="overall-progress">
-      <div className="overall-progress-labels">
-        <span>{DONE_LESSONS} / {TOTAL_LESSONS} lessons</span>
-        <span>{pct}% complete</span>
-      </div>
-      <div className="overall-progress-track">
-        <div className="overall-progress-fill" style={{ width: `${pct}%` }} />
-      </div>
-    </div>
-  );
-}
+// ─── Skill tree ───────────────────────────────────────────────────────────────
 
 function LessonNode({ lesson, onClick }: { lesson: Lesson; onClick: () => void }) {
   const clickable = lesson.status !== "locked";
@@ -138,12 +171,12 @@ function LessonNode({ lesson, onClick }: { lesson: Lesson; onClick: () => void }
       onClick={clickable ? onClick : undefined}
       disabled={!clickable}
     >
-      <span className="lesson-node-icon">
+      <span className="node-icon">
         {lesson.status === "locked" ? "🔒" : lesson.icon}
       </span>
-      {lesson.status === "active" && <span className="lesson-node-pulse" />}
-      {lesson.status === "complete" && <span className="lesson-node-check">✓</span>}
-      <span className="lesson-node-label">{lesson.title}</span>
+      {lesson.status === "active"   && <span className="node-pulse" />}
+      {lesson.status === "complete" && <span className="node-check">✓</span>}
+      <span className="node-label">{lesson.title}</span>
     </button>
   );
 }
@@ -152,13 +185,13 @@ function LessonTooltip({ lesson, onClose }: { lesson: Lesson; onClose: () => voi
   return (
     <div className="tooltip-overlay" onClick={onClose}>
       <div className="lesson-tooltip" onClick={e => e.stopPropagation()}>
-        <span className="tooltip-icon">{lesson.icon}</span>
-        <div className="tooltip-body">
-          <p className="tooltip-title">{lesson.title}</p>
-          <p className="tooltip-desc">{lesson.description}</p>
-          <p className="tooltip-xp">+{lesson.xp} XP</p>
+        <span className="tt-icon">{lesson.icon}</span>
+        <div className="tt-body">
+          <p className="tt-title">{lesson.title}</p>
+          <p className="tt-desc">{lesson.description}</p>
+          <p className="tt-xp">+{lesson.xp} XP on completion</p>
         </div>
-        <a href="/lessons" className="tooltip-btn">
+        <a href="/lessons" className="tt-btn">
           {lesson.status === "complete" ? "Practice again" : "Start lesson"} →
         </a>
       </div>
@@ -174,8 +207,8 @@ function SectionBlock({ section, onSelect }: { section: Section; onSelect: (l: L
     <div className={`section-block ${allDone ? "all-done" : ""} ${!anyActive ? "all-locked" : ""}`}>
       <div className="section-header">
         <span className="section-title">{section.title}</span>
-        {allDone  && <span className="section-badge done-badge">✓ Complete</span>}
-        {!anyActive && <span className="section-badge locked-badge">🔒 Locked</span>}
+        {allDone   && <span className="sec-badge done-badge">✓ Complete</span>}
+        {!anyActive && <span className="sec-badge locked-badge">🔒 Locked</span>}
       </div>
 
       <div className="section-tree">
@@ -195,7 +228,7 @@ function SectionBlock({ section, onSelect }: { section: Section; onSelect: (l: L
   );
 }
 
-// ─── Page ──────────────────────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Home() {
   const [selected, setSelected] = useState<Lesson | null>(null);
@@ -209,6 +242,11 @@ export default function Home() {
           <span className="home-logo-icon">{"</>"}</span>
           <span className="home-logo-text">CodeQuest</span>
         </div>
+        <nav className="home-nav">
+          <a href="/" className="nav-link active">Learn</a>
+          <a href="/lessons" className="nav-link">Practice</a>
+          <a href="#" className="nav-link">Leaderboard</a>
+        </nav>
         <div className="home-header-right">
           <div className="home-xp-pill"><span>⚡</span><span>140 XP</span></div>
           <div className="home-streak-pill"><span>🔥</span><span>3</span></div>
@@ -216,24 +254,24 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="home-main">
-        <div className="home-topbar">
-          <div>
+      <div className="home-body">
+        {/* Left: skill tree */}
+        <main className="tree-main">
+          <div className="tree-main-header">
             <h1 className="home-greeting">Hey Jamie 👋</h1>
-            <p className="home-greeting-sub">Pick up where you left off</p>
+            <p className="home-greeting-sub">Keep going — you're building real muscle memory</p>
           </div>
-          <LangBadge />
-        </div>
 
-        <StreakBar />
-        <ProgressSummary />
+          <div className="skill-tree">
+            {SECTIONS.map(section => (
+              <SectionBlock key={section.id} section={section} onSelect={setSelected} />
+            ))}
+          </div>
+        </main>
 
-        <div className="skill-tree">
-          {SECTIONS.map(section => (
-            <SectionBlock key={section.id} section={section} onSelect={setSelected} />
-          ))}
-        </div>
-      </main>
+        {/* Right: sticky sidebar */}
+        <Sidebar />
+      </div>
 
       <footer className="home-footer">
         <p>© 2025 CodeQuest · Built to make syntax <em>stick</em></p>
