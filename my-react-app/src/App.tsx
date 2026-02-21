@@ -12,7 +12,7 @@ function App() {
         {/* Public */}
         <Route path="/sign-in" element={<SignIn />} />
 
-        {/* Protected */}
+        {/* {Protected} */}
         <Route
           path="/"
           element={
@@ -37,12 +37,10 @@ function App() {
             </ProtectedRoute>
           }
         /> */}
-
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/sign-in" replace />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
-

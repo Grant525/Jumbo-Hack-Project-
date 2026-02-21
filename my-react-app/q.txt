@@ -1,0 +1,17 @@
+
+-- User profile: streak, xp, language pair
+create table profiles (
+  user_id uuid references auth.users(id) on delete cascade primary key,
+  username text,
+  source_language text default 'Python',
+  target_language text default 'Rust',
+  xp int default 0,
+  current_streak int default 0,
+  longest_streak int default 0,
+  last_completed_date date
+);
+
+alter table profiles enable row level security;
+
+create policy "users can manage own profile"
+  on profiles for all using (auth.uid() = user_id);
