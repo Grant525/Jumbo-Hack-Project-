@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import questions, { groupByChapter } from "../data/questions";
+import questions, { groupByChapter } from "../data/questions.json";
 import "./lessons.css";
 
 // Mock: which question IDs the user has completed
@@ -13,13 +13,15 @@ export default function Lessons() {
   const navigate = useNavigate();
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);
 
-  const total     = questions.length;
+  const total = questions.length;
   const completed = COMPLETED_IDS.size;
-  const pct       = Math.round((completed / total) * 100);
+  const pct = Math.round((completed / total) * 100);
 
   const chapterQuestions = chapters[activeChapter] ?? [];
-  const chapterDone      = chapterQuestions.filter(q => COMPLETED_IDS.has(q.id)).length;
-  const chapterPct       = Math.round((chapterDone / chapterQuestions.length) * 100);
+  const chapterDone = chapterQuestions.filter((q) =>
+    COMPLETED_IDS.has(q.id),
+  ).length;
+  const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
   return (
     <div className="lessons-root">
@@ -41,14 +43,13 @@ export default function Lessons() {
       </header>
 
       <div className="lessons-body">
-
         {/* ── Left: chapter nav ── */}
         <nav className="chapter-nav">
           <p className="chapter-nav-label">Chapters</p>
-          {chapterNames.map(name => {
-            const qs   = chapters[name];
-            const done = qs.filter(q => COMPLETED_IDS.has(q.id)).length;
-            const p    = Math.round((done / qs.length) * 100);
+          {chapterNames.map((name) => {
+            const qs = chapters[name];
+            const done = qs.filter((q) => COMPLETED_IDS.has(q.id)).length;
+            const p = Math.round((done / qs.length) * 100);
             const isActive = name === activeChapter;
 
             return (
@@ -59,10 +60,15 @@ export default function Lessons() {
               >
                 <div className="chapter-btn-top">
                   <span className="chapter-btn-name">{name}</span>
-                  <span className="chapter-btn-count">{done}/{qs.length}</span>
+                  <span className="chapter-btn-count">
+                    {done}/{qs.length}
+                  </span>
                 </div>
                 <div className="chapter-btn-bar">
-                  <div className="chapter-btn-fill" style={{ width: `${p}%` }} />
+                  <div
+                    className="chapter-btn-fill"
+                    style={{ width: `${p}%` }}
+                  />
                 </div>
               </button>
             );
@@ -71,19 +77,31 @@ export default function Lessons() {
 
         {/* ── Right: question list ── */}
         <main className="question-list-col">
-
           {/* Chapter header */}
           <div className="chapter-heading">
             <div>
               <h1 className="chapter-title">{activeChapter}</h1>
-              <p className="chapter-sub">{chapterDone} of {chapterQuestions.length} questions complete</p>
+              <p className="chapter-sub">
+                {chapterDone} of {chapterQuestions.length} questions complete
+              </p>
             </div>
             <div className="chapter-progress-ring">
               <svg viewBox="0 0 48 48" width="56" height="56">
-                <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" strokeWidth="4" />
                 <circle
-                  cx="24" cy="24" r="20" fill="none"
-                  stroke="var(--accent)" strokeWidth="4"
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  stroke="var(--border)"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="4"
                   strokeDasharray={`${2 * Math.PI * 20}`}
                   strokeDashoffset={`${2 * Math.PI * 20 * (1 - chapterPct / 100)}`}
                   strokeLinecap="round"
@@ -98,7 +116,9 @@ export default function Lessons() {
           {/* Overall progress bar */}
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
-            <span className="overall-bar-pct">{completed}/{total}</span>
+            <span className="overall-bar-pct">
+              {completed}/{total}
+            </span>
           </div>
           <div className="overall-bar-track">
             <div className="overall-bar-fill" style={{ width: `${pct}%` }} />
@@ -107,8 +127,11 @@ export default function Lessons() {
           {/* Question cards */}
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
-              const done      = COMPLETED_IDS.has(q.id);
-              const available = done || idx === 0 || COMPLETED_IDS.has(chapterQuestions[idx - 1]?.id);
+              const done = COMPLETED_IDS.has(q.id);
+              const available =
+                done ||
+                idx === 0 ||
+                COMPLETED_IDS.has(chapterQuestions[idx - 1]?.id);
 
               return (
                 <button
@@ -118,7 +141,9 @@ export default function Lessons() {
                   disabled={!available}
                 >
                   {/* Number */}
-                  <div className={`q-number ${done ? "done" : available ? "available" : "locked"}`}>
+                  <div
+                    className={`q-number ${done ? "done" : available ? "available" : "locked"}`}
+                  >
                     {done ? "✓" : idx + 1}
                   </div>
 
@@ -127,7 +152,9 @@ export default function Lessons() {
                     <div className="q-top">
                       <span className="q-title">{q.title}</span>
                       {done && <span className="q-done-badge">Complete</span>}
-                      {!available && <span className="q-locked-badge">🔒 Locked</span>}
+                      {!available && (
+                        <span className="q-locked-badge">🔒 Locked</span>
+                      )}
                     </div>
                     <p className="q-desc">{q.description}</p>
                     {q.example_output && (

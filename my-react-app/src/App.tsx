@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Lessons from "./pages/lessons";
-import Question from "./pages/question";
+import Question from "./pages/lessons.tsx";
 import SignIn from "./pages/sign-in";
 import Auth from "./Auth";
 
@@ -10,10 +10,10 @@ function App() {
     <BrowserRouter>
       <Auth />
       <Routes>
-        <Route path="/"               element={<Home />} />
-        <Route path="/lessons"        element={<Lessons />} />
-        <Route path="/question/:id"   element={<Question />} />
-        <Route path="/sign-in"        element={<SignIn />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/lessons" element={<Lessons />} />
+        <Route path="/question/:id" element={<Question />} />
+        <Route path="/sign-in" element={<SignIn />} />
       </Routes>
     </BrowserRouter>
   );
