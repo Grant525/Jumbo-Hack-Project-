@@ -3,6 +3,7 @@ import Home from "./pages/home";
 import Lessons from "./pages/lessons";
 import Question from "./pages/question";
 import SignIn from "./pages/sign-in";
+import Settings from "./pages/settings";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
@@ -28,6 +29,14 @@ function App() {
               <Lessons />
             </ProtectedRoute>
           }
+        />
+        <Route 
+          path="/settings" 
+          element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+          } 
         />
         {/* <Route
           path="/question/:id"
