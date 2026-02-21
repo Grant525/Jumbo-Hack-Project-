@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+/*import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Lessons from "./pages/lessons";
 import Question from "./pages/question";
@@ -9,10 +9,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
         <Route path="/sign-in" element={<SignIn />} />
 
-        {/* Protected */}
         <Route
           path="/"
           element={
@@ -29,19 +27,28 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
+        {<Route
           path="/question/:id"
           element={
             <ProtectedRoute>
               <Question />
             </ProtectedRoute>
           }
-        /> */}
+        />}
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
+}
+
+export default App;
+*/
+
+import SignIn from "./pages/sign-in";
+
+function App() {
+  return <SignIn />;
 }
 
 export default App;
