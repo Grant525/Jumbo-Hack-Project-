@@ -522,12 +522,13 @@ body {
 .lang-pair { display: flex; align-items: center; gap: 6px; width: 100%;}
 
 .lang-chip {
-  width: 120px;
+  width: 100px;
   flex-shrink: 0;
   justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: .85rem;
 }
 .lang-chip.from { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.to   { color: var(--accent2); }
