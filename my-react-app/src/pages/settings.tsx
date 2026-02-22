@@ -53,8 +53,8 @@ export default function Settings() {
 
       <header className="lessons-header">
         <div className="lessons-logo">
-          <span className="lessons-logo-icon">{"</>"}</span>
-          <span className="lessons-logo-text">CodeQuest</span>
+          <span className="lessons-logo-icon">{"◈"}</span>
+          <span className="lessons-logo-text">Rosetta</span>
         </div>
 
         <nav className="lessons-nav centered-nav">
@@ -65,9 +65,7 @@ export default function Settings() {
             Lessons
           </a>
 
-          <a href="/settings" className="nav-link active">
-            Profile
-          </a>
+
         </nav>
 
         <div 
