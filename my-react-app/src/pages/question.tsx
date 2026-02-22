@@ -224,7 +224,7 @@ export default function QuestionPage() {
           <span className="qp-title">
             {practiceQuestion ? practiceQuestion.title : question.title}
             {practiceQuestion && (
-              <span className="qp-practice-badge">Practice</span>
+              <span className="qp-practice-badge"> Practice</span>
             )}
           </span>
         </div>
