@@ -479,8 +479,8 @@ body {
 }
 .lang-chip img { display: block; flex-shrink: 0; width: 16px; height: 16px; }
 .lang-chip:hover { border-color: var(--border-hi); background: var(--accent-lo); }
-.lang-chip.from  { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
-.lang-chip.to    { color: var(--accent2); }
+.lang-chip.from  { color: var(--text); border-color: var(--border); }
+.lang-chip.to    { color: var(--text); border-color: var(--border); }
 .lang-arrow      { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }
 
 .language-dropdown {
