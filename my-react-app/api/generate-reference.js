@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: `Write a complete, working solution in ${knownLanguage} that solves this problem. Include a main function. Do NOT leave TODOs, placeholder comments, "Your code here", or test cases — write the full working solution code.\n\nProblem: ${problem}`,
+            content: `Write a complete, working solution in ${knownLanguage} that solves this problem. Include a main function. Do NOT leave TODOs, placeholder comments, "Your code here", or test cases — write the full working solution code. Follow these language rules: Java class must be named Main. C++ must use int main(). Rust must use fn main(). Go must use package main and func main().\n\nProblem: ${problem}`,
           },
         ],
       }),
