@@ -25,7 +25,6 @@ const languages = ["Python", "Java", "C++", "Rust", "Go", "Ruby"];
 export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
-  const { profile, updateProfile } = useProfile();
 
   const [fromLang, setFromLangState] = useState(
     profile?.source_language ?? "Python",
