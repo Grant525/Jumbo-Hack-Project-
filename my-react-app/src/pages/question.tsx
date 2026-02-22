@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { questions } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
+import { useUser } from "../user/useUser";
 import { useLessonProgress } from "../user/useLessonProgress";
 import CodeEditor from "../components/CodeEditor";
 import "./question.css";
@@ -26,6 +27,7 @@ function normalize(s: string) {
 export default function QuestionPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUser();
   const { profile, updateStreak } = useProfile();
   const { completeLesson, isCompleted } = useLessonProgress(
     profile?.source_language ?? "Python",
@@ -131,8 +133,8 @@ export default function QuestionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: question.title,
-          description: question.description,
+          title: activeQuestion!.title,
+          description: activeQuestion!.description,
           chapter: question.chapter,
         }),
       });
@@ -147,6 +149,7 @@ export default function QuestionPage() {
       setResult(null);
       setRefError(false);
       setTargetError(false);
+      fetchedFor.current = null;
       // Re-generate reference code for the new problem
       setLoadingRef(true);
       fetch("/api/generate-reference", {
@@ -221,7 +224,7 @@ export default function QuestionPage() {
           <span className="qp-title">
             {practiceQuestion ? practiceQuestion.title : question.title}
             {practiceQuestion && (
-              <span className="qp-practice-badge">Practice</span>
+              <span className="qp-practice-badge"> Practice</span>
             )}
           </span>
         </div>
