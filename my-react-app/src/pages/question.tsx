@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { questions } from "./questions.ts";
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
 export default function QuestionPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const question = questions.find((q) => q.id === Number(id));
 
   const [knownLanguage, setKnownLanguage] = useState("Python");
@@ -31,7 +32,10 @@ export default function QuestionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: question.starter_code_prompt.replace("{language}", knownLanguage),
+            problem: question.starter_code_prompt.replace(
+              "{language}",
+              knownLanguage,
+            ),
             knownLanguage,
           }),
         }),
@@ -39,7 +43,10 @@ export default function QuestionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: question.starter_code_prompt.replace("{language}", targetLanguage),
+            problem: question.starter_code_prompt.replace(
+              "{language}",
+              targetLanguage,
+            ),
             targetLanguage,
           }),
         }),
@@ -93,27 +100,48 @@ export default function QuestionPage() {
 
   return (
     <div style={{ padding: "20px" }}>
+      <button
+        onClick={() => navigate("/")}
+        style={{
+          marginBottom: "20px",
+          padding: "6px 12px",
+          cursor: "pointer",
+        }}
+      >
+        ← Back
+      </button>
+
       <h1>{question.title}</h1>
       <p>{question.description}</p>
 
       <div style={{ marginBottom: "20px" }}>
         <label>Known Language: </label>
-        <select value={knownLanguage} onChange={(e) => setKnownLanguage(e.target.value)}>
+        <select
+          value={knownLanguage}
+          onChange={(e) => setKnownLanguage(e.target.value)}
+        >
           <option>Python</option>
           <option>JavaScript</option>
           <option>Java</option>
           <option>C++</option>
         </select>
 
-        <label style={{ marginLeft: "20px" }}>Target Language: </label>
-        <select value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)}>
+        {/* <label style={{ marginLeft: "20px" }}>Target Language: </label>
+        <select
+          value={targetLanguage}
+          onChange={(e) => setTargetLanguage(e.target.value)}
+        >
           <option>Rust</option>
           <option>Go</option>
           <option>TypeScript</option>
           <option>Kotlin</option>
-        </select>
+        </select> */}
 
-        <button onClick={handleGenerate} disabled={loading} style={{ marginLeft: "20px" }}>
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          style={{ marginLeft: "20px" }}
+        >
           {loading ? "Generating..." : "Generate Code"}
         </button>
       </div>
@@ -127,11 +155,22 @@ export default function QuestionPage() {
             starterCode={referenceCode}
             onChange={setReferenceCode}
           />
-          <button onClick={runReference} disabled={runningRef} style={{ marginTop: "10px" }}>
+          {/* <button
+            onClick={runReference}
+            disabled={runningRef}
+            style={{ marginTop: "10px" }}
+          >
             {runningRef ? "Running..." : `Run ${knownLanguage}`}
-          </button>
+          </button> */}
           {referenceOutput && (
-            <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
+            <pre
+              style={{
+                marginTop: "10px",
+                background: "#111",
+                color: "#0f0",
+                padding: "10px",
+              }}
+            >
               {referenceOutput}
             </pre>
           )}
@@ -145,11 +184,22 @@ export default function QuestionPage() {
             starterCode={targetCode}
             onChange={setTargetCode}
           />
-          <button onClick={runTarget} disabled={runningTarget} style={{ marginTop: "10px" }}>
+          {/* <button
+            onClick={runTarget}
+            disabled={runningTarget}
+            style={{ marginTop: "10px" }}
+          >
             {runningTarget ? "Running..." : `Run ${targetLanguage}`}
-          </button>
+          </button> */}
           {targetOutput && (
-            <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
+            <pre
+              style={{
+                marginTop: "10px",
+                background: "#111",
+                color: "#0f0",
+                padding: "10px",
+              }}
+            >
               {targetOutput}
             </pre>
           )}
