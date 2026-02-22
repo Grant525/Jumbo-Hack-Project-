@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { questions } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
@@ -58,12 +58,32 @@ export default function QuestionPage() {
   const [refError, setRefError]               = useState(false);
   const [targetError, setTargetError]         = useState(false);
 
-  const [loading, setLoading]   = useState(false);
-  const [running, setRunning]   = useState(false);
-  const [result, setResult]     = useState<"pass" | "fail" | null>(null);
-  const [genError, setGenError] = useState("");
+  const [loadingRef, setLoadingRef] = useState(false);
+  const [loading, setLoading]       = useState(false);
+  const [running, setRunning]       = useState(false);
+  const [result, setResult]         = useState<"pass" | "fail" | null>(null);
+  const [genError, setGenError]     = useState("");
 
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
+
+  // Load reference code automatically when page loads
+  useEffect(() => {
+    if (!question) return;
+    setLoadingRef(true);
+    setReferenceCode("");
+    fetch("/api/generate-reference", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        problem: question.description,
+        knownLanguage: sourceLang,
+      }),
+    })
+      .then(res => res.json())
+      .then(({ code }) => setReferenceCode(code))
+      .catch(err => console.error("Error loading reference:", err))
+      .finally(() => setLoadingRef(false));
+  }, [question?.id]);
 
   if (!question) return (
     <div className="qp-notfound">
@@ -72,36 +92,25 @@ export default function QuestionPage() {
     </div>
   );
 
+  // Button only generates starter code
   const handleGenerate = async () => {
     setLoading(true);
     setGenError("");
     try {
-      const [refRes, starterRes] = await Promise.all([
-        fetch("/api/generate-reference", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            problem: question.description,  // plain description, no conflicting instructions
-            knownLanguage: sourceLang,
-          }),
+      const res = await fetch("/api/generate-starter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          problem: question.starter_code_prompt.replace("{language}", targetLang),
+          targetLanguage: targetLang,
         }),
-        fetch("/api/generate-starter", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            problem: question.starter_code_prompt.replace("{language}", targetLang),
-            targetLanguage: targetLang,
-          }),
-        }),
-      ]);
-      if (!refRes.ok || !starterRes.ok) throw new Error("API error");
-      const { code: refCode }   = await refRes.json();
-      const { code: startCode } = await starterRes.json();
-      setReferenceCode(refCode);
-      setTargetCode(startCode);
+      });
+      if (!res.ok) throw new Error("API error");
+      const { code } = await res.json();
+      setTargetCode(code);
     } catch (err: any) {
-      setGenError(err.message ?? "Failed to generate code");
-      console.error("Error generating code:", err);
+      setGenError(err.message ?? "Failed to generate starter code");
+      console.error("Error generating starter code:", err);
     } finally {
       setLoading(false);
     }
@@ -189,17 +198,19 @@ export default function QuestionPage() {
               onClick={handleGenerate}
               disabled={loading}
             >
-              {loading ? "Generating…" : "✨ Generate reference + starter"}
+              {loading ? "Generating..." : "Generate Code"}
             </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
-              Fills the {sourceLang} editor with a full solution, and the {targetLang} editor with starter code (boilerplate only — no solution)
+              {loadingRef
+                ? `Loading ${sourceLang} reference…`
+                : `Fills the ${targetLang} editor with starter code (boilerplate only — no solution)`}
             </p>
           </div>
 
           {result === "pass" && (
             <div className="qp-result pass">
-              <span>🎉</span>
+              <span>Correct!</span>
               <div>
                 <p className="qp-result-title">Correct!</p>
                 <p className="qp-result-sub">Both outputs match. Lesson complete.</p>
@@ -208,7 +219,7 @@ export default function QuestionPage() {
           )}
           {result === "fail" && (
             <div className="qp-result fail">
-              <span>✗</span>
+              <span>X</span>
               <div>
                 <p className="qp-result-title">Not quite</p>
                 <p className="qp-result-sub">Outputs don{"'"}t match — check both sides.</p>
@@ -222,6 +233,7 @@ export default function QuestionPage() {
             <div className="qp-editor-header">
               <span className="qp-editor-lang">{sourceLang}</span>
               <span className="qp-editor-role">Reference</span>
+              {loadingRef && <span className="qp-loading-hint">Loading…</span>}
             </div>
             <CodeEditor
               language={sourceLang.toLowerCase()}
