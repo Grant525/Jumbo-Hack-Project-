@@ -1,38 +1,39 @@
 import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 
-const LANGUAGES = [
-  { label: "Python", value: "python", version: "3.10.0" },
-  { label: "JavaScript", value: "javascript", version: "18.15.0" },
-  { label: "Java", value: "java", version: "15.0.2" },
-  { label: "C++", value: "cpp", version: "10.2.0" },
-];
+const LANGUAGE_CONFIG = {
+  python: { value: "python", version: "3.10.0" },
+  javascript: { value: "javascript", version: "18.15.0" },
+  java: { value: "java", version: "15.0.2" },
+  cpp: { value: "cpp", version: "10.2.0" },
+  rust: { value: "rust", version: "1.68.2" },
+  go: { value: "go", version: "1.20.2" },
+  typescript: { value: "typescript", version: "5.0.3" },
+  kotlin: { value: "kotlin", version: "1.8.20" },
+};
 
-export default function CodeEditor({ language: initialLanguage, starterCode = "" }) {
-  const initial = LANGUAGES.find((l) => l.value === initialLanguage)
-    || LANGUAGES[0];
+export default function CodeEditor({
+  language,
+  starterCode = "",
+  onChange,
+}) {
+  const config = LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG.python;
 
-  const [language, setLanguage] = useState(initial);
   const [code, setCode] = useState(starterCode);
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
   const [error, setError] = useState(false);
 
-  // Update code when starterCode prop changes (i.e. after API call)
+  // Sync when parent updates starterCode
   useEffect(() => {
     setCode(starterCode);
   }, [starterCode]);
-
-  const handleLanguageChange = (e) => {
-    const selected = LANGUAGES.find((l) => l.value === e.target.value);
-    setLanguage(selected);
-    setOutput("");
-  };
 
   const runCode = async () => {
     setRunning(true);
     setOutput("");
     setError(false);
+
     try {
       const response = await fetch(
         "https://emkc.org/api/v2/piston/execute",
@@ -40,41 +41,36 @@ export default function CodeEditor({ language: initialLanguage, starterCode = ""
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            language: language.value,
-            version: language.version,
+            language: config.value,
+            version: config.version,
             files: [{ content: code }],
           }),
         }
       );
+
       const data = await response.json();
-      if (data.run.stderr) {
+
+      if (data.run?.stderr) {
         setOutput(data.run.stderr);
         setError(true);
       } else {
-        setOutput(data.run.output || "(no output)");
+        setOutput(data.run?.output || "(no output)");
       }
     } catch (err) {
       setOutput("Error connecting to execution engine.");
       setError(true);
     }
+
     setRunning(false);
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <span style={styles.title}>Code Editor</span>
-        <select
-          style={styles.select}
-          value={language.value}
-          onChange={handleLanguageChange}
-        >
-          {LANGUAGES.map((l) => (
-            <option key={l.value} value={l.value}>
-              {l.label}
-            </option>
-          ))}
-        </select>
+        <span style={styles.title}>
+          {config.value.toUpperCase()} Editor
+        </span>
+
         <button
           style={running ? styles.buttonDisabled : styles.button}
           onClick={runCode}
@@ -87,9 +83,13 @@ export default function CodeEditor({ language: initialLanguage, starterCode = ""
       <div style={styles.editorWrapper}>
         <Editor
           height="400px"
-          language={language.value}
+          language={config.value}
           value={code}
-          onChange={(val) => setCode(val)}
+          onChange={(val) => {
+            const newValue = val || "";
+            setCode(newValue);
+            if (onChange) onChange(newValue);
+          }}
           theme="vs-dark"
           options={{
             fontSize: 14,
@@ -101,7 +101,12 @@ export default function CodeEditor({ language: initialLanguage, starterCode = ""
       </div>
 
       <div style={styles.outputHeader}>Output</div>
-      <div style={{ ...styles.output, color: error ? "#f87171" : "#4ade80" }}>
+      <div
+        style={{
+          ...styles.output,
+          color: error ? "#f87171" : "#4ade80",
+        }}
+      >
         {output || "Run your code to see output here..."}
       </div>
     </div>
@@ -115,13 +120,10 @@ const styles = {
     borderRadius: "8px",
     overflow: "hidden",
     border: "1px solid #333",
-    maxWidth: "900px",
-    margin: "0 auto",
   },
   header: {
     display: "flex",
     alignItems: "center",
-    gap: "12px",
     padding: "12px 16px",
     background: "#252526",
     borderBottom: "1px solid #333",
@@ -131,15 +133,6 @@ const styles = {
     fontWeight: "bold",
     fontSize: "14px",
     marginRight: "auto",
-  },
-  select: {
-    background: "#3c3c3c",
-    color: "#fff",
-    border: "1px solid #555",
-    borderRadius: "4px",
-    padding: "6px 10px",
-    fontSize: "13px",
-    cursor: "pointer",
   },
   button: {
     background: "#007acc",
