@@ -40,7 +40,6 @@
 }
 
 .signin-logo-icon {
-  font-family: 'JetBrains Mono', monospace;
   font-size: .95rem;
   color: var(--accent);
   background: rgba(192,99,58,.1);
