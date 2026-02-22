@@ -6,15 +6,6 @@ import { useLessonProgress } from "../user/useLessonProgress";
 import CodeEditor from "../components/CodeEditor";
 import "./question.css";
 
-const LANGUAGE_VERSIONS: Record<string, string> = {
-  python: "3.10.0",
-  java: "15.0.2",
-  cpp: "10.2.0",
-  rust: "1.68.2",
-  go: "1.20.2",
-  ruby: "4.0.1",
-};
-
 async function runWithJudge0(language: string, code: string) {
   const res = await fetch("/api/run-code", {
     method: "POST",
@@ -35,7 +26,7 @@ function normalize(s: string) {
 export default function QuestionPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { profile } = useProfile();
+  const { profile, updateStreak } = useProfile();
   const { completeLesson, isCompleted } = useLessonProgress(
     profile?.source_language ?? "Python",
     profile?.target_language ?? "Rust"
@@ -60,17 +51,15 @@ export default function QuestionPage() {
   const [result, setResult] = useState<"pass" | "fail" | null>(null);
   const [genError, setGenError] = useState("");
 
-  // Track which (questionId + sourceLang) we've already fetched for
   const fetchedFor = useRef<string | null>(null);
 
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
 
-  // Auto-load reference code once both question and profile are ready
   useEffect(() => {
     if (!question || !sourceLang) return;
 
     const key = `${question.id}-${sourceLang}`;
-    if (fetchedFor.current === key) return; // already fetched for this combo
+    if (fetchedFor.current === key) return;
     fetchedFor.current = key;
 
     setLoadingRef(true);
@@ -105,10 +94,7 @@ export default function QuestionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          problem: question.starter_code_prompt.replace(
-            "{language}",
-            targetLang,
-          ),
+          problem: question.starter_code_prompt.replace("{language}", targetLang),
           targetLanguage: targetLang,
         }),
       });
@@ -117,7 +103,6 @@ export default function QuestionPage() {
       setTargetCode(code);
     } catch (err: any) {
       setGenError(err.message ?? "Failed to generate starter code");
-      console.error("Error generating starter code:", err);
     } finally {
       setLoading(false);
     }
@@ -146,7 +131,10 @@ export default function QuestionPage() {
       if (!ref.stderr && !target.stderr) {
         const pass = normalize(ref.stdout) === normalize(target.stdout);
         setResult(pass ? "pass" : "fail");
-        if (pass) await completeLesson(String(question.id));
+        if (pass) {
+          await completeLesson(String(question.id));
+          await updateStreak();
+        }
       }
     } catch {
       setReferenceOutput("Error connecting to execution engine.");
@@ -189,9 +177,7 @@ export default function QuestionPage() {
             {question.example_output && (
               <div className="qp-expected">
                 <p className="qp-expected-label">Expected output</p>
-                <pre className="qp-expected-code">
-                  {question.example_output}
-                </pre>
+                <pre className="qp-expected-code">{question.example_output}</pre>
               </div>
             )}
 
@@ -227,9 +213,7 @@ export default function QuestionPage() {
             <div className="qp-result pass">
               <span>Correct!</span>
               <div>
-                <p className="qp-result-title">
-                  Both outputs match. Lesson complete.
-                </p>
+                <p className="qp-result-title">Both outputs match. Lesson complete.</p>
               </div>
             </div>
           )}
@@ -250,9 +234,7 @@ export default function QuestionPage() {
             <div className="qp-editor-header">
               <span className="qp-editor-lang">{sourceLang ?? "..."}</span>
               <span className="qp-editor-role">Reference</span>
-              {loadingRef && (
-                <span className="qp-loading-hint">Loading...</span>
-              )}
+              {loadingRef && <span className="qp-loading-hint">Loading...</span>}
             </div>
             <CodeEditor
               language={(sourceLang ?? "python").toLowerCase()}
@@ -275,9 +257,7 @@ export default function QuestionPage() {
               <button
                 className="qp-run-btn"
                 onClick={handleRunBoth}
-                disabled={
-                  running || !referenceCode.trim() || !targetCode.trim()
-                }
+                disabled={running || !referenceCode.trim() || !targetCode.trim()}
               >
                 {running ? "Running..." : "Run both"}
               </button>
