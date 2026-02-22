@@ -34,3 +34,22 @@ create table profiles (
   completed_at timestamptz default now(),
   unique(user_id, source_language, target_language, lesson_id)
 );
+
+create table profiles (
+  user_id uuid references auth.users(id) on delete cascade primary key,
+  username text,
+  source_language text default 'Python',
+  target_language text default 'Rust',
+  xp int default 0,
+  current_streak int default 0,
+  longest_streak int default 0,
+  last_completed_date date
+);
+
+create table completed_lessons (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references profiles(user_id) on delete cascade,
+  lesson_id text not null,
+  completed_at timestamptz default now(),
+  unique(user_id, lesson_id)
+);
