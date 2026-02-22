@@ -16,3 +16,21 @@ create policy "users can manage own progress"
 
 -- Optional: index for fast lookups per user+language pair
 create index on user_lesson_progress(user_id, source_language, target_language);
+
+
+
+
+
+create table profiles (
+  user_id uuid references auth.users(id) on delete cascade primary key,
+  username text,
+  source_language text default 'Python',
+  target_language text default 'Rust',
+  xp int default 0,
+  current_streak int default 0,
+  longest_streak int default 0,
+  last_completed_date date
+  lesson_id text not null,      
+  completed_at timestamptz default now(),
+  unique(user_id, source_language, target_language, lesson_id)
+);
