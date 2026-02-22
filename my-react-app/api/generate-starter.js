@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         model: "claude-sonnet-4-6",
         max_tokens: 20000,
         temperature: 1,
-        system: "You are a programming language tutor helping users learn new languages through coding problems. Follow these language rules: Java class must be named Main. C++ must use int main(). Rust must use fn main(). Go must use package main and func main(). Only output raw code with no markdown formatting or code fences.",
+        system: "You are a programming language tutor helping users learn new languages through coding problems. Follow these language rules: Java class must be named Main. C++ must use int main() and must not include (using namespace std). Rust must use fn main(). Go must use package main and func main(). Only output raw code with no markdown formatting or code fences.",
         messages: [
           {
             role: "user",
