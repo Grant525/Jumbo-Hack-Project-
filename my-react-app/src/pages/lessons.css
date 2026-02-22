@@ -519,25 +519,27 @@ body {
 /* =============================================================
    LANG PAIR CHIPS  (used in banner or standalone)
 ============================================================= */
-.lang-pair { display: flex; align-items: center; gap: 6px; width: 100%; }
+.lang-pair { display: flex; align-items: center; gap: 6px; width: 100%;}
 
 .lang-chip {
-  width: 120px;
+  width: 100px;
   flex-shrink: 0;
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px 8px; border-radius: var(--r-sm);
-  background: var(--surface2); border: 1px solid var(--border);
-  font-family: var(--sans); font-size: .68rem; font-weight: 700;
-  color: var(--text); cursor: pointer;
-  justify-content: flex-start;
-  padding-left: 12px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  transition: border-color .15s, background .15s;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .85rem;
 }
-.lang-chip img { display: block; flex-shrink: 0; }
+.lang-chip.from { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
+.lang-chip.to   { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
+.lang-arrow     { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }
+
+.lang-arrow { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }
+
 .lang-chip:hover { border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.from  { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.to    { color: var(--accent2); }
+.lang-chip-icon  { font-size: .9rem; }
 .lang-arrow      { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }
 
 .language-dropdown {
