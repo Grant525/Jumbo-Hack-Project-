@@ -11,8 +11,6 @@ export interface Profile {
   current_streak: number;
   longest_streak: number;
   last_completed_date: string | null;
-  completed_questions?: number[];
-  // completed_questions?: Record<string, number[]>;
 }
 
 const DEFAULTS: Omit<Profile, "user_id"> = {
@@ -23,7 +21,6 @@ const DEFAULTS: Omit<Profile, "user_id"> = {
   current_streak: 0,
   longest_streak: 0,
   last_completed_date: null,
-  completed_questions: [],
 };
 
 export function useProfile() {
@@ -46,7 +43,6 @@ export function useProfile() {
       .single();
 
     if (error && error.code === "PGRST116") {
-      // No profile yet — create one
       const fresh = { user_id: user!.id, ...DEFAULTS };
       const { data: created, error: createError } = await (supabase as any)
         .from("profiles")
@@ -75,5 +71,25 @@ export function useProfile() {
     else setProfile(data);
   }
 
-  return { profile, loading, error, updateProfile, refetch: fetchProfile };
+  async function updateStreak() {
+    if (!user || !profile) return;
+
+    const today = new Date().toISOString().split("T")[0];
+    const last = profile.last_completed_date;
+
+    // Already completed today — don't update
+    if (last === today) return;
+
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+    const newStreak = last === yesterday ? profile.current_streak + 1 : 1;
+    const newLongest = Math.max(newStreak, profile.longest_streak);
+
+    await updateProfile({
+      current_streak: newStreak,
+      longest_streak: newLongest,
+      last_completed_date: today,
+    });
+  }
+
+  return { profile, loading, error, updateProfile, updateStreak, refetch: fetchProfile };
 }
