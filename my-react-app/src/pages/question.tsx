@@ -16,15 +16,10 @@ const LANGUAGE_VERSIONS: Record<string, string> = {
 };
 
 async function runWithPiston(language: string, code: string) {
-  const lang = language.toLowerCase();
   const res = await fetch("/api/run-code", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      language: lang,
-      version: LANGUAGE_VERSIONS[lang] ?? "latest",
-      code,
-    }),
+    body: JSON.stringify({ language: language.toLowerCase(), code }),
   });
   const data = await res.json();
   return {
