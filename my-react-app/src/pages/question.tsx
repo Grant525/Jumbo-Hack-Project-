@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { questions } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
@@ -45,7 +45,7 @@ export default function QuestionPage() {
 
   const question = questions.find((q) => q.id === Number(id));
 
-  const sourceLang = profile?.source_language ?? "Python";
+  const sourceLang = profile?.source_language ?? null;
   const targetLang = profile?.target_language ?? "Rust";
 
   const [referenceCode, setReferenceCode] = useState("");
@@ -62,9 +62,34 @@ export default function QuestionPage() {
   const [result, setResult]         = useState<"pass" | "fail" | null>(null);
   const [genError, setGenError]     = useState("");
 
+  // Track which (questionId + sourceLang) we've already fetched for
+  const fetchedFor = useRef<string | null>(null);
+
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
 
+  // Auto-load reference code once both question and profile are ready
+  useEffect(() => {
+    if (!question || !sourceLang) return;
 
+    const key = `${question.id}-${sourceLang}`;
+    if (fetchedFor.current === key) return; // already fetched for this combo
+    fetchedFor.current = key;
+
+    setLoadingRef(true);
+    setReferenceCode("");
+    fetch("/api/generate-reference", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        problem: question.description,
+        knownLanguage: sourceLang,
+      }),
+    })
+      .then(res => res.json())
+      .then(({ code }) => setReferenceCode(code))
+      .catch(err => console.error("Error loading reference:", err))
+      .finally(() => setLoadingRef(false));
+  }, [question?.id, sourceLang]);
 
   if (!question) return (
     <div className="qp-notfound">
@@ -107,7 +132,7 @@ export default function QuestionPage() {
 
     try {
       const [ref, target] = await Promise.all([
-        runWithPiston(sourceLang, referenceCode),
+        runWithPiston(sourceLang ?? "python", referenceCode),
         runWithPiston(targetLang, targetCode),
       ]);
 
@@ -209,12 +234,12 @@ export default function QuestionPage() {
         <main className="qp-editors">
           <div className="qp-editor-col">
             <div className="qp-editor-header">
-              <span className="qp-editor-lang">{sourceLang}</span>
+              <span className="qp-editor-lang">{sourceLang ?? "..."}</span>
               <span className="qp-editor-role">Reference</span>
               {loadingRef && <span className="qp-loading-hint">Loading...</span>}
             </div>
             <CodeEditor
-              language={sourceLang.toLowerCase()}
+              language={(sourceLang ?? "python").toLowerCase()}
               starterCode={referenceCode}
               onChange={setReferenceCode}
               fillHeight
