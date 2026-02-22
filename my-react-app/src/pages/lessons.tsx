@@ -1,70 +1,77 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { questions, groupByChapter, Question } from "./questions.ts";
+import { questions, groupByChapter } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
 import React from "react";
 import "./lessons.css";
 
-// Mock: which question IDs the user has completed
-const COMPLETED_IDS = new Set([1, 2, 3]);
-
-const chapters = groupByChapter(questions);
-const chapterNames = Object.keys(chapters);
-
-const STREAK_DAYS = ["M","T","W","T","F","S","S"];
-const STREAK_DONE = [true, true, true, false, false, false, false];
-
 export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
   const { profile } = useProfile();
+  const chapters = useMemo(() => groupByChapter(questions), []);
+  const chapterNames = Object.keys(chapters);
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);
 
+  // Compute completed questions dynamically from profile
+  const completedIds: Set<number> = useMemo(() => new Set(profile?.completed_questions ?? []), [profile]);
+
   const total = questions.length;
-  const completed = COMPLETED_IDS.size;
+  const completed = completedIds.size;
   const pct = Math.round((completed / total) * 100);
 
   const chapterQuestions = chapters[activeChapter] ?? [];
-  const chapterDone = chapterQuestions.filter((q) =>
-    COMPLETED_IDS.has(q.id),
-  ).length;
+  const chapterDone = chapterQuestions.filter((q) => completedIds.has(q.id)).length;
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
+  // Optional: dynamic languages
   const languages = ["Python", "JavaScript", "Java", "C++", "Rust", "Go", "Ruby"];
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
-  return (
-    <div className="lessons-root home-root">
-      <div className="lessons-bg-grid home-bg-grid" />
+  // Compute streak dynamically if you store last_completed_date in profile
+  const STREAK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
+  const STREAK_DONE = STREAK_DAYS.map((_, idx) => {
+    // You could compute based on current_streak and last_completed_date
+    return idx < (profile?.current_streak ?? 0);
+  });
 
-      {/* ── Header ── */}
-      <header className="home-header lessons-header">
-        <div className="home-logo">
-          <span className="home-logo-icon">{"</>"}</span>
-          <span className="home-logo-text">CodeQuest</span>
+  return (
+    <div className="lessons-root">
+      <div className="lessons-bg-grid" />
+
+      {/* Header */}
+      <header className="lessons-header">
+        <div className="lessons-logo">
+          <span className="lessons-logo-icon">{"</>"}</span>
+          <span className="lessons-logo-text">CodeQuest</span>
         </div>
-        <nav className="home-nav">
+        <nav className="lessons-nav">
           <a href="/" className="nav-link">Learn</a>
           <a href="/lessons" className="nav-link active">Practice</a>
           <a href="#" className="nav-link">Leaderboard</a>
         </nav>
-        <div className="home-header-right">
-          <div className="home-streak-pill"><span>🔥</span><span>{profile?.current_streak ?? 0}</span></div>
-          <div className="home-avatar" style={{cursor:"pointer"}} onClick={() => navigate("/settings")}>
+        <div className="lessons-header-right">
+          <div className="lessons-streak-pill">
+            <span>🔥</span><span>{profile?.current_streak ?? 0}</span>
+          </div>
+          <div
+            className="lessons-avatar"
+            onClick={() => navigate("/settings")}
+          >
             {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
           </div>
         </div>
       </header>
 
-      <div className="home-body lessons-body">
+      <div className="lessons-body">
         {/* Left: chapter nav */}
         <nav className="chapter-nav">
           <p className="chapter-nav-label">Chapters</p>
           {chapterNames.map((name) => {
             const qs = chapters[name];
-            const done = qs.filter((q) => COMPLETED_IDS.has(q.id)).length;
+            const done = qs.filter((q) => completedIds.has(q.id)).length;
             const p = Math.round((done / qs.length) * 100);
             const isActive = name === activeChapter;
 
@@ -86,16 +93,18 @@ export default function Lessons() {
           })}
         </nav>
 
-        {/* Right: sticky sidebar */}
+        {/* Right: sidebar */}
         <aside className="sidebar">
-          {/* Language card */}
           <div className="sidebar-card lang-card">
             <p className="sidebar-label">Current path</p>
             <div className="lang-pair">
               <div style={{ position: "relative" }}>
-                <button className="lang-chip from" onClick={() => setShowFromDropdown(!showFromDropdown)}>
+                <button
+                  className="lang-chip from"
+                  onClick={() => setShowFromDropdown(!showFromDropdown)}
+                >
                   <span className="lang-chip-icon">🐍</span>
-                  <span>{profile?.source_language ?? "Python"}</span>
+                  <span>{profile?.source_language ?? languages[0]}</span>
                 </button>
                 {showFromDropdown && (
                   <div className="language-dropdown">
@@ -107,9 +116,12 @@ export default function Lessons() {
               </div>
               <span className="lang-arrow">→</span>
               <div style={{ position: "relative" }}>
-                <button className="lang-chip to" onClick={() => setShowToDropdown(!showToDropdown)}>
+                <button
+                  className="lang-chip to"
+                  onClick={() => setShowToDropdown(!showToDropdown)}
+                >
                   <span className="lang-chip-icon">⚙️</span>
-                  <span>{profile?.target_language ?? "Rust"}</span>
+                  <span>{profile?.target_language ?? languages[1]}</span>
                 </button>
                 {showToDropdown && (
                   <div className="language-dropdown">
@@ -120,10 +132,11 @@ export default function Lessons() {
                 )}
               </div>
             </div>
-            <button className="lang-change-btn" onClick={() => navigate("/settings")}>Change language pair</button>
+            <button className="lang-change-btn" onClick={() => navigate("/settings")}>
+              Change language pair
+            </button>
           </div>
 
-          {/* Streak */}
           <div className="sidebar-card streak-card">
             <div className="streak-top">
               <span className="streak-flame">🔥</span>
@@ -134,7 +147,7 @@ export default function Lessons() {
             </div>
             <div className="streak-week">
               {STREAK_DAYS.map((d, i) => (
-                <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""} ${i === 3 ? "today" : ""}`}>
+                <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}>
                   <span>{STREAK_DONE[i] ? "🔥" : "·"}</span>
                   <span className="pip-day">{d}</span>
                 </div>
@@ -175,7 +188,7 @@ export default function Lessons() {
             </div>
           </div>
 
-          {/* Overall progress bar */}
+          {/* Overall progress */}
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
             <span className="overall-bar-pct">{completed}/{total}</span>
@@ -187,11 +200,11 @@ export default function Lessons() {
           {/* Question cards */}
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
-              const done = COMPLETED_IDS.has(q.id);
+              const done = completedIds.has(q.id);
               const available =
                 done ||
                 idx === 0 ||
-                COMPLETED_IDS.has(chapterQuestions[idx - 1]?.id);
+                completedIds.has(chapterQuestions[idx - 1]?.id);
 
               return (
                 <button
@@ -200,7 +213,9 @@ export default function Lessons() {
                   onClick={() => available && navigate(`/question/${q.id}`)}
                   disabled={!available}
                 >
-                  <div className={`q-number ${done ? "done" : available ? "available" : "locked"}`}>{done ? "✓" : idx + 1}</div>
+                  <div className={`q-number ${done ? "done" : available ? "available" : "locked"}`}>
+                    {done ? "✓" : idx + 1}
+                  </div>
                   <div className="q-content">
                     <div className="q-top">
                       <span className="q-title">{q.title}</span>
@@ -211,7 +226,7 @@ export default function Lessons() {
                     {q.example_output && (
                       <div className="q-output">
                         <span className="q-output-label">Expected output</span>
-                        <code>{q.example_output.replace(/\\n/g, " · ")}</code>
+                        <code>{q.example_output.replace(/\n/g, " · ")}</code>
                       </div>
                     )}
                   </div>
