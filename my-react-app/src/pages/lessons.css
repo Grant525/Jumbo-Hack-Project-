@@ -531,7 +531,7 @@ body {
   font-size: .85rem;
 }
 .lang-chip.from { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
-.lang-chip.to   { color: var(--accent2); }
+.lang-chip.to   { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-arrow     { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }
 
 .lang-arrow { font-family: var(--mono); color: var(--muted); font-size: .85rem; flex-shrink: 0; }

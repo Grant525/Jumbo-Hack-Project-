@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: `Generate starter code in ${targetLanguage} for the following problem. Do NOT solve the problem.\nOnly output the raw code with no markdown formatting or code fences.\n\nProblem: ${problem}`
+            content: `${problem}`
           }
         ]
       })
