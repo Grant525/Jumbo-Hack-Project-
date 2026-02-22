@@ -93,11 +93,10 @@ export default function Lessons() {
           </a>
         </nav>
         <div className="lessons-header-right">
-          <div className="lessons-avatar">
-            {(profile?.username ?? user?.email ?? "?")
-              .slice(0, 2)
-              .toUpperCase()}
-          </div>
+          <span className="lessons-username">
+            {profile?.username ?? user?.email ?? ""}
+          </span>
+        </div>
         </div>
       </header>
 
