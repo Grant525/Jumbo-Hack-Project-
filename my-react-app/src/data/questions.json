@@ -128,6 +128,102 @@
       "example_output": "Min: 1, Max: 9",
       "constraints": ["Do not use built-in min() or max() functions"],
       "starter_code_prompt": "Generate starter code in {language} for a question titled 'Multiple Return Values'. Include a main function that calls min_max with [4,1,9,3,7] and a comment 'Define min_max function here'. Return only the code."
+    },
+    {
+      "id": 15,
+      "chapter": "Collections",
+      "title": "Array / List Basics",
+      "description": "Create a list of 5 integers: [10, 20, 30, 40, 50]. Print the first and last elements by index, then iterate over the list and print each element on its own line.",
+      "example_output": "First: 10\nLast: 50\n10\n20\n30\n40\n50",
+      "constraints": [],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Array / List Basics'. Include a main function with a comment 'Create list, print first/last, and iterate here'. Do not pre-declare the list. Return only the code, no explanation."
+    },
+    {
+      "id": 16,
+      "chapter": "Collections",
+      "title": "Map / Dictionary",
+      "description": "Create a map/dictionary with the following key-value pairs: 'Alice' -> 90, 'Bob' -> 85, 'Charlie' -> 92. Print each key-value pair on its own line in the format '<key>: <value>'.",
+      "example_output": "Alice: 90\nBob: 85\nCharlie: 92",
+      "constraints": [],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Map / Dictionary'. Include a main function with a comment 'Create map and iterate here'. Do not pre-declare the map. Return only the code, no explanation."
+    },
+    {
+      "id": 17,
+      "chapter": "Collections",
+      "title": "Filter and Map a List",
+      "description": "Given the list [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], first filter it to only even numbers, then double each of those numbers. Print the final result.",
+      "example_output": "[4, 8, 12, 16, 20]",
+      "constraints": [],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Filter and Map a List'. Include a main function with a comment 'Filter even numbers and double them here'. Do not pre-declare the list. Return only the code, no explanation."
+    },
+    {
+      "id": 18,
+      "chapter": "Strings",
+      "title": "Reverse a String",
+      "description": "Write a function reverse_string(s) that takes a string and returns it reversed. Do not use any built-in reverse functions.",
+      "examples": [
+        { "input": "'hello'", "output": "'olleh'" }
+      ],
+      "constraints": ["Do not use built-in reverse functions"],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Reverse a String'. Include a main function that calls reverse_string('hello') and prints it. Provide a comment 'Define reverse_string here'. Return only the code, no explanation."
+    },
+    {
+      "id": 19,
+      "chapter": "Strings",
+      "title": "Palindrome Check",
+      "description": "Write a function is_palindrome(s) that returns true if the string is a palindrome and false otherwise. Ignore case and spaces.",
+      "examples": [
+        { "input": "'A man a plan a canal Panama'", "output": "true" }
+      ],
+      "constraints": ["Ignore case and spaces"],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Palindrome Check'. Include a main function that calls is_palindrome with 'racecar' and 'hello'. Provide a comment 'Define is_palindrome here'. Return only the code, no explanation."
+    },
+    {
+      "id": 20,
+      "chapter": "Strings",
+      "title": "String Formatting",
+      "description": "Given a name 'Alice', an age 30, and a score 98.5, print the following using string interpolation or formatting: 'Name: Alice | Age: 30 | Score: 98.50'",
+      "constraints": ["Score must be printed to exactly 2 decimal places"],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'String Formatting'. Include a main function with a comment 'Declare variables and print formatted string here'. Do not pre-declare variables. Return only the code, no explanation."
+    },
+    {
+      "id": 21,
+      "chapter": "OOP / Structs",
+      "title": "Define a Class or Struct",
+      "description": "Define a class or struct called Animal with two fields: name and sound. Add a method speak() that prints '<name> says <sound>!'. Create an instance for a Dog that says Woof.",
+      "example_output": "Dog says Woof!",
+      "constraints": [],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Define a Class'. Include a main function with a comment 'Create instance and call speak here'. Provide a comment 'Define Animal class/struct here'. Return only the code, no explanation."
+    },
+    {
+      "id": 22,
+      "chapter": "OOP / Structs",
+      "title": "Inheritance or Interface",
+      "description": "Define a base class or interface Shape with a method area(). Create Circle (radius) and Square (side) that implement it. Print areas for Circle(5) and Square(4) to 2 decimal places.",
+      "constraints": ["Area values printed to 2 decimal places"],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Inheritance'. Include a main function with a comment 'Instantiate shapes and print areas here'. Provide a comment 'Define Shape, Circle, and Square here'. Return only the code, no explanation."
+    },
+    {
+      "id": 23,
+      "chapter": "Error Handling",
+      "title": "Safe Division",
+      "description": "Write a function safe_divide(a, b) that divides a by b. If b is zero, handle the error gracefully and return 'Error: division by zero'.",
+      "examples": [
+        { "input": "10, 0", "output": "Error: division by zero" }
+      ],
+      "constraints": [],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Error Handling'. Include a main function that calls safe_divide(10, 2) and (10, 0). Provide a comment 'Define safe_divide with error handling here'. Return only the code, no explanation."
+    },
+    {
+      "id": 24,
+      "chapter": "Error Handling",
+      "title": "Parse Integer",
+      "description": "Write a function parse_int(s) that tries to parse a string as an integer. Return -1 if parsing fails.",
+      "examples": [
+        { "input": "'hello'", "output": "-1" }
+      ],
+      "constraints": ["Return -1 on failure"],
+      "starter_code_prompt": "Generate starter code in {language} for a question titled 'Parse Integer'. Include a main function that calls parse_int with '42' and 'hello'. Provide a comment 'Define parse_int here'. Return only the code, no explanation."
     }
   ]
 }
