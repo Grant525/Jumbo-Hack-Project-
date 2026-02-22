@@ -29,15 +29,7 @@ export default function Lessons() {
   ).length;
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
-  const languages = [
-    "Python",
-    "JavaScript",
-    "Java",
-    "C++",
-    "Rust",
-    "Go",
-    "Ruby",
-  ];
+  const languages = ["Python", "Java", "C++", "Rust", "Go", "Ruby"];
   const setFromLang = (lang: string) => {
     updateProfile({ source_language: lang });
   };
