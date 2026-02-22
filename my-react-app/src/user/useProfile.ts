@@ -12,6 +12,7 @@ export interface Profile {
   longest_streak: number;
   last_completed_date: string | null;
   completed_questions?: number[];
+  // completed_questions?: Record<string, number[]>;
 }
 
 const DEFAULTS: Omit<Profile, "user_id"> = {
@@ -22,6 +23,7 @@ const DEFAULTS: Omit<Profile, "user_id"> = {
   current_streak: 0,
   longest_streak: 0,
   last_completed_date: null,
+  completed_questions: [],
 };
 
 export function useProfile() {
