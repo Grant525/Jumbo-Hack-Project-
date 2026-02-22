@@ -8,10 +8,13 @@ import React from "react";
 import "./lessons.css";
 
 const LANG_ICONS: Record<string, string> = {
-  Python: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-  JavaScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+  Python:
+    "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  JavaScript:
+    "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
   Java: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
-  "C++": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+  "C++":
+    "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
   Rust: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg",
   Go: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
   Ruby: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg",
@@ -24,7 +27,9 @@ export default function Lessons() {
   const { user } = useUser();
   const { profile, updateProfile } = useProfile();
 
-  const [fromLang, setFromLangState] = useState(profile?.source_language ?? "Python");
+  const [fromLang, setFromLangState] = useState(
+    profile?.source_language ?? "Python",
+  );
   const [toLang, setToLangState] = useState(profile?.target_language ?? "Rust");
 
   useEffect(() => {
@@ -54,7 +59,9 @@ export default function Lessons() {
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
   const STREAK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
-  const STREAK_DONE = STREAK_DAYS.map((_, idx) => idx < (profile?.current_streak ?? 0));
+  const STREAK_DONE = STREAK_DAYS.map(
+    (_, idx) => idx < (profile?.current_streak ?? 0),
+  );
 
   const setFromLang = (lang: string) => {
     setFromLangState(lang);
@@ -75,15 +82,21 @@ export default function Lessons() {
       <header className="lessons-header">
         <div className="lessons-logo">
           <span className="lessons-logo-icon">{"</>"}</span>
-          <span className="lessons-logo-text">CodeQuest</span>
+          <span className="lessons-logo-text">Rosetta</span>
         </div>
         <nav className="lessons-nav centered-nav">
-          <a href="/lessons" className="nav-link active">Lessons</a>
-          <a href="/settings" className="nav-link">Profile</a>
+          <a href="/lessons" className="nav-link active">
+            Lessons
+          </a>
+          <a href="/settings" className="nav-link">
+            Profile
+          </a>
         </nav>
         <div className="lessons-header-right">
-           <div className="lessons-avatar">
-            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
+          <div className="lessons-avatar">
+            {(profile?.username ?? user?.email ?? "?")
+              .slice(0, 2)
+              .toUpperCase()}
           </div>
         </div>
       </header>
@@ -104,10 +117,15 @@ export default function Lessons() {
               >
                 <div className="chapter-btn-top">
                   <span className="chapter-btn-name">{name}</span>
-                  <span className="chapter-btn-count">{done}/{qs.length}</span>
+                  <span className="chapter-btn-count">
+                    {done}/{qs.length}
+                  </span>
                 </div>
                 <div className="chapter-btn-bar">
-                  <div className="chapter-btn-fill" style={{ width: `${p}%` }} />
+                  <div
+                    className="chapter-btn-fill"
+                    style={{ width: `${p}%` }}
+                  />
                 </div>
               </button>
             );
@@ -121,7 +139,10 @@ export default function Lessons() {
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip from"
-                  onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
+                  onClick={() => {
+                    setShowFromDropdown(!showFromDropdown);
+                    setShowToDropdown(false);
+                  }}
                 >
                   <img src={LANG_ICONS[fromLang]} width={16} height={16} />
                   <span>{fromLang}</span>
@@ -129,7 +150,9 @@ export default function Lessons() {
                 {showFromDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => setFromLang(lang)}>{lang}</button>
+                      <button key={lang} onClick={() => setFromLang(lang)}>
+                        {lang}
+                      </button>
                     ))}
                   </div>
                 )}
@@ -140,7 +163,10 @@ export default function Lessons() {
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip to"
-                  onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
+                  onClick={() => {
+                    setShowToDropdown(!showToDropdown);
+                    setShowFromDropdown(false);
+                  }}
                 >
                   <img src={LANG_ICONS[toLang]} width={16} height={16} />
                   <span>{toLang}</span>
@@ -148,7 +174,9 @@ export default function Lessons() {
                 {showToDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => setToLang(lang)}>{lang}</button>
+                      <button key={lang} onClick={() => setToLang(lang)}>
+                        {lang}
+                      </button>
                     ))}
                   </div>
                 )}
@@ -166,13 +194,18 @@ export default function Lessons() {
             </div>
             <div className="streak-week">
               {STREAK_DAYS.map((d, i) => (
-                <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}>
+                <div
+                  key={i}
+                  className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}
+                >
                   <span>{STREAK_DONE[i] ? "🔥" : "·"}</span>
                   <span className="pip-day">{d}</span>
                 </div>
               ))}
             </div>
-            <p className="streak-sub">Complete today's lesson to keep your streak alive</p>
+            <p className="streak-sub">
+              Complete today's lesson to keep your streak alive
+            </p>
           </div>
         </aside>
 
@@ -186,9 +219,18 @@ export default function Lessons() {
             </div>
             <div className="chapter-progress-ring">
               <svg viewBox="0 0 48 48" width="56" height="56">
-                <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" strokeWidth="4" />
                 <circle
-                  cx="24" cy="24" r="20"
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  stroke="var(--border)"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="20"
                   fill="none"
                   stroke="var(--accent)"
                   strokeWidth="4"
@@ -205,7 +247,9 @@ export default function Lessons() {
 
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
-            <span className="overall-bar-pct">{completed}/{total}</span>
+            <span className="overall-bar-pct">
+              {completed}/{total}
+            </span>
           </div>
           <div className="overall-bar-track">
             <div className="overall-bar-fill" style={{ width: `${pct}%` }} />
