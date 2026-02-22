@@ -53,7 +53,7 @@ export default function Settings() {
 
       <header className="lessons-header">
         <div className="lessons-logo">
-          <span className="lessons-logo-icon">{"◈"}</span>
+          <img src="/rosetta-logo.svg" width={32} height={32} alt="Rosetta" />
           <span className="lessons-logo-text">Rosetta</span>
         </div>
 
