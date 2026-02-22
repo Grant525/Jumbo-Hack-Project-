@@ -31,7 +31,7 @@ export default function QuestionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: question.starter_code_prompt,
+            problem: question.starter_code_prompt.replace("{language}", knownLanguage),
             knownLanguage,
           }),
         }),
@@ -39,7 +39,7 @@ export default function QuestionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: question.starter_code_prompt,
+            problem: question.starter_code_prompt.replace("{language}", targetLanguage),
             targetLanguage,
           }),
         }),
@@ -63,12 +63,8 @@ export default function QuestionPage() {
       const res = await fetch("/api/run-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code: referenceCode,
-          language: knownLanguage,
-        }),
+        body: JSON.stringify({ code: referenceCode, language: knownLanguage }),
       });
-
       const { output } = await res.json();
       setReferenceOutput(output);
     } catch (err) {
@@ -84,12 +80,8 @@ export default function QuestionPage() {
       const res = await fetch("/api/run-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code: targetCode,
-          language: targetLanguage,
-        }),
+        body: JSON.stringify({ code: targetCode, language: targetLanguage }),
       });
-
       const { output } = await res.json();
       setTargetOutput(output);
     } catch (err) {
@@ -106,10 +98,7 @@ export default function QuestionPage() {
 
       <div style={{ marginBottom: "20px" }}>
         <label>Known Language: </label>
-        <select
-          value={knownLanguage}
-          onChange={(e) => setKnownLanguage(e.target.value)}
-        >
+        <select value={knownLanguage} onChange={(e) => setKnownLanguage(e.target.value)}>
           <option>Python</option>
           <option>JavaScript</option>
           <option>Java</option>
@@ -117,21 +106,14 @@ export default function QuestionPage() {
         </select>
 
         <label style={{ marginLeft: "20px" }}>Target Language: </label>
-        <select
-          value={targetLanguage}
-          onChange={(e) => setTargetLanguage(e.target.value)}
-        >
+        <select value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)}>
           <option>Rust</option>
           <option>Go</option>
           <option>TypeScript</option>
           <option>Kotlin</option>
         </select>
 
-        <button
-          onClick={handleGenerate}
-          disabled={loading}
-          style={{ marginLeft: "20px" }}
-        >
+        <button onClick={handleGenerate} disabled={loading} style={{ marginLeft: "20px" }}>
           {loading ? "Generating..." : "Generate Code"}
         </button>
       </div>
@@ -140,21 +122,14 @@ export default function QuestionPage() {
         {/* LEFT SIDE */}
         <div style={{ flex: 1 }}>
           <h2>{knownLanguage}</h2>
-
           <CodeEditor
             language={knownLanguage.toLowerCase()}
             starterCode={referenceCode}
             onChange={setReferenceCode}
           />
-
-          <button
-            onClick={runReference}
-            disabled={runningRef}
-            style={{ marginTop: "10px" }}
-          >
+          <button onClick={runReference} disabled={runningRef} style={{ marginTop: "10px" }}>
             {runningRef ? "Running..." : `Run ${knownLanguage}`}
           </button>
-
           {referenceOutput && (
             <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
               {referenceOutput}
@@ -165,21 +140,14 @@ export default function QuestionPage() {
         {/* RIGHT SIDE */}
         <div style={{ flex: 1 }}>
           <h2>{targetLanguage}</h2>
-
           <CodeEditor
             language={targetLanguage.toLowerCase()}
             starterCode={targetCode}
             onChange={setTargetCode}
           />
-
-          <button
-            onClick={runTarget}
-            disabled={runningTarget}
-            style={{ marginTop: "10px" }}
-          >
+          <button onClick={runTarget} disabled={runningTarget} style={{ marginTop: "10px" }}>
             {runningTarget ? "Running..." : `Run ${targetLanguage}`}
           </button>
-
           {targetOutput && (
             <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
               {targetOutput}
