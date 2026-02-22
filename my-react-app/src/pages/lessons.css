@@ -519,7 +519,7 @@ body {
 /* =============================================================
    LANG PAIR CHIPS  (used in banner or standalone)
 ============================================================= */
-.lang-pair { display: flex; align-items: center; gap: 8px; }
+.lang-pair { display: flex; align-items: center; gap: 8px; width: 100%;}
 
 .lang-chip {
   display: flex; align-items: center; gap: 6px;
@@ -528,7 +528,7 @@ body {
   font-family: var(--sans); font-size: .68rem; font-weight: 700;
   color: var(--text); cursor: pointer;
   transition: border-color .15s, background .15s;
-  width: 110px;        
+  width: 120px;        
   justify-content: center;
 }
 
