@@ -1,0 +1,163 @@
+/* ─── Question Page Root ─────────────────────────────────────────────── */
+.question-root {
+    position: relative;
+    min-height: 100vh;
+    padding: 48px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+  }
+  
+  .question-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  
+  /* ─── Title & Description ───────────────────────────────────────────── */
+  .question-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.6px;
+    color: var(--text);
+  }
+  
+  .question-desc {
+    font-size: .95rem;
+    color: var(--muted);
+    max-width: 760px;
+    line-height: 1.6;
+  }
+  
+  /* ─── Language Controls ─────────────────────────────────────────────── */
+  .language-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 14px rgba(59,31,10,.06);
+  }
+  
+  .language-controls label {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+  
+  .language-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  
+  .language-select:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 10px rgba(192,99,58,.1);
+  }
+  
+  /* ─── Generate Button ───────────────────────────────────────────────── */
+  .generate-btn {
+    margin-left: auto;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 18px rgba(192,99,58,.3);
+  }
+  
+  .generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(192,99,58,.45);
+  }
+  
+  .generate-btn:disabled {
+    background: var(--col-locked);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* ─── Dual Editor Layout ───────────────────────────────────────────── */
+  .editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    margin-top: 24px;
+  }
+  
+  .editor-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: 0 4px 20px rgba(59,31,10,.08);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  
+  .editor-panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(59,31,10,.15);
+  }
+  
+  .editor-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.2px;
+  }
+  
+  /* ─── Editor Wrapper (Monaco container) ───────────────────────────── */
+  .editor-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  
+  /* ─── Output Styling (if external) ─────────────────────────────────── */
+  .editor-output {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    min-height: 70px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  
+  .editor-output.success {
+    color: var(--green);
+  }
+  
+  .editor-output.error {
+    color: #c04a4a;
+  }
+  
+  /* ─── Responsive ───────────────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .editor-layout {
+      grid-template-columns: 1fr;
+    }
+  }
