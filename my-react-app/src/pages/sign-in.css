@@ -34,24 +34,29 @@
 
 .signin-logo {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  flex-direction: column;     /* stack vertically */
+  align-items: center;        /* center horizontally */
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  text-align: center;
 }
 
 .signin-logo-icon {
-  font-size: .95rem;
+  font-size: 3.5rem;          /* much bigger icon */
   color: var(--accent);
-  background: rgba(192,99,58,.1);
-  padding: 5px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(192,99,58,.25);
+  background: rgba(192,99,58,.12);
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(192,99,58,.35);
+  line-height: 1;
+  box-shadow: 0 0 40px rgba(192,99,58,.15);
 }
 
 .signin-logo-text {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -.2px;
+  font-size: 2.6rem;          /* bigger title */
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--text);
 }
 
