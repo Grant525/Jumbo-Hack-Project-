@@ -9,14 +9,14 @@ export interface LessonProgress {
   completed_at: string;
 }
 
-export function useLessonProgress(sourceLang: string, targetLang: string) {
+export function useLessonProgress(sourceLang: string, targetLang: string, skip = false) {
   const { user } = useUser();
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProgress = useCallback(async () => {
-    if (!user) { setLoading(false); return; }
+    if (!user || skip) { setLoading(false); return; }
     setLoading(true);
 
     const { data, error } = await (supabase as any)
@@ -32,7 +32,7 @@ export function useLessonProgress(sourceLang: string, targetLang: string) {
       setCompletedLessons(new Set(data.map((r: LessonProgress) => r.lesson_id)));
     }
     setLoading(false);
-  }, [user, sourceLang, targetLang]);
+  }, [user, sourceLang, targetLang, skip]);
 
   useEffect(() => { fetchProgress(); }, [fetchProgress]);
 
