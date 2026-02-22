@@ -172,12 +172,7 @@ export default function QuestionPage() {
             <h2 className="qp-problem-title">{question.title}</h2>
             <p className="qp-problem-desc">{question.description}</p>
 
-            {question.example_output && (
-              <div className="qp-expected">
-                <p className="qp-expected-label">Expected output</p>
-                <pre className="qp-expected-code">{question.example_output}</pre>
-              </div>
-            )}
+          
 
             {question.constraints?.length > 0 && (
               <div className="qp-constraints">
@@ -187,7 +182,7 @@ export default function QuestionPage() {
             )}
           </div>
 
-          {/* Generate button */}
+{/* Generate button */}
           <div className="qp-generate-section">
             <button
               className="qp-generate-btn"
@@ -196,10 +191,19 @@ export default function QuestionPage() {
             >
               {loading ? "Generating…" : "✨ Generate reference + starter"}
             </button>
+
             {genError && <p className="qp-gen-error">{genError}</p>}
+
             <p className="qp-generate-hint">
               Fills the {sourceLang} editor with a full solution, and the {targetLang} editor with starter code (boilerplate only — no solution)
             </p>
+
+            {question.example_output && (
+              <div className="qp-expected">
+                <p className="qp-expected-label">Expected output</p>
+                <pre className="qp-expected-code">{question.example_output}</pre>
+              </div>
+            )}
           </div>
 
           {/* Result banner */}
