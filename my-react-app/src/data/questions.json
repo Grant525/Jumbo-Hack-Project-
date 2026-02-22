@@ -1,3 +1,4 @@
+
 {
   "questions": [
     {
@@ -7,7 +8,7 @@
       "description": "Print the text `Hello, World!` to the console.",
       "example_output": "Hello, World!",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that should print 'Hello, World!'. Include all necessary boilerplate to run a program in {language} (imports, main function, etc.) but leave a blank println/print statement for the user to fill in. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function and a single comment '// print Hello, World! here'. Include only the necessary boilerplate to run. Return only code, no markdown."
     },
     {
       "id": 2,
@@ -16,7 +17,7 @@
       "description": "Declare one variable of each type below and print them each on a separate line: an integer with value 42, a float with value 3.14, a string with value 'Alice', and a boolean with value true.",
       "example_output": "42\n3.14\nAlice\ntrue",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that should declare and print four variables. Declare four uninitialized or zero-value variables of the correct types (integer, float, string, boolean) with placeholder names, and add empty print statements for each. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares four variables: an integer, a float, a string, and a boolean using idiomatic {language} variable declaration syntax with zero/empty values. Add a comment '// print each variable here'. Return only code, no markdown."
     },
     {
       "id": 3,
@@ -25,7 +26,7 @@
       "description": "Given a = 10 and b = 3, print the result of addition, subtraction, multiplication, integer division, and modulo each on its own line.",
       "example_output": "13\n7\n30\n3\n1",
       "constraints": ["Use integer division, not float division"],
-      "starter_code_prompt": "Write starter code in {language} for a program that should perform arithmetic on two variables. Declare a=10 and b=3, then add five empty print statements where the user should print the results of addition, subtraction, multiplication, integer division, and modulo. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares a=10 and b=3. Add a comment '// print a+b, a-b, a*b, a/b (integer), a%b each on its own line'. Return only code, no markdown."
     },
     {
       "id": 4,
@@ -34,7 +35,7 @@
       "description": "Given s1 = 'Hello' and s2 = 'World', print them joined with a space, then print the length of the resulting string.",
       "example_output": "Hello World\n11",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that should concatenate two strings and print the result and its length. Declare s1='Hello' and s2='World', then add two empty print statements for the user to fill in. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares s1='Hello' and s2='World'. Add a comment '// print s1 + space + s2, then print the length of the joined string'. Return only code, no markdown."
     },
     {
       "id": 5,
@@ -43,7 +44,7 @@
       "description": "Declare a constant PI with value 3.14159 and a constant MAX with value 100. Print both on separate lines.",
       "example_output": "3.14159\n100",
       "constraints": ["Use the idiomatic constant declaration syntax of the language"],
-      "starter_code_prompt": "Write starter code in {language} for a program that should declare two constants and print them. Use idiomatic {language} constant syntax to declare PI and MAX with placeholder zero values, then add empty print statements. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program that declares two constants PI and MAX using idiomatic {language} constant syntax with zero values, and a main function with a comment '// print PI and MAX'. Return only code, no markdown."
     },
     {
       "id": 6,
@@ -52,7 +53,7 @@
       "description": "Given x = 15, print 'positive' if x is greater than 0, 'negative' if less than 0, or 'zero' if equal to 0.",
       "example_output": "positive",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that should classify a number. Declare x=15, then add an if/else if/else structure with empty bodies where the user should fill in the conditions and print statements. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares x=15 and an empty if/else if/else block. Add a comment '// print positive, negative, or zero'. Return only code, no markdown."
     },
     {
       "id": 7,
@@ -61,7 +62,7 @@
       "description": "Loop through numbers 1 to 20. Print 'FizzBuzz' if divisible by both 3 and 5, 'Fizz' if divisible by 3 only, 'Buzz' if divisible by 5 only, or the number itself otherwise.",
       "example_output": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a FizzBuzz program. Include a for loop from 1 to 20 with an empty body where the user should add the FizzBuzz logic. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function containing a for loop from 1 to 20 with an empty body and a comment '// FizzBuzz logic here'. Return only code, no markdown."
     },
     {
       "id": 8,
@@ -70,7 +71,7 @@
       "description": "Use a while loop to print the powers of 2 from 2^0 to 2^9, one per line.",
       "example_output": "1\n2\n4\n8\n16\n32\n64\n128\n256\n512",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using a while loop. Declare a counter variable and a result variable with initial values, add an empty while loop structure with a condition placeholder, and an empty print statement inside the loop body. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function containing an empty while loop structure and a comment '// print powers of 2 from 2^0 to 2^9'. Return only code, no markdown."
     },
     {
       "id": 9,
@@ -79,7 +80,7 @@
       "description": "Given day = 'Wednesday', use a switch or match statement to print 'Weekday' for Monday through Friday, 'Weekend' for Saturday and Sunday, and 'Unknown' for anything else.",
       "example_output": "Weekday",
       "constraints": ["Use a switch or match statement, not if/else chains"],
-      "starter_code_prompt": "Write starter code in {language} for a program using a switch or match statement. Declare day='Wednesday', then add a switch/match structure with empty cases for the user to fill in the day names and print statements. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares day='Wednesday' and an empty switch or match statement on day. Add a comment '// cases: weekdays, weekend, default'. Return only code, no markdown."
     },
     {
       "id": 10,
@@ -88,7 +89,7 @@
       "description": "Loop through numbers 1 to 10. Skip the number 5 using continue. Stop the loop entirely when you reach 8 using break. Print each number that is processed.",
       "example_output": "1\n2\n3\n4\n6\n7",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using break and continue. Include a for loop from 1 to 10 with an empty body where the user should add the skip and break logic and print statement. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function containing a for loop from 1 to 10 with an empty body and a comment '// skip 5 with continue, break at 8, print each number'. Return only code, no markdown."
     },
     {
       "id": 11,
@@ -97,7 +98,7 @@
       "description": "Write a function add(a, b) that returns the sum of two integers. Call it with (7, 5) and (-3, 3) and print the results.",
       "example_output": "12\n0",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program with a function that adds two integers. Define an empty function stub add(a, b) with the correct integer parameter and return type signatures, then call it with (7,5) and (-3,3) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration add(a, b) that takes two integers and returns an integer, and a main function that calls add(7,5) and add(-3,3) and prints each result. Add a comment '// return a + b' inside add. Return only code, no markdown."
     },
     {
       "id": 12,
@@ -106,7 +107,7 @@
       "description": "Write a function power(base, exponent) where exponent defaults to 2. Call it as power(3), power(3, 3), and power(2, 8) and print the results.",
       "example_output": "9\n27\n256",
       "constraints": ["Use the language's native default parameter syntax"],
-      "starter_code_prompt": "Write starter code in {language} for a program with a function using a default parameter. Define an empty function stub power(base, exponent) where exponent defaults to 2 using idiomatic {language} default parameter syntax, then call it with (3), (3,3), and (2,8) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration power(base, exponent=2) using idiomatic {language} default parameter syntax, and a main function that calls power(3), power(3,3), power(2,8) and prints each result. Add a comment '// return base raised to exponent' inside power. Return only code, no markdown."
     },
     {
       "id": 13,
@@ -115,7 +116,7 @@
       "description": "Write a recursive function factorial(n) that returns n!. Call it with 0, 6, and 10 and print the results.",
       "example_output": "1\n720\n3628800",
       "constraints": ["No loops allowed", "Do not use standard library factorial functions"],
-      "starter_code_prompt": "Write starter code in {language} for a program with a recursive function. Define an empty recursive function stub factorial(n) with the correct return type, a base case placeholder, and a recursive call placeholder, then call it with 0, 6, and 10 and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty recursive function declaration factorial(n) returning an integer, and a main function that calls factorial(0), factorial(6), factorial(10) and prints each result. Add a comment '// base case and recursive case here' inside factorial. Return only code, no markdown."
     },
     {
       "id": 14,
@@ -124,7 +125,7 @@
       "description": "Write a function min_max(numbers) that returns both the minimum and maximum of a list without using built-in min/max. Call it with [4, 1, 9, 3, 7] and print in the format 'Min: 1, Max: 9'.",
       "example_output": "Min: 1, Max: 9",
       "constraints": ["Do not use built-in min() or max() functions"],
-      "starter_code_prompt": "Write starter code in {language} for a program with a function returning multiple values. Define an empty function stub min_max that accepts a list/array and returns two values using idiomatic {language} multiple return syntax, then call it with [4,1,9,3,7] and print 'Min: X, Max: Y' with placeholder values. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration min_max that accepts a list and returns two integers using idiomatic {language} multiple return syntax, and a main function that calls it with [4,1,9,3,7] and prints 'Min: X, Max: Y'. Add a comment '// find and return min and max without built-ins' inside min_max. Return only code, no markdown."
     },
     {
       "id": 15,
@@ -133,7 +134,7 @@
       "description": "Write a function apply(func, value) that takes a function and a value and returns the result of calling func with value. Define a double(x) function that returns x * 2. Call apply(double, 5) and apply(double, 21) and print the results.",
       "example_output": "10\n42",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using higher-order functions. Define an empty stub double(x) with the correct integer signature, define an empty stub apply(func, value) that accepts a function as a parameter using idiomatic {language} function type syntax, then call apply(double,5) and apply(double,21) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration double(x) returning an integer, an empty function declaration apply(func, value) that accepts a function parameter using idiomatic {language} function type syntax, and a main function that calls apply(double,5) and apply(double,21) and prints each result. Add comments '// return x * 2' and '// call func with value' in the respective functions. Return only code, no markdown."
     },
     {
       "id": 16,
@@ -142,7 +143,7 @@
       "description": "Create a list of 5 integers: [10, 20, 30, 40, 50]. Print the first and last elements by index, then iterate and print each element on its own line.",
       "example_output": "10\n50\n10\n20\n30\n40\n50",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using a list. Declare a list [10,20,30,40,50], add two empty print statements with index placeholders for the first and last elements, then add an empty for loop to iterate the list with an empty print statement inside. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares a list [10,20,30,40,50] and an empty for loop. Add a comment '// print first element, last element, then each element in the loop'. Return only code, no markdown."
     },
     {
       "id": 17,
@@ -151,7 +152,7 @@
       "description": "Start with the list [3, 1, 4, 1, 5]. Append 9, remove the first occurrence of 1, then print the final list and its length.",
       "example_output": "[3, 4, 1, 5, 9]\n5",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that mutates a list. Declare the list [3,1,4,1,5], add a placeholder append call, add a placeholder remove call, then add print statements for the list and its length. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares a list [3,1,4,1,5]. Add a comment '// append 9, remove first 1, print list and length'. Return only code, no markdown."
     },
     {
       "id": 18,
@@ -160,7 +161,7 @@
       "description": "Create a dictionary with keys 'Alice', 'Bob', 'Charlie' mapping to scores 90, 85, 92. Print each key-value pair in the format '<key>: <value>', then add 'Diana': 88 and print the updated size.",
       "example_output": "Alice: 90\nBob: 85\nCharlie: 92\n4",
       "constraints": ["Print key-value pairs in insertion order"],
-      "starter_code_prompt": "Write starter code in {language} for a program using a dictionary or map. Declare a map with string keys and integer values pre-filled with Alice/Bob/Charlie entries, add an empty loop with an empty print statement to iterate each pair, add a placeholder insert for Diana, then a placeholder size print. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares a map/dictionary with string keys and integer values containing Alice, Bob, Charlie entries and an empty iteration loop. Add a comment '// print each key: value, add Diana:88, print size'. Return only code, no markdown."
     },
     {
       "id": 19,
@@ -169,7 +170,7 @@
       "description": "Given [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], filter to only even numbers then double each. Print the result.",
       "example_output": "[4, 8, 12, 16, 20]",
       "constraints": ["Use idiomatic language features such as list comprehensions, map/filter, or iterators"],
-      "starter_code_prompt": "Write starter code in {language} for a program that filters and transforms a list. Declare the list [1,2,3,4,5,6,7,8,9,10], add a placeholder result variable using idiomatic {language} filter/map syntax (list comprehension, iterator chain, etc.) with empty predicate and transform, then print the result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares the list [1..10] and an empty result variable using idiomatic {language} filter/map syntax. Add a comment '// filter evens, double each, store in result'. Return only code, no markdown."
     },
     {
       "id": 20,
@@ -178,7 +179,7 @@
       "description": "Given [5, 2, 8, 1, 9, 3], sort ascending and print. Then sort by remainder when divided by 3 (ascending) and print.",
       "example_output": "[1, 2, 3, 5, 8, 9]\n[9, 3, 1, 2, 8, 5]",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program that sorts a list two ways. Declare [5,2,8,1,9,3], add a placeholder ascending sort call and print, then add a placeholder custom-comparator sort call with an empty comparator lambda and print. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares [5,2,8,1,9,3] and two empty sort calls. Add comments '// sort ascending' and '// sort by x%3'. Return only code, no markdown."
     },
     {
       "id": 21,
@@ -187,7 +188,7 @@
       "description": "Given s = 'Hello, World!', print it in uppercase, in lowercase, whether it starts with 'Hello' (true/false), and the index of the character 'W'.",
       "example_output": "HELLO, WORLD!\nhello, world!\ntrue\n7",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using string methods. Declare s='Hello, World!', then add four empty print statements where the user should call the uppercase, lowercase, startsWith, and indexOf methods on s. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares s='Hello, World!'. Add a comment '// print uppercase, lowercase, startsWith Hello, indexOf W'. Return only code, no markdown."
     },
     {
       "id": 22,
@@ -196,7 +197,7 @@
       "description": "Write a function reverse_string(s) that returns the string reversed without using built-in reverse functions. Call it with 'hello' and 'racecar' and print the results.",
       "example_output": "olleh\nracecar",
       "constraints": ["Do not use built-in reverse functions"],
-      "starter_code_prompt": "Write starter code in {language} for a program with a string reversal function. Define an empty function stub reverse_string(s) that takes a string and returns a string, then call it with 'hello' and 'racecar' and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration reverse_string(s) that takes and returns a string, and a main function that calls it with 'hello' and 'racecar' and prints each result. Add a comment '// reverse s without built-in reverse' inside the function. Return only code, no markdown."
     },
     {
       "id": 23,
@@ -205,7 +206,7 @@
       "description": "Given name = 'Alice', age = 30, and score = 98.5, print: 'Name: Alice | Age: 30 | Score: 98.50'",
       "example_output": "Name: Alice | Age: 30 | Score: 98.50",
       "constraints": ["Score must be printed to exactly 2 decimal places"],
-      "starter_code_prompt": "Write starter code in {language} for a program using string formatting. Declare name='Alice', age=30, score=98.5, then add an empty formatted print statement placeholder using idiomatic {language} string interpolation or format syntax. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares name='Alice', age=30, score=98.5. Add a comment '// print: Name: Alice | Age: 30 | Score: 98.50 (score to 2 decimal places)'. Return only code, no markdown."
     },
     {
       "id": 24,
@@ -214,7 +215,7 @@
       "description": "Given s = 'one,two,three,four', split it by commas and print each element on its own line. Then join them back with ' - ' and print the result.",
       "example_output": "one\ntwo\nthree\nfour\none - two - three - four",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program using string split and join. Declare s='one,two,three,four', add a placeholder split call into a list variable, an empty loop with an empty print statement to print each element, then a placeholder join call and print. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares s='one,two,three,four'. Add a comment '// split by comma, print each element, join with \" - \" and print'. Return only code, no markdown."
     },
     {
       "id": 25,
@@ -223,7 +224,7 @@
       "description": "Define a class or struct Animal with fields name (string) and sound (string), and a method speak() that prints '<n> says <sound>!'. Create an instance with name='Dog' and sound='Woof' and call speak().",
       "example_output": "Dog says Woof!",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program with a class or struct. Define an Animal class/struct with string fields name and sound and an empty speak() method stub with the correct signature and empty body, then instantiate it with name='Dog' and sound='Woof' and call speak(). Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an Animal class or struct declaration containing string fields name and sound and an empty speak() method stub, and a main function that instantiates it with name='Dog', sound='Woof' and calls speak(). Add a comment '// print: name says sound!' inside speak. Return only code, no markdown."
     },
     {
       "id": 26,
@@ -232,7 +233,7 @@
       "description": "Define a class Rectangle with fields width and height, a method area() returning width * height, and a method describe() printing 'Rectangle: <width> x <height>, Area: <area>'. Create Rectangle(5, 3) and call describe().",
       "example_output": "Rectangle: 5 x 3, Area: 15",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program with a class and methods. Define a Rectangle class/struct with integer fields width and height, an empty area() stub returning an integer, and an empty describe() stub, then instantiate Rectangle(5,3) and call describe(). Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a Rectangle class or struct containing integer fields width and height, an empty area() stub returning an integer, and an empty describe() stub, and a main function that instantiates Rectangle(5,3) and calls describe(). Add comments '// return width * height' and '// print: Rectangle: W x H, Area: A' in the respective methods. Return only code, no markdown."
     },
     {
       "id": 27,
@@ -241,7 +242,7 @@
       "description": "Define a base class or interface Shape with an area() method. Implement Circle (radius field) and Square (side field). Print areas for Circle(5) and Square(4) to 2 decimal places.",
       "example_output": "Circle area: 78.54\nSquare area: 16.00",
       "constraints": ["Area values printed to 2 decimal places", "Use 3.14159 for pi"],
-      "starter_code_prompt": "Write starter code in {language} for a program using inheritance or interfaces. Define a Shape base class or interface with an area() method signature, define Circle with a radius field and an empty area() stub, define Square with a side field and an empty area() stub, then instantiate Circle(5) and Square(4) and print their areas with placeholder format strings. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a Shape base class or interface declaring area() returning a float, a Circle class with a float radius field and empty area() stub, a Square class with a float side field and empty area() stub, and a main function that instantiates Circle(5) and Square(4) and prints their areas to 2 decimal places. Add comments '// return 3.14159 * radius * radius' and '// return side * side' in the stubs. Return only code, no markdown."
     },
     {
       "id": 28,
@@ -250,7 +251,7 @@
       "description": "Write a function safe_divide(a, b) that returns a / b as a float, or prints 'Error: division by zero' and returns 0 if b is zero. Call it with (10, 2) and (10, 0) and print the results.",
       "example_output": "5.0\nError: division by zero\n0",
       "constraints": [],
-      "starter_code_prompt": "Write starter code in {language} for a program with error-handled division. Define an empty function stub safe_divide(a, b) with the correct return type and an idiomatic {language} error handling structure (try/catch, if-check, Result match, etc.) with empty bodies, then call it with (10,2) and (10,0) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration safe_divide(a, b) returning a float using idiomatic {language} error handling structure with empty bodies, and a main function that calls it with (10,2) and (10,0) and prints each result. Add a comment '// return a/b or handle division by zero' inside the function. Return only code, no markdown."
     },
     {
       "id": 29,
@@ -259,7 +260,7 @@
       "description": "Write a function parse_int(s) that parses a string as an integer and returns -1 if parsing fails. Call it with '42', 'hello', and '0' and print the results.",
       "example_output": "42\n-1\n0",
       "constraints": ["Return -1 on parse failure"],
-      "starter_code_prompt": "Write starter code in {language} for a program with safe string parsing. Define an empty function stub parse_int(s) that returns an integer, with idiomatic {language} error handling structure (try/catch, match on Result, etc.) and empty bodies, then call it with '42', 'hello', '0' and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty function declaration parse_int(s) returning an integer using idiomatic {language} error handling structure with empty bodies, and a main function that calls it with '42', 'hello', '0' and prints each result. Add a comment '// parse s as int, return -1 on failure' inside the function. Return only code, no markdown."
     },
     {
       "id": 30,
@@ -268,7 +269,7 @@
       "description": "Create a function make_multiplier(n) that returns a function which multiplies its argument by n. Use it to create double and triple functions. Call double(5), triple(5), and double(triple(4)) and print the results.",
       "example_output": "10\n15\n24",
       "constraints": ["Use closures or first-class functions, not classes"],
-      "starter_code_prompt": "Write starter code in {language} for a program using closures. Define an empty make_multiplier(n) stub that returns a function type using idiomatic {language} closure syntax with an empty closure body, assign double and triple as placeholder calls to make_multiplier, then call double(5), triple(5), double(triple(4)) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty make_multiplier(n) function declaration that returns a function type using idiomatic {language} closure syntax, and a main function that assigns double and triple from make_multiplier and calls double(5), triple(5), double(triple(4)) and prints each result. Add a comment '// return a closure that multiplies by n' inside make_multiplier. Return only code, no markdown."
     },
     {
       "id": 31,
@@ -277,7 +278,7 @@
       "description": "Write a generic function first(collection) that returns the first element of any list/array. Call it with [1, 2, 3] and ['a', 'b', 'c'] and print the results.",
       "example_output": "1\na",
       "constraints": ["Use generics, type parameters, or templates if the language supports them"],
-      "starter_code_prompt": "Write starter code in {language} for a program using generics. Define an empty generic/template function stub first(collection) with the correct type parameter syntax for {language} and an empty body, call it with [1,2,3] and ['a','b','c'] and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty generic or template function declaration first(collection) using correct {language} type parameter syntax, and a main function that calls it with [1,2,3] and ['a','b','c'] and prints each result. Add a comment '// return the first element' inside first. Return only code, no markdown."
     },
     {
       "id": 32,
@@ -286,7 +287,7 @@
       "description": "Write a recursive function sum_list(numbers) that returns the sum of all integers in a list using recursion and an accumulator parameter. Call it with [1, 2, 3, 4, 5] and print the result.",
       "example_output": "15",
       "constraints": ["No loops allowed", "Use recursion with an accumulator parameter"],
-      "starter_code_prompt": "Write starter code in {language} for a program using recursion with an accumulator. Define an empty recursive function stub sum_list with an accumulator parameter defaulting to 0 and the correct return type, with a base case placeholder and recursive case placeholder, then call it with [1,2,3,4,5] and print the result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty recursive function declaration sum_list with an accumulator parameter defaulting to 0 returning an integer, and a main function that calls it with [1,2,3,4,5] and prints the result. Add a comment '// base case: empty list; recursive case: add head to accumulator' inside sum_list. Return only code, no markdown."
     },
     {
       "id": 33,
@@ -295,7 +296,7 @@
       "description": "Build a string by joining the numbers 1 through 10 with commas using the most efficient string-building method in your language. Print the final result.",
       "example_output": "1,2,3,4,5,6,7,8,9,10",
       "constraints": ["Use idiomatic efficient string building (StringBuilder, join, etc.), not naive concatenation in a loop"],
-      "starter_code_prompt": "Write starter code in {language} for a program using efficient string building. Declare an empty string builder or collection variable using idiomatic {language} (StringBuilder, Vec, array, etc.), add a placeholder loop from 1 to 10 with an empty append/push body, then a placeholder build/join call assigned to a result variable and an empty print statement. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a main function that declares an empty string builder or collection variable using idiomatic {language} and an empty loop from 1 to 10. Add a comment '// append each number, join with commas, print result'. Return only code, no markdown."
     },
     {
       "id": 34,
@@ -304,7 +305,7 @@
       "description": "Write a function fib(n) that returns the nth Fibonacci number using memoization. fib(0)=0, fib(1)=1. Print fib(10), fib(20), and fib(30).",
       "example_output": "55\n6765\n832040",
       "constraints": ["Use memoization or dynamic programming, not naive recursion"],
-      "starter_code_prompt": "Write starter code in {language} for a program using memoization. Declare an empty cache map variable with integer keys and values, define an empty fib(n) stub that takes an integer and returns an integer with a cache-check placeholder and empty base/recursive cases, then call fib(10), fib(20), fib(30) and print each result. Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with an empty integer-to-integer cache map declaration and an empty fib(n) function declaration returning an integer, and a main function that calls fib(10), fib(20), fib(30) and prints each result. Add a comment '// check cache, base cases n=0 and n=1, else recurse and cache' inside fib. Return only code, no markdown."
     },
     {
       "id": 35,
@@ -313,7 +314,7 @@
       "description": "Implement a singly linked list with a Node structure and a LinkedList class/struct. Support append(value) and print_all() which prints each value on its own line. Append 1, 2, 3 and call print_all().",
       "example_output": "1\n2\n3",
       "constraints": ["Implement from scratch, do not use built-in linked list libraries"],
-      "starter_code_prompt": "Write starter code in {language} for a program implementing a singly linked list from scratch. Define a Node type with an integer value field and a nullable next pointer, define a LinkedList type with a nullable head field, define an empty append(value) stub and an empty print_all() stub each with correct signatures and empty bodies, then call append(1), append(2), append(3), and print_all(). Include all necessary boilerplate. Return only the code with no comments, explanations, or markdown."
+      "starter_code_prompt": "Generate a minimal {language} program with a Node type declaration containing an integer value field and a nullable next pointer, a LinkedList type declaration containing a nullable head field, empty append(value) and print_all() method stubs with correct signatures, and a main function that calls append(1), append(2), append(3), print_all(). Add comments '// add node to end of list' and '// traverse and print each value' in the respective stubs. Return only code, no markdown."
     }
   ]
 }
