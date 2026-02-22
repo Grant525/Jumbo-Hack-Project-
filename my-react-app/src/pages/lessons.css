@@ -5,7 +5,7 @@
    The question list is the center focus.
 ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* --- Tokens ------------------------------------------------ */
 :root {
@@ -25,7 +25,7 @@
   --green-lo:   rgba(58,184,122,.1);
   --locked:     #3a3330;
   --mono:       'JetBrains Mono', monospace;
-  --sans:       'Space Grotesk', sans-serif;
+  --sans:       'Inter', sans-serif;
   --r:          14px;
   --r-sm:       8px;
   --pill:       99px;
