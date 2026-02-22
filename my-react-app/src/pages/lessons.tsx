@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { questions, groupByChapter, Question } from "./question"; // <-- import from questions.ts
+import { questions, groupByChapter, Question } from "./question";
+import React from "react";
 import "./lessons.css";
 
 // Mock: which question IDs the user has completed
