@@ -26,7 +26,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-RapidAPI-Key": process.env.a94a833eeamsh606fcfcd9a2b28bp1fbb68jsn4f8593f1adf9,
+        "X-RapidAPI-Key": "a94a833eeamsh606fcfcd9a2b28bp1fbb68jsn4f8593f1adf9",
         "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
       },
       body: JSON.stringify({
