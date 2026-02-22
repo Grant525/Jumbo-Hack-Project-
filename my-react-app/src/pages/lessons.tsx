@@ -27,10 +27,6 @@ export default function Lessons() {
   const { user } = useUser();
   const { profile, updateProfile } = useProfile();
 
-  if (!profile) {
-    return <div className="loading">Loading…</div>;
-  }
-
   const [fromLang, setFromLangState] = useState(
     profile?.source_language ?? "Python",
   );
