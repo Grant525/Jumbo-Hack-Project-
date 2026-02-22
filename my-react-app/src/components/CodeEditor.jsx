@@ -24,32 +24,25 @@ export default function CodeEditor({ language, starterCode = "", onChange, fillH
     setCode(starterCode);
   }, [starterCode]);
 
-  const runCode = async () => {
-    setRunning(true);
-    setOutput("");
-    setError(false);
-    try {
-      const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-RapidAPI-Key": "YOUR_API_KEY",
-          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-        },
-        body: JSON.stringify({
-          source_code: code,
-          language_id: config.judge0Id,
-        }),
-      });
-      const data = await response.json();
-      if (data.stderr) { setOutput(data.stderr); setError(true); }
-      else setOutput(data.stdout || "(no output)");
-    } catch (err) {
-      setOutput("Error connecting to execution engine.");
-      setError(true);
-    }
-    setRunning(false);
-  };
+const runCode = async () => {
+  setRunning(true);
+  setOutput("");
+  setError(false);
+  try {
+    const res = await fetch("/api/run-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ language, code }),
+    });
+    const data = await res.json();
+    if (data.stderr) { setOutput(data.stderr); setError(true); }
+    else setOutput(data.stdout || "(no output)");
+  } catch {
+    setOutput("Error connecting to execution engine.");
+    setError(true);
+  }
+  setRunning(false);
+};
 
   // When fillHeight=true (used in question page), render editor only — no run button/output
   // The parent handles running. When false (standalone), show full controls.

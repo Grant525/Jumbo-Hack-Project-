@@ -15,16 +15,11 @@ const LANGUAGE_VERSIONS: Record<string, string> = {
   ruby: "4.0.1",
 };
 
-async function runWithPiston(language: string, code: string) {
-  const lang = language.toLowerCase();
+async function runWithJudge0(language: string, code: string) {
   const res = await fetch("/api/run-code", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      language: lang,
-      version: LANGUAGE_VERSIONS[lang] ?? "latest",
-      code,
-    }),
+    body: JSON.stringify({ language: language.toLowerCase(), code }),
   });
   const data = await res.json();
   return {
@@ -41,7 +36,10 @@ export default function QuestionPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { profile } = useProfile();
-  const { completeLesson, isCompleted } = useLessonProgress();
+  const { completeLesson, isCompleted } = useLessonProgress(
+    profile?.source_language ?? "Python",
+    profile?.target_language ?? "Rust"
+  );
 
   const question = questions.find((q) => q.id === Number(id));
 
@@ -136,8 +134,8 @@ export default function QuestionPage() {
 
     try {
       const [ref, target] = await Promise.all([
-        runWithPiston(sourceLang ?? "python", referenceCode),
-        runWithPiston(targetLang, targetCode),
+        runWithJudge0(sourceLang ?? "python", referenceCode),
+        runWithJudge0(targetLang, targetCode),
       ]);
 
       setReferenceOutput(ref.stderr || ref.stdout);
