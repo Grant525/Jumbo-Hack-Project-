@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: `Generate a complete, clean, and well-commented solution for the following problem in ${knownLanguage}. Only output the raw code with no markdown formatting or code fences.\n\nProblem: ${problem}`,
+            content: `Write a complete, working solution in ${knownLanguage} that solves this problem. Include a main function with test cases. Do NOT leave TODOs or placeholder comments — write the full working code.\n\nProblem: ${problem}`,
           },
         ],
       }),
