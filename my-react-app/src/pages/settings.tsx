@@ -123,15 +123,15 @@ export default function Settings() {
           <h2 className="settings-card-title">Stats</h2>
           <div className="settings-stats">
             <div className="settings-stat">
-              <span className="settings-stat-val">🔥 {profile?.current_streak ?? 0}</span>
+              <span className="settings-stat-val"> {profile?.current_streak ?? 0}</span>
               <span className="settings-stat-key">Current streak</span>
             </div>
             <div className="settings-stat">
-              <span className="settings-stat-val">🏆 {profile?.longest_streak ?? 0}</span>
+              <span className="settings-stat-val"> {profile?.longest_streak ?? 0}</span>
               <span className="settings-stat-key">Longest streak</span>
             </div>
             <div className="settings-stat">
-              <span className="settings-stat-val">📅 {profile?.last_completed_date ?? "—"}</span>
+              <span className="settings-stat-val"> {profile?.last_completed_date ?? "—"}</span>
               <span className="settings-stat-key">Last active</span>
             </div>
           </div>
