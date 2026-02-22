@@ -122,27 +122,33 @@ export default function QuestionPage() {
     setRefError(false);
     setTargetError(false);
 
-    try {
+  try {
       const [ref, target] = await Promise.all([
         runWithPiston(sourceLang, referenceCode),
         runWithPiston(targetLang, targetCode),
       ]);
 
-      setReferenceOutput(ref.stderr || ref.stdout);
-      setTargetOutput(target.stderr || target.stdout);
+      setReferenceOutput(ref.stderr ? ref.stderr : ref.stdout);
+      setTargetOutput(target.stderr ? target.stderr : target.stdout);
       setRefError(!!ref.stderr);
       setTargetError(!!target.stderr);
 
       if (!ref.stderr && !target.stderr) {
-        const pass = normalize(ref.stdout) === normalize(target.stdout);
-        setResult(pass ? "pass" : "fail");
-        if (pass) await completeLesson(String(question.id));
+        const refOut    = normalize(ref.stdout);
+        const targetOut = normalize(target.stdout);
+
+        if (!refOut && !targetOut) {
+          setResult("fail");
+          setReferenceOutput("(no output — is your code complete?)");
+          setTargetOutput("(no output — is your code complete?)");
+          setRefError(true);
+          setTargetError(true);
+        } else {
+          const pass = refOut === targetOut;
+          setResult(pass ? "pass" : "fail");
+          if (pass) await completeLesson(String(question.id));
+        }
       }
-    } catch {
-      setReferenceOutput("Error connecting to execution engine.");
-      setTargetOutput("Error connecting to execution engine.");
-      setRefError(true);
-      setTargetError(true);
     } finally {
       setRunning(false);
     }
