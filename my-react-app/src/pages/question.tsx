@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import { questions } from "./questions.ts";
->>>>>>> 1fbc096fb5565498093bcbebd09f69c76c33bc0f
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
@@ -13,9 +10,16 @@ export default function QuestionPage() {
 
   const [knownLanguage, setKnownLanguage] = useState("Python");
   const [targetLanguage, setTargetLanguage] = useState("Rust");
+
   const [referenceCode, setReferenceCode] = useState("");
-  const [starterCode, setStarterCode] = useState("");
+  const [targetCode, setTargetCode] = useState("");
+
+  const [referenceOutput, setReferenceOutput] = useState("");
+  const [targetOutput, setTargetOutput] = useState("");
+
   const [loading, setLoading] = useState(false);
+  const [runningRef, setRunningRef] = useState(false);
+  const [runningTarget, setRunningTarget] = useState(false);
 
   if (!question) return <div>Question not found</div>;
 
@@ -45,7 +49,7 @@ export default function QuestionPage() {
       const { code: startCode } = await starterRes.json();
 
       setReferenceCode(refCode);
-      setStarterCode(startCode);
+      setTargetCode(startCode);
     } catch (err) {
       console.error("Error generating code:", err);
     } finally {
@@ -53,12 +57,54 @@ export default function QuestionPage() {
     }
   };
 
+  const runReference = async () => {
+    setRunningRef(true);
+    try {
+      const res = await fetch("/api/run-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: referenceCode,
+          language: knownLanguage,
+        }),
+      });
+
+      const { output } = await res.json();
+      setReferenceOutput(output);
+    } catch (err) {
+      console.error("Error running reference code:", err);
+    } finally {
+      setRunningRef(false);
+    }
+  };
+
+  const runTarget = async () => {
+    setRunningTarget(true);
+    try {
+      const res = await fetch("/api/run-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: targetCode,
+          language: targetLanguage,
+        }),
+      });
+
+      const { output } = await res.json();
+      setTargetOutput(output);
+    } catch (err) {
+      console.error("Error running target code:", err);
+    } finally {
+      setRunningTarget(false);
+    }
+  };
+
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h1>{question.title}</h1>
       <p>{question.description}</p>
 
-      <div>
+      <div style={{ marginBottom: "20px" }}>
         <label>Known Language: </label>
         <select
           value={knownLanguage}
@@ -70,7 +116,7 @@ export default function QuestionPage() {
           <option>C++</option>
         </select>
 
-        <label> Target Language: </label>
+        <label style={{ marginLeft: "20px" }}>Target Language: </label>
         <select
           value={targetLanguage}
           onChange={(e) => setTargetLanguage(e.target.value)}
@@ -80,25 +126,67 @@ export default function QuestionPage() {
           <option>TypeScript</option>
           <option>Kotlin</option>
         </select>
+
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          style={{ marginLeft: "20px" }}
+        >
+          {loading ? "Generating..." : "Generate Code"}
+        </button>
       </div>
 
-      <button onClick={handleGenerate} disabled={loading}>
-        {loading ? "Generating..." : "Generate Code"}
-      </button>
+      <div style={{ display: "flex", gap: "20px" }}>
+        {/* LEFT SIDE */}
+        <div style={{ flex: 1 }}>
+          <h2>{knownLanguage}</h2>
 
-      {referenceCode && (
-        <div>
-          <h2>Reference Code ({knownLanguage})</h2>
-          <pre>
-            <code>{referenceCode}</code>
-          </pre>
+          <CodeEditor
+            language={knownLanguage.toLowerCase()}
+            starterCode={referenceCode}
+            onChange={setReferenceCode}
+          />
+
+          <button
+            onClick={runReference}
+            disabled={runningRef}
+            style={{ marginTop: "10px" }}
+          >
+            {runningRef ? "Running..." : `Run ${knownLanguage}`}
+          </button>
+
+          {referenceOutput && (
+            <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
+              {referenceOutput}
+            </pre>
+          )}
         </div>
-      )}
 
-      <CodeEditor
-        language={targetLanguage.toLowerCase()}
-        starterCode={starterCode}
-      />
+        {/* RIGHT SIDE */}
+        <div style={{ flex: 1 }}>
+          <h2>{targetLanguage}</h2>
+
+          <CodeEditor
+            language={targetLanguage.toLowerCase()}
+            starterCode={targetCode}
+            onChange={setTargetCode}
+          />
+
+          <button
+            onClick={runTarget}
+            disabled={runningTarget}
+            style={{ marginTop: "10px" }}
+          >
+            {runningTarget ? "Running..." : `Run ${targetLanguage}`}
+          </button>
+
+          {targetOutput && (
+            <pre style={{ marginTop: "10px", background: "#111", color: "#0f0", padding: "10px" }}>
+              {targetOutput}
+            </pre>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
