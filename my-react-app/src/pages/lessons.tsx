@@ -265,10 +265,7 @@ export default function Lessons() {
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
               const done = completedIds.has(q.id);
-              const available =
-                done ||
-                idx === 0 ||
-                completedIds.has(chapterQuestions[idx - 1]?.id);
+              const available = true;
               return (
                 <button
                   key={q.id}
