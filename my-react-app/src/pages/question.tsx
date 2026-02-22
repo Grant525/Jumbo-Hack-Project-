@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { questions } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
+import { useUser } from "../user/useUser";
 import { useLessonProgress } from "../user/useLessonProgress";
 import CodeEditor from "../components/CodeEditor";
 import "./question.css";
@@ -26,6 +27,7 @@ function normalize(s: string) {
 export default function QuestionPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUser();
   const { profile, updateStreak } = useProfile();
   const { completeLesson, isCompleted } = useLessonProgress(
     profile?.source_language ?? "Python",
