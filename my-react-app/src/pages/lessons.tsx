@@ -45,9 +45,11 @@ export default function Lessons() {
   const [toLang, setToLangState]     = useState(profile?.target_language ?? "Rust");
 
   useEffect(() => {
-    if (profile?.source_language) setFromLangState(profile.source_language);
-    if (profile?.target_language) setToLangState(profile.target_language);
-  }, [profile?.source_language, profile?.target_language]);
+    if (profile) {
+      setFromLangState(profile.source_language ?? "Python");
+      setToLangState(profile.target_language ?? "Rust");
+    }
+  }, [profile]);
 
   const setFromLang = (lang: string) => {
     setFromLangState(lang);

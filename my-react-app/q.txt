@@ -53,3 +53,24 @@ create table completed_lessons (
   completed_at timestamptz default now(),
   unique(user_id, lesson_id)
 );
+
+
+---------------------------------------------------------
+
+drop table completed_lessons;
+
+create table completed_lessons (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references profiles(user_id) on delete cascade,
+  lesson_id text not null,
+  source_language text not null default 'Python',
+  target_language text not null default 'Rust',
+  completed_at timestamptz default now(),
+  unique(user_id, source_language, target_language, lesson_id)
+);
+
+alter table completed_lessons enable row level security;
+
+create policy "users can manage own lessons"
+  on completed_lessons for all using (auth.uid() = user_id);
+
