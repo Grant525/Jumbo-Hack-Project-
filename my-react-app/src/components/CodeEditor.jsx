@@ -5,7 +5,7 @@ const LANGUAGE_CONFIG = {
   python:     { value: "python",     version: "3.10.0" },
   javascript: { value: "javascript", version: "18.15.0" },
   java:       { value: "java",       version: "15.0.2" },
-  cpp:        { value: "cpp",        version: "10.2.0" },
+  "c++":        { value: "c++",        version: "10.2.0" },
   rust:       { value: "rust",       version: "1.68.2" },
   go:         { value: "go",         version: "1.20.2" },
   typescript: { value: "typescript", version: "5.0.3" },
@@ -28,22 +28,21 @@ export default function CodeEditor({ language, starterCode = "", onChange, fillH
     setOutput("");
     setError(false);
     try {
-      const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": "YOUR_API_KEY",
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        },
         body: JSON.stringify({
-          language: config.value,
-          version: config.version,
-          files: [{ content: code }],
+          source_code: code,
+          language_id: JUDGE0_LANG_IDS[language] ?? 71,
         }),
       });
       const data = await response.json();
-      if (data.run?.stderr) {
-        setOutput(data.run.stderr);
-        setError(true);
-      } else {
-        setOutput(data.run?.output || "(no output)");
-      }
+      if (data.stderr) { setOutput(data.stderr); setError(true); }
+      else setOutput(data.stdout || "(no output)");
     } catch (err) {
       setOutput("Error connecting to execution engine.");
       setError(true);

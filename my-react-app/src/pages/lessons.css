@@ -119,11 +119,12 @@ body {
   width: 32px; height: 32px; border-radius: 50%;
   background: linear-gradient(135deg, #c0633a, #e8c06a);
   display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
   font-size: .62rem; font-weight: 800; color: #fff; letter-spacing: .04em;
   border: 1.5px solid rgba(255,255,255,.12); cursor: pointer;
   transition: transform .15s, box-shadow .15s;
 }
-.lessons-avatar:hover { transform: scale(1.1); box-shadow: 0 0 0 3px rgba(192,99,58,.25); }
+
 
 /* =============================================================
    STREAK BANNER  (72px, sticky just below header)
