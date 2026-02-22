@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { questions } from "../data/questions.json";
 import CodeEditor from "../components/CodeEditor";
-import React from "react";
 
 export default function QuestionPage() {
   const { id } = useParams();
