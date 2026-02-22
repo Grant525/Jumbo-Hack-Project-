@@ -84,28 +84,57 @@ const TOTAL_COUNT   = ALL_LESSONS.length;
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
-function Sidebar({ profile }: { profile: any }) {
-  const navigate = useNavigate();
-  const pct = Math.round((DONE_COUNT / TOTAL_COUNT) * 100);
 
-  return (
-    <aside className="sidebar">
-      {/* Language pair */}
-      <div className="sidebar-card lang-card">
-        <p className="sidebar-label">Current path</p>
-        <div className="lang-pair">
-          <div className="lang-chip from">
-            <span className="lang-chip-icon">🐍</span>
-            <span>{profile?.source_language ?? "Python"}</span>
+  function Sidebar({ profile }: { profile: any }) {
+    const navigate = useNavigate();
+    const pct = Math.round((DONE_COUNT / TOTAL_COUNT) * 100);
+    const [showFromDropdown, setShowFromDropdown] = useState(false);
+    const [showToDropdown, setShowToDropdown] = useState(false);
+  
+    const languages = ["Python", "JavaScript", "Java", "C++", "Rust", "Go", "Ruby"];
+
+    
+    return (
+      <aside className="sidebar">
+        <div className="sidebar-card lang-card">
+          <p className="sidebar-label">Current path</p>
+          <div className="lang-pair">
+            <div style={{ position: "relative" }}>
+              <button className="lang-chip from" onClick={() => setShowFromDropdown(!showFromDropdown)}>
+                <span className="lang-chip-icon">🐍</span>
+                <span>{profile?.source_language ?? "Python"}</span>
+              </button>
+              {showFromDropdown && (
+                <div className="language-dropdown">
+                  {languages.map((lang) => (
+                    <button key={lang} onClick={() => setShowFromDropdown(false)}>
+                      {lang}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <span className="lang-arrow">→</span>
+            <div style={{ position: "relative" }}>
+              <button className="lang-chip to" onClick={() => setShowToDropdown(!showToDropdown)}>
+                <span className="lang-chip-icon">⚙️</span>
+                <span>{profile?.target_language ?? "Rust"}</span>
+              </button>
+              {showToDropdown && (
+                <div className="language-dropdown">
+                  {languages.map((lang) => (
+                    <button key={lang} onClick={() => setShowToDropdown(false)}>
+                      {lang}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          <span className="lang-arrow">→</span>
-          <div className="lang-chip to">
-            <span className="lang-chip-icon">⚙️</span>
-            <span>{profile?.target_language ?? "Rust"}</span>
-          </div>
+          <button className="lang-change-btn" onClick={() => navigate("/settings")}>
+            Change language pair
+          </button>
         </div>
-        <button className="lang-change-btn" onClick={() => navigate("/settings")}>Change language pair</button>
-      </div>
 
       {/* Streak */}
       <div className="sidebar-card streak-card">
