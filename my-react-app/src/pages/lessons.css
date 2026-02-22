@@ -107,6 +107,12 @@ body {
 
 .lessons-header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
+.lessons-username {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
 /* Keep the small streak pill in header for mobile fallback */
 .lessons-streak-pill {
   display: flex; align-items: center; gap: 6px;
