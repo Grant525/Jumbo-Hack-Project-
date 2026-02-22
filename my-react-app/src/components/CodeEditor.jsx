@@ -5,7 +5,7 @@ const LANGUAGE_CONFIG = {
   python:     { value: "python",     version: "3.10.0" },
   javascript: { value: "javascript", version: "18.15.0" },
   java:       { value: "java",       version: "15.0.2" },
-  cpp:        { value: "cpp",        version: "10.2.0" },
+  "c++":        { value: "c++",        version: "10.2.0" },
   rust:       { value: "rust",       version: "1.68.2" },
   go:         { value: "go",         version: "1.20.2" },
   typescript: { value: "typescript", version: "5.0.3" },
