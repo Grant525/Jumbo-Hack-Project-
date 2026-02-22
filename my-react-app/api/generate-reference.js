@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: `Write a complete, working solution in ${knownLanguage} that solves this problem. Include a main function with test cases. Do NOT leave TODOs or placeholder comments — write the full working code.\n\nProblem: ${problem}`,
+            content: `Write a complete, working solution in ${knownLanguage} that solves this problem. Include a main function. Do NOT leave TODOs, placeholder comments, "Your code here", or test cases — write the full working solution code.\n\nProblem: ${problem}`,
           },
         ],
       }),
