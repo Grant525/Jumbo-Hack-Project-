@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { questions, groupByChapter } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
@@ -19,6 +19,16 @@ export default function Lessons() {
     [profile],
   );
 
+  const LANG_ICONS: Record<string, string> = {
+    Python:     "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+    JavaScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+    Java:       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+    "C++":      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+    Rust:       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg",
+    Go:         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
+    Ruby:       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg",
+  };
+
   const total = questions.length;
   const completed = completedIds.size;
   const pct = Math.round((completed / total) * 100);
@@ -30,13 +40,24 @@ export default function Lessons() {
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
   const languages = ["Python", "Java", "C++", "Rust", "Go", "Ruby"];
+
+  const [fromLang, setFromLangState] = useState(profile?.source_language ?? "Python");
+  const [toLang, setToLangState]     = useState(profile?.target_language ?? "Rust");
+
+  useEffect(() => {
+    if (profile?.source_language) setFromLangState(profile.source_language);
+    if (profile?.target_language) setToLangState(profile.target_language);
+  }, [profile?.source_language, profile?.target_language]);
+
   const setFromLang = (lang: string) => {
+    setFromLangState(lang);
     updateProfile({ source_language: lang });
   };
-
   const setToLang = (lang: string) => {
+    setToLangState(lang);
     updateProfile({ target_language: lang });
   };
+
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
@@ -55,21 +76,13 @@ export default function Lessons() {
           <span className="lessons-logo-text">CodeQuest</span>
         </div>
         <nav className="lessons-nav">
-          <a href="/" className="nav-link">
-            Learn
-          </a>
-          <a href="/lessons" className="nav-link active">
-            Practice
-          </a>
-          <a href="#" className="nav-link">
-            Leaderboard
-          </a>
+          <a href="/" className="nav-link">Learn</a>
+          <a href="/lessons" className="nav-link active">Practice</a>
+          <a href="#" className="nav-link">Leaderboard</a>
         </nav>
         <div className="lessons-header-right">
           <div className="lessons-avatar" onClick={() => navigate("/settings")}>
-            {(profile?.username ?? user?.email ?? "?")
-              .slice(0, 2)
-              .toUpperCase()}
+            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
           </div>
         </div>
       </header>
@@ -90,48 +103,35 @@ export default function Lessons() {
               >
                 <div className="chapter-btn-top">
                   <span className="chapter-btn-name">{name}</span>
-                  <span className="chapter-btn-count">
-                    {done}/{qs.length}
-                  </span>
+                  <span className="chapter-btn-count">{done}/{qs.length}</span>
                 </div>
                 <div className="chapter-btn-bar">
-                  <div
-                    className="chapter-btn-fill"
-                    style={{ width: `${p}%` }}
-                  />
+                  <div className="chapter-btn-fill" style={{ width: `${p}%` }} />
                 </div>
               </button>
             );
           })}
         </nav>
 
-        {/* ── Right sidebar ── */}
+        {/* Right sidebar */}
         <aside className="sidebar">
           <div className="sidebar-card lang-card">
             <p className="sidebar-label">Current path</p>
             <div className="lang-pair">
+
               {/* FROM */}
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip from"
-                  onClick={() => {
-                    setShowFromDropdown(!showFromDropdown);
-                    setShowToDropdown(false);
-                  }}
+                  onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
                 >
-                  <span className="lang-chip-icon">🐍</span>
-                  <span>{profile?.source_language ?? "..."}</span>
+                  <img src={LANG_ICONS[fromLang]} width={16} height={16} />
+                  <span>{fromLang}</span>
                 </button>
                 {showFromDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button
-                        key={lang}
-                        onClick={() => {
-                          setFromLang(lang);
-                          setShowFromDropdown(false);
-                        }}
-                      >
+                      <button key={lang} onClick={() => { setFromLang(lang); setShowFromDropdown(false); }}>
                         {lang}
                       </button>
                     ))}
@@ -145,30 +145,22 @@ export default function Lessons() {
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip to"
-                  onClick={() => {
-                    setShowToDropdown(!showToDropdown);
-                    setShowFromDropdown(false);
-                  }}
+                  onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
                 >
-                  <span className="lang-chip-icon">⚙️</span>
-                  <span>{profile?.target_language ?? "..."}</span>
+                  <img src={LANG_ICONS[toLang]} width={16} height={16} />
+                  <span>{toLang}</span>
                 </button>
                 {showToDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button
-                        key={lang}
-                        onClick={() => {
-                          setToLang(lang);
-                          setShowToDropdown(false);
-                        }}
-                      >
+                      <button key={lang} onClick={() => { setToLang(lang); setShowToDropdown(false); }}>
                         {lang}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
+
             </div>
           </div>
 
@@ -182,22 +174,17 @@ export default function Lessons() {
             </div>
             <div className="streak-week">
               {STREAK_DAYS.map((d, i) => (
-                <div
-                  key={i}
-                  className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}
-                >
+                <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}>
                   <span>{STREAK_DONE[i] ? "🔥" : "·"}</span>
                   <span className="pip-day">{d}</span>
                 </div>
               ))}
             </div>
-            <p className="streak-sub">
-              Complete today's lesson to keep your streak alive
-            </p>
+            <p className="streak-sub">Complete today's lesson to keep your streak alive</p>
           </div>
         </aside>
 
-        {/* ── Main question list ── */}
+        {/* Main question list */}
         <main className="question-list-col">
           <div className="chapter-heading">
             <div>
@@ -208,25 +195,12 @@ export default function Lessons() {
             </div>
             <div className="chapter-progress-ring">
               <svg viewBox="0 0 48 48" width="56" height="56">
+                <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" strokeWidth="4" />
                 <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  fill="none"
-                  stroke="var(--border)"
-                  strokeWidth="4"
-                />
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  fill="none"
-                  stroke="var(--accent)"
-                  strokeWidth="4"
+                  cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" strokeWidth="4"
                   strokeDasharray={`${2 * Math.PI * 20}`}
                   strokeDashoffset={`${2 * Math.PI * 20 * (1 - chapterPct / 100)}`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 24 24)"
+                  strokeLinecap="round" transform="rotate(-90 24 24)"
                   style={{ transition: "stroke-dashoffset .6s ease" }}
                 />
               </svg>
@@ -236,9 +210,7 @@ export default function Lessons() {
 
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
-            <span className="overall-bar-pct">
-              {completed}/{total}
-            </span>
+            <span className="overall-bar-pct">{completed}/{total}</span>
           </div>
           <div className="overall-bar-track">
             <div className="overall-bar-fill" style={{ width: `${pct}%` }} />
@@ -255,24 +227,18 @@ export default function Lessons() {
                   onClick={() => available && navigate(`/question/${q.id}`)}
                   disabled={!available}
                 >
-                  <div
-                    className={`q-number ${done ? "done" : available ? "available" : "locked"}`}
-                  >
+                  <div className={`q-number ${done ? "done" : available ? "available" : "locked"}`}>
                     {done ? "✓" : idx + 1}
                   </div>
                   <div className="q-content">
                     <div className="q-top">
                       <span className="q-title">{q.title}</span>
                       {done && <span className="q-done-badge">Complete</span>}
-                      {!available && (
-                        <span className="q-locked-badge">🔒 Locked</span>
-                      )}
+                      {!available && <span className="q-locked-badge">🔒 Locked</span>}
                     </div>
                     <p className="q-desc">{q.description}</p>
                   </div>
-                  {available && (
-                    <span className="q-arrow">{done ? "↺" : "→"}</span>
-                  )}
+                  {available && <span className="q-arrow">{done ? "↺" : "→"}</span>}
                 </button>
               );
             })}
