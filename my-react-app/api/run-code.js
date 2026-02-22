@@ -11,6 +11,7 @@ const LANGUAGE_IDS = {
 };
 
 export default async function handler(req, res) {
+  console.log("API key present:", !!process.env.JUDGE0_API_KEY);
   const { language, code } = req.body;
 
   const languageId = LANGUAGE_IDS[language?.toLowerCase()];
