@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 import "./home.css";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
