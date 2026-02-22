@@ -108,7 +108,7 @@ body {
 .lessons-header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
 .lessons-username {
-  color: var(--text-muted);
+  color: var(--text-sub);
   font-size: 13px;
   font-family: 'JetBrains Mono', monospace;
 }
@@ -131,97 +131,25 @@ body {
   transition: transform .15s, box-shadow .15s;
 }
 
-
 /* =============================================================
-   STREAK BANNER  (72px, sticky just below header)
-   NOTE: this element is NOT in the current JSX — you'll need to
-   add it as a sibling above .lessons-body, pulling data from
-   profile. Example:
-     <div className="streak-banner"> ... </div>
-   OR repurpose .sidebar styles below if keeping aside.sidebar.
-   The styles here are ready for when you add it.
-============================================================= */
-.streak-banner {
-  position: sticky; top: 58px; z-index: 90;
-  width: 100%; height: 72px;
-  display: flex; align-items: center;
-  padding: 0 32px; gap: 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  overflow: hidden;
-}
-.streak-banner::before {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 35% 120% at 15% 50%, rgba(192,99,58,.09), transparent 65%);
-}
-
-/* Flame + big number */
-.streak-banner-flame  { font-size: 1.7rem; line-height: 1; margin-right: 10px; }
-.streak-banner-number {
-  font-family: var(--mono); font-size: 2.2rem; font-weight: 800;
-  color: var(--accent); line-height: 1; margin-right: 7px;
-  text-shadow: 0 0 28px rgba(192,99,58,.5);
-}
-.streak-banner-label {
-  font-size: .65rem; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--text-sub);
-  margin-right: 36px; align-self: flex-end; padding-bottom: 4px;
-}
-
-/* Day pips */
-.streak-banner-week { display: flex; align-items: center; gap: 5px; margin-right: 36px; }
-.streak-banner-pip {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 6px 9px; border-radius: var(--r-sm);
-  background: var(--surface2); border: 1px solid var(--border);
-  min-width: 34px;
-  transition: background .15s, border-color .15s;
-}
-.streak-banner-pip.done { background: var(--accent-lo); border-color: var(--border-hi); }
-.streak-banner-pip span:first-child { font-size: .85rem; line-height: 1; }
-.streak-banner-pip-day {
-  font-family: var(--mono); font-size: .48rem; font-weight: 700;
-  text-transform: uppercase; color: var(--muted);
-}
-.streak-banner-pip.done .streak-banner-pip-day { color: var(--accent); }
-
-/* Divider */
-.streak-banner-divider {
-  width: 1px; height: 30px; background: var(--border);
-  margin-right: 36px; flex-shrink: 0;
-}
-
-/* XP */
-.streak-banner-xp { display: flex; align-items: baseline; gap: 5px; }
-.streak-banner-xp-number {
-  font-family: var(--mono); font-size: 1.5rem; font-weight: 800; color: var(--accent2);
-}
-.streak-banner-xp-label {
-  font-size: .62rem; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--text-sub);
-}
-
-/* Lang pair on the far right of the banner */
-.streak-banner-lang { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-
-/* =============================================================
-   BODY  (2 columns: chapter-nav | question-list)
+   BODY  (3 columns: chapter-nav | question-list | sidebar)
+   Sidebars stretch to fill the full page height
 ============================================================= */
 .lessons-body {
   position: relative; z-index: 1;
   display: grid;
   grid-template-columns: 240px 1fr 300px;
   grid-template-areas: "nav main sidebar";
-  height: calc(100vh - 130px);
+  min-height: calc(100vh - 58px); /* fill viewport minus header */
   align-items: start;
 }
 
 /* Right sidebar */
 .sidebar {
   grid-area: sidebar;
-  position: sticky; top: 130px;
-  height: calc(100vh - 130px); overflow-y: auto;
+  position: sticky; top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto;
   padding: 24px 16px 48px;
   border-left: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 14px;
@@ -234,8 +162,9 @@ body {
 ============================================================= */
 .chapter-nav {
   grid-area: nav;
-  position: sticky; top: 130px;
-  height: calc(100vh - 130px); overflow-y: auto; overflow-x: hidden;
+  position: sticky; top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto; overflow-x: hidden;
   padding: 20px 12px 48px;
   border-right: 1px solid var(--border);
   display: flex; justify-content: center; flex-direction: column; gap: 3px;
