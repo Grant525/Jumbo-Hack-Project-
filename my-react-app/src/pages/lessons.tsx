@@ -287,12 +287,6 @@ export default function Lessons() {
                       )}
                     </div>
                     <p className="q-desc">{q.description}</p>
-                    {q.example_output && (
-                      <div className="q-output">
-                        <span className="q-output-label">Expected output</span>
-                        <code>{q.example_output.replace(/\n/g, " · ")}</code>
-                      </div>
-                    )}
                   </div>
                   {available && (
                     <span className="q-arrow">{done ? "↺" : "→"}</span>
