@@ -11,6 +11,7 @@ export interface Profile {
   current_streak: number;
   longest_streak: number;
   last_completed_date: string | null;
+  completed_questions?: number[];
 }
 
 const DEFAULTS: Omit<Profile, "user_id"> = {
