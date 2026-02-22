@@ -182,12 +182,6 @@ export default function Lessons() {
                 )}
               </div>
             </div>
-            <button
-              className="lang-change-btn"
-              onClick={() => navigate("/settings")}
-            >
-              Change language pair
-            </button>
           </div>
 
           <div className="sidebar-card streak-card">
