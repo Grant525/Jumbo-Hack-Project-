@@ -146,8 +146,12 @@
 }
 
 .qp-problem-label {
-  font-size: .58rem; font-weight: 800; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--accent); opacity: .8;
+  font-size: .72rem; font-weight: 800; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent);
+  background: var(--accent-lo);
+  border: 1px solid var(--border-hi);
+  padding: 4px 10px; border-radius: 4px;
+  align-self: flex-start;
 }
 
 .qp-problem-title {
