@@ -97,7 +97,6 @@ export default function Lessons() {
             {profile?.username ?? user?.email ?? ""}
           </span>
         </div>
-        </div>
       </header>
 
       <div className="lessons-body">
