@@ -522,23 +522,12 @@ body {
 .lang-pair { display: flex; align-items: center; gap: 6px; width: 100%;}
 
 .lang-chip {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
+  width: 120px;
+  flex-shrink: 0;
   justify-content: center;
-  gap: 6px;
-  padding: 8px;
-  border-radius: var(--r-sm);
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  font-family: var(--sans);
-  font-size: .68rem;
-  font-weight: 700;
-  color: var(--text);
-  cursor: pointer;
-  transition: border-color .15s, background .15s;
-  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .lang-chip.from { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.to   { color: var(--accent2); }
