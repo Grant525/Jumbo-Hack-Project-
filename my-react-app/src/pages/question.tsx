@@ -190,10 +190,7 @@ export default function QuestionPage() {
             )}
           </div>
 
-<<<<<<< HEAD
-{/* Generate button */}
-=======
->>>>>>> 64653fa9b7fc53ee21d95a2a92d29d5e2b036f70
+
           <div className="qp-generate-section">
             <button
               className="qp-generate-btn"
