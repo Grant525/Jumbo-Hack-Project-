@@ -8,13 +8,11 @@ import "./question.css";
 
 const LANGUAGE_VERSIONS: Record<string, string> = {
   python:     "3.10.0",
-  javascript: "18.15.0",
   java:       "15.0.2",
   cpp:        "10.2.0",
   rust:       "1.68.2",
   go:         "1.20.2",
-  typescript: "5.0.3",
-  kotlin:     "1.8.20",
+  ruby:       "4.0.1",
 };
 
 async function runWithPiston(language: string, code: string) {
@@ -66,7 +64,6 @@ export default function QuestionPage() {
 
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
 
-  // Load reference code automatically when page loads
   useEffect(() => {
     if (!question) return;
     setLoadingRef(true);
@@ -88,11 +85,10 @@ export default function QuestionPage() {
   if (!question) return (
     <div className="qp-notfound">
       <p>Question not found</p>
-      <button onClick={() => navigate("/lessons")}>← Back to lessons</button>
+      <button onClick={() => navigate("/lessons")}>Back to lessons</button>
     </div>
   );
 
-  // Button only generates starter code
   const handleGenerate = async () => {
     setLoading(true);
     setGenError("");
@@ -156,14 +152,14 @@ export default function QuestionPage() {
       <div className="qp-bg-grid" />
 
       <header className="qp-header">
-        <button className="qp-back" onClick={() => navigate("/lessons")}>← Lessons</button>
+        <button className="qp-back" onClick={() => navigate("/lessons")}>Back to Lessons</button>
         <div className="qp-header-center">
           <span className="qp-chapter">{question.chapter}</span>
           <span className="qp-sep">›</span>
           <span className="qp-title">{question.title}</span>
         </div>
         <div className="qp-header-right">
-          {alreadyDone && <span className="qp-done-pill">✓ Complete</span>}
+          {alreadyDone && <span className="qp-done-pill">Complete</span>}
           <div className="qp-avatar" onClick={() => navigate("/settings")}>
             {(profile?.username ?? "?").slice(0, 2).toUpperCase()}
           </div>
@@ -203,8 +199,8 @@ export default function QuestionPage() {
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
               {loadingRef
-                ? `Loading ${sourceLang} reference…`
-                : `Fills the ${targetLang} editor with starter code (boilerplate only — no solution)`}
+                ? `Loading ${sourceLang} reference...`
+                : `Fills the ${targetLang} editor with starter code (boilerplate only - no solution)`}
             </p>
           </div>
 
@@ -212,17 +208,15 @@ export default function QuestionPage() {
             <div className="qp-result pass">
               <span>Correct!</span>
               <div>
-                <p className="qp-result-title">Correct!</p>
-                <p className="qp-result-sub">Both outputs match. Lesson complete.</p>
+                <p className="qp-result-title">Both outputs match. Lesson complete.</p>
               </div>
             </div>
           )}
           {result === "fail" && (
             <div className="qp-result fail">
-              <span>X</span>
+              <span>Not quite</span>
               <div>
-                <p className="qp-result-title">Not quite</p>
-                <p className="qp-result-sub">Outputs don{"'"}t match — check both sides.</p>
+                <p className="qp-result-title">Outputs don{"'"}t match - check both sides.</p>
               </div>
             </div>
           )}
@@ -233,7 +227,7 @@ export default function QuestionPage() {
             <div className="qp-editor-header">
               <span className="qp-editor-lang">{sourceLang}</span>
               <span className="qp-editor-role">Reference</span>
-              {loadingRef && <span className="qp-loading-hint">Loading…</span>}
+              {loadingRef && <span className="qp-loading-hint">Loading...</span>}
             </div>
             <CodeEditor
               language={sourceLang.toLowerCase()}
@@ -258,7 +252,7 @@ export default function QuestionPage() {
                 onClick={handleRunBoth}
                 disabled={running || !referenceCode.trim() || !targetCode.trim()}
               >
-                {running ? "Running…" : "▶ Run both"}
+                {running ? "Running..." : "Run both"}
               </button>
             </div>
             <CodeEditor
