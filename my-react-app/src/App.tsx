@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/home";
 import Lessons from "./pages/lessons";
 import Question from "./pages/question.tsx";
 import SignIn from "./pages/sign-in";
@@ -13,12 +12,12 @@ function App() {
         {/* Public */}
         <Route path="/sign-in" element={<SignIn />} />
 
-        {/* {Protected} */}
+        {/* Protected */}
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <Home />
+              <Lessons />
             </ProtectedRoute>
           }
         />
