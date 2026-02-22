@@ -32,7 +32,8 @@ export default async function handler(req, res) {
     "description": "...",
     "example_output": "...",
     "constraints": [],
-    "starter_code_prompt": "Generate a minimal {language} program for a question titled '...'. Describe the skeleton needed. Return only raw code, no markdown, no code fences."
+    "starter_code_prompt": "Generate starter code in {language} for a question titled {title}. Include a main function. Do not pre-declare variables. Return only the code."
+    }
   }`
             }
           ]
