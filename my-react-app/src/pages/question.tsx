@@ -17,20 +17,19 @@ const LANGUAGE_VERSIONS: Record<string, string> = {
 
 async function runWithPiston(language: string, code: string) {
   const lang = language.toLowerCase();
-  const res = await fetch("https://piston.helioho.st/api/v2/execute", {
+  const res = await fetch("/api/run-code", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       language: lang,
       version: LANGUAGE_VERSIONS[lang] ?? "latest",
-      files: [{ content: code }],
+      code,
     }),
   });
   const data = await res.json();
-  console.log(`piston [${lang}]:`, data); 
   return {
-    stdout: data.run?.output ?? "",
-    stderr: data.run?.stderr ?? "",
+    stdout: data.stdout ?? "",
+    stderr: data.stderr ?? "",
   };
 }
 
