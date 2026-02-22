@@ -81,7 +81,7 @@ export default function Lessons() {
 
       <header className="lessons-header">
         <div className="lessons-logo">
-          <span className="lessons-logo-icon">{"</>"}</span>
+          <span className="lessons-logo-icon">{"◈"}</span>
           <span className="lessons-logo-text">Rosetta</span>
         </div>
         <nav className="lessons-nav centered-nav">
