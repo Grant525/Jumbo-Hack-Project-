@@ -10,9 +10,7 @@ export default function SignIn() {
           <span className="signin-logo-icon">{"◈"}</span>
           <span className="signin-logo-text">Rosetta</span>
         </div>
-        <p className="signin-tagline">
-          Learn syntax by doing — one snippet at a time
-        </p>
+        <p className="signin-tagline">Learn using what you know</p>
         <Auth />
       </div>
     </div>
