@@ -68,7 +68,7 @@ export default function Lessons() {
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
-  const STREAK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
+  const STREAK_DAYS = ["M", "T", "W", "Tu", "F", "Sa", "Su"];
   const STREAK_DONE = STREAK_DAYS.map(
     (_, idx) => idx < (profile?.current_streak ?? 0),
   );
