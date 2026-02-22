@@ -28,6 +28,7 @@ async function runWithPiston(language: string, code: string) {
     }),
   });
   const data = await res.json();
+  console.log(`piston [${lang}]:`, data); 
   return {
     stdout: data.run?.output ?? "",
     stderr: data.run?.stderr ?? "",
