@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { questions } from "../data/questions.json";
+import { questions } from "./questions.ts";
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
@@ -23,12 +23,18 @@ export default function QuestionPage() {
         fetch("/api/generate-reference", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ problem: question.starter_code_prompt, knownLanguage }),
+          body: JSON.stringify({
+            problem: question.starter_code_prompt,
+            knownLanguage,
+          }),
         }),
         fetch("/api/generate-starter", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ problem: question.starter_code_prompt, targetLanguage }),
+          body: JSON.stringify({
+            problem: question.starter_code_prompt,
+            targetLanguage,
+          }),
         }),
       ]);
 
@@ -51,7 +57,10 @@ export default function QuestionPage() {
 
       <div>
         <label>Known Language: </label>
-        <select value={knownLanguage} onChange={e => setKnownLanguage(e.target.value)}>
+        <select
+          value={knownLanguage}
+          onChange={(e) => setKnownLanguage(e.target.value)}
+        >
           <option>Python</option>
           <option>JavaScript</option>
           <option>Java</option>
@@ -59,7 +68,10 @@ export default function QuestionPage() {
         </select>
 
         <label> Target Language: </label>
-        <select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value)}>
+        <select
+          value={targetLanguage}
+          onChange={(e) => setTargetLanguage(e.target.value)}
+        >
           <option>Rust</option>
           <option>Go</option>
           <option>TypeScript</option>
@@ -74,11 +86,16 @@ export default function QuestionPage() {
       {referenceCode && (
         <div>
           <h2>Reference Code ({knownLanguage})</h2>
-          <pre><code>{referenceCode}</code></pre>
+          <pre>
+            <code>{referenceCode}</code>
+          </pre>
         </div>
       )}
 
-      <CodeEditor language={targetLanguage.toLowerCase()} starterCode={starterCode} />
+      <CodeEditor
+        language={targetLanguage.toLowerCase()}
+        starterCode={starterCode}
+      />
     </div>
   );
 }
