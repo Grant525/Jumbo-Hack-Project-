@@ -198,7 +198,7 @@ body {
   display: grid;
   grid-template-columns: 240px 1fr 280px;
   grid-template-areas: "nav main sidebar";
-  min-height: calc(100vh - 130px);
+  height: calc(100vh - 130px);
   align-items: start;
 }
 
@@ -223,7 +223,7 @@ body {
   height: calc(100vh - 130px); overflow-y: auto; overflow-x: hidden;
   padding: 20px 12px 48px;
   border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex; justify-content: center; flex-direction: column; gap: 3px;
   background: var(--surface);
   scrollbar-width: thin; scrollbar-color: var(--surface3) transparent;
 }
