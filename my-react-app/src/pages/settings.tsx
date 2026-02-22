@@ -53,8 +53,8 @@ export default function Settings() {
 
       <header className="lessons-header">
         <div className="lessons-logo">
-          <span className="lessons-logo-icon">{"</>"}</span>
-          <span className="lessons-logo-text">CodeQuest</span>
+          <span className="lessons-logo-icon">{"◈"}</span>
+          <span className="lessons-logo-text">Rosetta</span>
         </div>
 
         <nav className="lessons-nav centered-nav">
@@ -69,13 +69,6 @@ export default function Settings() {
             Profile
           </a>
         </nav>
-
-        <div 
-          className="lessons-avatar" 
-          onClick={() => navigate("/settings")} 
-          style={{ cursor: "pointer", position: "relative", zIndex: 10 }}
-        >
-        </div>
       </header>
 
       <main className="settings-main">

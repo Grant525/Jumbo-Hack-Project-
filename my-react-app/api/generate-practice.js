@@ -16,8 +16,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
           max_tokens: 1024,
-          system: "You are generating coding practice problems. Always respond with only a valid JSON object, no markdown, no code fences, no explanation.",
-          messages: [
+          system: "You are generating coding practice problems. Always respond with only a valid JSON object, no markdown, no code fences, no explanation. The starter_code_prompt field must produce skeleton code only — never a solution. It must instruct the model to include empty function stubs with placeholder returns, empty loop bodies, and comments saying '// your code here'. Never solve the problem.",          messages: [
             {
               role: "user",
               content: `Generate a new coding problem similar to this one but with different specifics:
@@ -32,7 +31,8 @@ export default async function handler(req, res) {
     "description": "...",
     "example_output": "...",
     "constraints": [],
-    "starter_code_prompt": "Generate a minimal {language} program for a question titled '...'. Describe the skeleton needed. Return only raw code, no markdown, no code fences."
+    "starter_code_prompt": "Generate starter code in {language} for a question titled {title}. Include a main function. Do not pre-declare variables. Return only the code."
+    }
   }`
             }
           ]

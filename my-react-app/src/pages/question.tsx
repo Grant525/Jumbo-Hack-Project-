@@ -229,9 +229,11 @@ export default function QuestionPage() {
           {alreadyDone && !practiceQuestion && (
             <span className="qp-done-pill">Complete</span>
           )}
-          <div className="qp-avatar">
-            {(profile?.username ?? "?").slice(0, 2).toUpperCase()}
-          </div>
+        <div className="lessons-header-right">
+          <span className="question-username">
+            {profile?.username ?? user?.email ?? ""}
+          </span>
+        </div>
         </div>
       </header>
 
@@ -279,7 +281,7 @@ export default function QuestionPage() {
               disabled={loadingPractice}
               style={{ marginTop: "8px", opacity: 0.85 }}
             >
-              {loadingPractice ? "Generating..." : "✦ Generate Similar Problem"}
+              {loadingPractice ? "Generating..." : "Generate Similar Problem"}
             </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
