@@ -5,7 +5,6 @@ import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
 import React from "react";
 import "./lessons.css";
-import "./home.css"; // for sidebar styles
 
 // Mock: which question IDs the user has completed
 const COMPLETED_IDS = new Set([1, 2, 3]);
