@@ -26,15 +26,18 @@ export default async function handler(req, res) {
       }),
     });
 
-    const data = await response.json();
+    const text = await response.text();
+    console.log("Raw Claude response:", text);
 
     if (!response.ok) {
-      return res.status(500).json({ error: data });
+      return res.status(500).json({ error: text });
     }
 
+    const data = JSON.parse(text);
     const code = data.content[0].text;
     res.status(200).json({ code });
   } catch (err) {
+    console.log("Caught error:", err.message);
     res.status(500).json({ error: err.message });
   }
 }

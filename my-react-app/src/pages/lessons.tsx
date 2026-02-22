@@ -1,29 +1,32 @@
 import { useState, useMemo } from "react";
-import { useLessonProgress } from "../user/useLessonProgress";
 import { useNavigate } from "react-router-dom";
 import { questions, groupByChapter } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
+import React from "react";
 import "./lessons.css";
 
 export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
   const { profile } = useProfile();
-  const { isCompleted, completedLessons } = useLessonProgress();
   const chapters = useMemo(() => groupByChapter(questions), []);
   const chapterNames = Object.keys(chapters);
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);
 
+  const completedIds: Set<number> = useMemo(() => new Set(profile?.completed_questions ?? []), [profile]);
+
   const total = questions.length;
-  const completed = completedLessons.size;
+  const completed = completedIds.size;
   const pct = Math.round((completed / total) * 100);
 
   const chapterQuestions = chapters[activeChapter] ?? [];
-  const chapterDone = chapterQuestions.filter((q) => isCompleted(String(q.id))).length;
+  const chapterDone = chapterQuestions.filter((q) => completedIds.has(q.id)).length;
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
   const languages = ["Python", "JavaScript", "Java", "C++", "Rust", "Go", "Ruby"];
+  const [fromLang, setFromLang] = useState(profile?.source_language ?? languages[0]);
+  const [toLang, setToLang]     = useState(profile?.target_language ?? languages[1]);
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
@@ -34,7 +37,6 @@ export default function Lessons() {
     <div className="lessons-root">
       <div className="lessons-bg-grid" />
 
-      {/* Header */}
       <header className="lessons-header">
         <div className="lessons-logo">
           <span className="lessons-logo-icon">{"</>"}</span>
@@ -56,15 +58,13 @@ export default function Lessons() {
       </header>
 
       <div className="lessons-body">
-        {/* Left: chapter nav */}
         <nav className="chapter-nav">
           <p className="chapter-nav-label">Chapters</p>
           {chapterNames.map((name) => {
             const qs = chapters[name];
-            const done = qs.filter((q) => isCompleted(String(q.id))).length;
+            const done = qs.filter((q) => completedIds.has(q.id)).length;
             const p = Math.round((done / qs.length) * 100);
             const isActive = name === activeChapter;
-
             return (
               <button
                 key={name}
@@ -83,44 +83,54 @@ export default function Lessons() {
           })}
         </nav>
 
-        {/* Right: sidebar */}
+        {/* ── Right sidebar ── */}
         <aside className="sidebar">
           <div className="sidebar-card lang-card">
             <p className="sidebar-label">Current path</p>
             <div className="lang-pair">
+
+              {/* FROM */}
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip from"
-                  onClick={() => setShowFromDropdown(!showFromDropdown)}
+                  onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
                 >
                   <span className="lang-chip-icon">🐍</span>
-                  <span>{profile?.source_language ?? languages[0]}</span>
+                  <span>{fromLang}</span>
                 </button>
                 {showFromDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => setShowFromDropdown(false)}>{lang}</button>
+                      <button key={lang} onClick={() => { setFromLang(lang); setShowFromDropdown(false); }}>
+                        {lang}
+                      </button>
                     ))}
                   </div>
                 )}
               </div>
+
               <span className="lang-arrow">→</span>
+
+              {/* TO */}
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip to"
-                  onClick={() => setShowToDropdown(!showToDropdown)}
+                  onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
                 >
                   <span className="lang-chip-icon">⚙️</span>
-                  <span>{profile?.target_language ?? languages[1]}</span>
+                  <span>{toLang}</span>
                 </button>
                 {showToDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => setShowToDropdown(false)}>{lang}</button>
+                      <button key={lang} onClick={() => { setToLang(lang); setShowToDropdown(false); }}>
+                        {lang}
+                      </button>
                     ))}
                   </div>
                 )}
               </div>
+
             </div>
             <button className="lang-change-btn" onClick={() => navigate("/settings")}>
               Change language pair
@@ -147,29 +157,21 @@ export default function Lessons() {
           </div>
         </aside>
 
-        {/* Middle: question list */}
+        {/* ── Main question list ── */}
         <main className="question-list-col">
           <div className="chapter-heading">
             <div>
               <h1 className="chapter-title">{activeChapter}</h1>
-              <p className="chapter-sub">
-                {chapterDone} of {chapterQuestions.length} questions complete
-              </p>
+              <p className="chapter-sub">{chapterDone} of {chapterQuestions.length} questions complete</p>
             </div>
             <div className="chapter-progress-ring">
               <svg viewBox="0 0 48 48" width="56" height="56">
                 <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" strokeWidth="4"/>
                 <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  fill="none"
-                  stroke="var(--accent)"
-                  strokeWidth="4"
+                  cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" strokeWidth="4"
                   strokeDasharray={`${2 * Math.PI * 20}`}
                   strokeDashoffset={`${2 * Math.PI * 20 * (1 - chapterPct / 100)}`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 24 24)"
+                  strokeLinecap="round" transform="rotate(-90 24 24)"
                   style={{ transition: "stroke-dashoffset .6s ease" }}
                 />
               </svg>
@@ -187,12 +189,8 @@ export default function Lessons() {
 
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
-              const done = isCompleted(String(q.id));
-              const available =
-                done ||
-                idx === 0 ||
-                isCompleted(String(chapterQuestions[idx - 1]?.id));
-
+              const done = completedIds.has(q.id);
+              const available = done || idx === 0 || completedIds.has(chapterQuestions[idx - 1]?.id);
               return (
                 <button
                   key={q.id}
