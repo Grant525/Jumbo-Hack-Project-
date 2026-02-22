@@ -528,7 +528,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: .65rem;
+  font-size: .70rem;
 }
 .lang-chip.from { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.to   { color: var(--accent2); }
