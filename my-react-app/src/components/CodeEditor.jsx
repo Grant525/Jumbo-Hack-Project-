@@ -28,22 +28,21 @@ export default function CodeEditor({ language, starterCode = "", onChange, fillH
     setOutput("");
     setError(false);
     try {
-      const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": "YOUR_API_KEY",
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        },
         body: JSON.stringify({
-          language: config.value,
-          version: config.version,
-          files: [{ content: code }],
+          source_code: code,
+          language_id: JUDGE0_LANG_IDS[language] ?? 71,
         }),
       });
       const data = await response.json();
-      if (data.run?.stderr) {
-        setOutput(data.run.stderr);
-        setError(true);
-      } else {
-        setOutput(data.run?.output || "(no output)");
-      }
+      if (data.stderr) { setOutput(data.stderr); setError(true); }
+      else setOutput(data.stdout || "(no output)");
     } catch (err) {
       setOutput("Error connecting to execution engine.");
       setError(true);
