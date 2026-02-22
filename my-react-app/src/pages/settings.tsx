@@ -65,14 +65,12 @@ export default function Settings() {
             Lessons
           </a>
 
-
+          <a href="/settings" className="nav-link active">
+            Profile
+          </a>
         </nav>
 
-        <div 
-          className="lessons-avatar" 
-          onClick={() => navigate("/settings")} 
-          style={{ cursor: "pointer", position: "relative", zIndex: 10 }}
-        >
+
         </div>
       </header>
 
