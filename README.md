@@ -2,7 +2,7 @@
 
 The Project: Include your team name, and 2 to 3 sentences describing the goal of your project. What were your goals, and what did you accomplish over the weekend?
 
-Team Name:
+Team Name: CodeQuest
 The Team: Anubhav Sinha, AJ Romeo, Grant Caile, Carlos Schober
 Goal:
 
@@ -12,7 +12,7 @@ APIs used:
 -Vercel: Google Authentication
 -SupaBase: User data base
 -Judge0: Runs user's code
--Claud: Generate starter code for questions
+-Claude: Generate starter and reference code for questions
 -Monaco Editor: Code editor interface
 
 Front end:
