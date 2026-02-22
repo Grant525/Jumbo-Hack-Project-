@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Lessons from "./pages/lessons";
-import Question from "./pages/question.tsx";
+import Question from "./pages/question";
 import SignIn from "./pages/sign-in";
 import Settings from "./pages/settings";
 import ProtectedRoute from "./ProtectedRoute";
