@@ -133,8 +133,8 @@ export default function QuestionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: question.title,
-          description: question.description,
+          title: activeQuestion!.title,
+          description: activeQuestion!.description,
           chapter: question.chapter,
         }),
       });
@@ -149,6 +149,7 @@ export default function QuestionPage() {
       setResult(null);
       setRefError(false);
       setTargetError(false);
+      fetchedFor.current = null;
       // Re-generate reference code for the new problem
       setLoadingRef(true);
       fetch("/api/generate-reference", {
