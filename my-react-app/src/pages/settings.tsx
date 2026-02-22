@@ -70,10 +70,11 @@ export default function Settings() {
           </a>
         </nav>
 
-        <div className="lessons-header-right">
-          <div className="lessons-avatar" onClick={() => navigate("/settings")} style={{ cursor: "pointer" }}>
-            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
-          </div>
+        <div 
+          className="lessons-avatar" 
+          onClick={() => navigate("/settings")} 
+          style={{ cursor: "pointer", position: "relative", zIndex: 10 }}
+        >
         </div>
       </header>
 
