@@ -196,7 +196,7 @@ body {
 .lessons-body {
   position: relative; z-index: 1;
   display: grid;
-  grid-template-columns: 200px 1fr 240px;
+  grid-template-columns: 180px 1fr 220px;
   grid-template-areas: "nav main sidebar";
   min-height: calc(100vh - 130px);
   align-items: start;
@@ -267,10 +267,9 @@ body {
 ============================================================= */
 .question-list-col {
   grid-area: main;
-  padding: 40px 52px 100px;
+  padding: 40px 48px 100px;
   display: flex; flex-direction: column; gap: 22px;
   animation: fadeUp .35s cubic-bezier(.22,1,.36,1) both;
-  max-width: 880px;
 }
 
 .chapter-heading {
