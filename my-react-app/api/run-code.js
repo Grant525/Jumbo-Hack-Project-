@@ -4,6 +4,7 @@ const LANGUAGE_IDS = {
   javascript: 63,
   java:       62,
   cpp:        54,
+  "c++":      54,  // add this alias
   rust:       73,
   go:         60,
   typescript: 74,
