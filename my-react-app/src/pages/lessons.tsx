@@ -30,16 +30,18 @@ export default function Lessons() {
   const [fromLang, setFromLangState] = useState(
     profile?.source_language ?? "Python",
   );
-  const [toLang, setToLangState] = useState(profile?.target_language ?? "Rust");
+const { profile, loading: profileLoading, updateProfile } = useProfile();
+const [fromLang, setFromLangState] = useState(profile?.source_language ?? "Python");
+const [toLang, setToLangState] = useState(profile?.target_language ?? "Rust");
 
-  useEffect(() => {
-    if (profile) {
-      setFromLangState(profile.source_language ?? "Python");
-      setToLangState(profile.target_language ?? "Rust");
-    }
-  }, [profile]);
+useEffect(() => {
+  if (profile) {
+    setFromLangState(profile.source_language ?? "Python");
+    setToLangState(profile.target_language ?? "Rust");
+  }
+}, [profile]);
 
-  const { completedLessons } = useLessonProgress(fromLang, toLang);
+const { completedLessons } = useLessonProgress(fromLang, toLang, profileLoading);
 
   const chapters = useMemo(() => groupByChapter(questions), []);
   const chapterNames = Object.keys(chapters);
