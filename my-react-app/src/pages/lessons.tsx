@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useLessonProgress } from "../user/useLessonProgress";
 import { useNavigate } from "react-router-dom";
 import { questions, groupByChapter } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
@@ -10,32 +11,28 @@ export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
   const { profile } = useProfile();
+  const { isCompleted, completedLessons } = useLessonProgress(
+    profile?.source_language ?? "Python",
+    profile?.target_language ?? "Rust"
+  );
   const chapters = useMemo(() => groupByChapter(questions), []);
   const chapterNames = Object.keys(chapters);
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);
 
-  // Compute completed questions dynamically from profile
-  const completedIds: Set<number> = useMemo(() => new Set(profile?.completed_questions ?? []), [profile]);
-
   const total = questions.length;
-  const completed = completedIds.size;
+  const completed = completedLessons.size;
   const pct = Math.round((completed / total) * 100);
 
   const chapterQuestions = chapters[activeChapter] ?? [];
-  const chapterDone = chapterQuestions.filter((q) => completedIds.has(q.id)).length;
+  const chapterDone = chapterQuestions.filter((q) => isCompleted(String(q.id))).length;
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
-  // Optional: dynamic languages
   const languages = ["Python", "JavaScript", "Java", "C++", "Rust", "Go", "Ruby"];
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
-  // Compute streak dynamically if you store last_completed_date in profile
   const STREAK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
-  const STREAK_DONE = STREAK_DAYS.map((_, idx) => {
-    // You could compute based on current_streak and last_completed_date
-    return idx < (profile?.current_streak ?? 0);
-  });
+  const STREAK_DONE = STREAK_DAYS.map((_, idx) => idx < (profile?.current_streak ?? 0));
 
   return (
     <div className="lessons-root">
@@ -56,10 +53,7 @@ export default function Lessons() {
           <div className="lessons-streak-pill">
             <span>🔥</span><span>{profile?.current_streak ?? 0}</span>
           </div>
-          <div
-            className="lessons-avatar"
-            onClick={() => navigate("/settings")}
-          >
+          <div className="lessons-avatar" onClick={() => navigate("/settings")}>
             {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
           </div>
         </div>
@@ -71,7 +65,7 @@ export default function Lessons() {
           <p className="chapter-nav-label">Chapters</p>
           {chapterNames.map((name) => {
             const qs = chapters[name];
-            const done = qs.filter((q) => completedIds.has(q.id)).length;
+            const done = qs.filter((q) => isCompleted(String(q.id))).length;
             const p = Math.round((done / qs.length) * 100);
             const isActive = name === activeChapter;
 
@@ -159,7 +153,6 @@ export default function Lessons() {
 
         {/* Middle: question list */}
         <main className="question-list-col">
-          {/* Chapter header */}
           <div className="chapter-heading">
             <div>
               <h1 className="chapter-title">{activeChapter}</h1>
@@ -188,7 +181,6 @@ export default function Lessons() {
             </div>
           </div>
 
-          {/* Overall progress */}
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
             <span className="overall-bar-pct">{completed}/{total}</span>
@@ -197,14 +189,13 @@ export default function Lessons() {
             <div className="overall-bar-fill" style={{ width: `${pct}%` }} />
           </div>
 
-          {/* Question cards */}
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
-              const done = completedIds.has(q.id);
+              const done = isCompleted(String(q.id));
               const available =
                 done ||
                 idx === 0 ||
-                completedIds.has(chapterQuestions[idx - 1]?.id);
+                isCompleted(String(chapterQuestions[idx - 1]?.id));
 
               return (
                 <button

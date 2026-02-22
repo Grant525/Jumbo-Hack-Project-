@@ -1,4 +1,3 @@
-// user/useLessonProgress.ts
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../supabase";
 import { useUser } from "./useUser";
