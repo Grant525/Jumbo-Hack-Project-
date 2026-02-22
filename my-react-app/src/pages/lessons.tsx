@@ -82,8 +82,6 @@ export default function Lessons() {
           <a href="/settings" className="nav-link">Profile</a>
         </nav>
         <div className="lessons-header-right">
-          <div className="lessons-streak-pill">
-            <span>🔥</span><span>{profile?.current_streak ?? 0}</span>
           </div>
           <div className="lessons-avatar">
             {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
