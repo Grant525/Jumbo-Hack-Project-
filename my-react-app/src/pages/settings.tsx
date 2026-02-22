@@ -69,9 +69,6 @@ export default function Settings() {
             Profile
           </a>
         </nav>
-
-
-        </div>
       </header>
 
       <main className="settings-main">
