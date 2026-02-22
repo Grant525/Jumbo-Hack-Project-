@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 
 const LANGUAGE_CONFIG = {
-  python:     { value: "python",     version: "3.10.0" },
-  javascript: { value: "javascript", version: "18.15.0" },
-  java:       { value: "java",       version: "15.0.2" },
-  cpp:        { value: "c++",        version: "10.2.0" },
-  rust:       { value: "rust",       version: "1.68.2" },
-  go:         { value: "go",         version: "1.20.2" },
-  typescript: { value: "typescript", version: "5.0.3" },
-  kotlin:     { value: "kotlin",     version: "1.8.20" },
+  python:     { value: "python",     version: "3.10.0",  judge0Id: 71 },
+  javascript: { value: "javascript", version: "18.15.0", judge0Id: 63 },
+  java:       { value: "java",       version: "15.0.2",  judge0Id: 62 },
+  cpp:        { value: "cpp",        version: "10.2.0",  judge0Id: 54 },  // "cpp" not "c++"
+  rust:       { value: "rust",       version: "1.68.2",  judge0Id: 73 },
+  go:         { value: "go",         version: "1.20.2",  judge0Id: 60 },
+  typescript: { value: "typescript", version: "5.0.3",   judge0Id: 74 },
+  kotlin:     { value: "kotlin",     version: "1.8.20",  judge0Id: 78 },
 };
+
 
 export default function CodeEditor({ language, starterCode = "", onChange, fillHeight = false }) {
   const config = LANGUAGE_CONFIG[language] || LANGUAGE_CONFIG.python;
@@ -37,7 +38,7 @@ export default function CodeEditor({ language, starterCode = "", onChange, fillH
         },
         body: JSON.stringify({
           source_code: code,
-          language_id: JUDGE0_LANG_IDS[language] ?? 71,
+          language_id: config.judge0Id,
         }),
       });
       const data = await response.json();
