@@ -203,7 +203,7 @@ export default function QuestionPage() {
               onClick={handleGenerate}
               disabled={loading}
             >
-              {loading ? "Generating..." : "Generate Code"}
+              {loading ? "Generating..." : "Generate Starter Code"}
             </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
