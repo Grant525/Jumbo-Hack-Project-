@@ -2,14 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../supabase";
 import { useUser } from "./useUser";
 
-export interface LessonProgress {
-  lesson_id: string;
-  source_language: string;
-  target_language: string;
-  completed_at: string;
-}
-
-export function useLessonProgress(sourceLang: string, targetLang: string) {
+export function useLessonProgress() {
   const { user } = useUser();
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -18,40 +11,29 @@ export function useLessonProgress(sourceLang: string, targetLang: string) {
   const fetchProgress = useCallback(async () => {
     if (!user) { setLoading(false); return; }
     setLoading(true);
-
     const { data, error } = await (supabase as any)
-      .from("user_lesson_progress")
+      .from("completed_lessons")
       .select("lesson_id")
-      .eq("user_id", user.id)
-      .eq("source_language", sourceLang)
-      .eq("target_language", targetLang);
+      .eq("user_id", user.id);
 
     if (error) {
       setError(error.message);
     } else {
-      setCompletedLessons(new Set(data.map((r: LessonProgress) => r.lesson_id)));
+      setCompletedLessons(new Set(data.map((r: any) => r.lesson_id)));
     }
     setLoading(false);
-  }, [user, sourceLang, targetLang]);
+  }, [user]);
 
   useEffect(() => { fetchProgress(); }, [fetchProgress]);
 
   async function completeLesson(lessonId: string) {
     if (!user) return;
-
     const { error } = await (supabase as any)
-      .from("user_lesson_progress")
+      .from("completed_lessons")
       .upsert(
-        {
-          user_id: user.id,
-          source_language: sourceLang,
-          target_language: targetLang,
-          lesson_id: lessonId,
-          completed_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,source_language,target_language,lesson_id" }
+        { user_id: user.id, lesson_id: lessonId },
+        { onConflict: "user_id,lesson_id" }
       );
-
     if (error) {
       setError(error.message);
     } else {

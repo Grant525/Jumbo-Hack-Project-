@@ -4,17 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { questions, groupByChapter } from "./questions.ts";
 import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
-import React from "react";
 import "./lessons.css";
 
 export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
   const { profile } = useProfile();
-  const { isCompleted, completedLessons } = useLessonProgress(
-    profile?.source_language ?? "Python",
-    profile?.target_language ?? "Rust"
-  );
+  const { isCompleted, completedLessons } = useLessonProgress();
   const chapters = useMemo(() => groupByChapter(questions), []);
   const chapterNames = Object.keys(chapters);
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);

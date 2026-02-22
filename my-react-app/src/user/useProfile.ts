@@ -1,68 +1,76 @@
-// user/useLessonProgress.ts
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { useUser } from "./useUser";
 
-export interface LessonProgress {
-  lesson_id: string;
+export interface Profile {
+  user_id: string;
+  username: string | null;
   source_language: string;
   target_language: string;
-  completed_at: string;
+  xp: number;
+  current_streak: number;
+  longest_streak: number;
+  last_completed_date: string | null;
 }
 
-export function useLessonProgress(sourceLang: string, targetLang: string) {
+const DEFAULTS: Omit<Profile, "user_id"> = {
+  username: null,
+  source_language: "Python",
+  target_language: "Rust",
+  xp: 0,
+  current_streak: 0,
+  longest_streak: 0,
+  last_completed_date: null,
+};
+
+export function useProfile() {
   const { user } = useUser();
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProgress = useCallback(async () => {
+  useEffect(() => {
     if (!user) { setLoading(false); return; }
+    fetchProfile();
+  }, [user]);
+
+  async function fetchProfile() {
     setLoading(true);
-
     const { data, error } = await (supabase as any)
-      .from("user_lesson_progress")
-      .select("lesson_id")
-      .eq("user_id", user.id)
-      .eq("source_language", sourceLang)
-      .eq("target_language", targetLang);
+      .from("profiles")
+      .select("*")
+      .eq("user_id", user!.id)
+      .single();
 
-    if (error) {
+    if (error && error.code === "PGRST116") {
+      // No profile yet — create one
+      const fresh = { user_id: user!.id, ...DEFAULTS };
+      const { data: created, error: createError } = await (supabase as any)
+        .from("profiles")
+        .insert(fresh)
+        .select()
+        .single();
+      if (createError) setError(createError.message);
+      else setProfile(created);
+    } else if (error) {
       setError(error.message);
     } else {
-      setCompletedLessons(new Set(data.map((r: LessonProgress) => r.lesson_id)));
+      setProfile(data);
     }
     setLoading(false);
-  }, [user, sourceLang, targetLang]);
-
-  useEffect(() => { fetchProgress(); }, [fetchProgress]);
-
-  async function completeLesson(lessonId: string) {
-    if (!user) return;
-
-    const { error } = await (supabase as any)
-      .from("user_lesson_progress")
-      .upsert(
-        {
-          user_id: user.id,
-          source_language: sourceLang,
-          target_language: targetLang,
-          lesson_id: lessonId,
-          completed_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,source_language,target_language,lesson_id" }
-      );
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setCompletedLessons(prev => new Set([...prev, lessonId]));
-    }
   }
 
-  function isCompleted(lessonId: string) {
-    return completedLessons.has(lessonId);
+  async function updateProfile(updates: Partial<Omit<Profile, "user_id">>) {
+    if (!user || !profile) return;
+    const { data, error } = await (supabase as any)
+      .from("profiles")
+      .update(updates)
+      .eq("user_id", user.id)
+      .select()
+      .single();
+    if (error) setError(error.message);
+    else setProfile(data);
   }
 
-  return { completedLessons, loading, error, completeLesson, isCompleted, refetch: fetchProgress };
+  return { profile, loading, error, updateProfile, refetch: fetchProfile };
 }
