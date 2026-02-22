@@ -180,12 +180,7 @@ export default function QuestionPage() {
             <h2 className="qp-problem-title">{question.title}</h2>
             <p className="qp-problem-desc">{question.description}</p>
 
-            {question.example_output && (
-              <div className="qp-expected">
-                <p className="qp-expected-label">Expected output</p>
-                <pre className="qp-expected-code">{question.example_output}</pre>
-              </div>
-            )}
+          
 
             {question.constraints?.length > 0 && (
               <div className="qp-constraints">
@@ -195,6 +190,10 @@ export default function QuestionPage() {
             )}
           </div>
 
+<<<<<<< HEAD
+{/* Generate button */}
+=======
+>>>>>>> 64653fa9b7fc53ee21d95a2a92d29d5e2b036f70
           <div className="qp-generate-section">
             <button
               className="qp-generate-btn"
@@ -203,12 +202,21 @@ export default function QuestionPage() {
             >
               {loading ? "Generating..." : "Generate Code"}
             </button>
+
             {genError && <p className="qp-gen-error">{genError}</p>}
+
             <p className="qp-generate-hint">
               {loadingRef
                 ? `Loading ${sourceLang} reference...`
                 : `Fills the ${targetLang} editor with starter code (boilerplate only - no solution)`}
             </p>
+
+            {question.example_output && (
+              <div className="qp-expected">
+                <p className="qp-expected-label">Expected output</p>
+                <pre className="qp-expected-code">{question.example_output}</pre>
+              </div>
+            )}
           </div>
 
           {result === "pass" && (
