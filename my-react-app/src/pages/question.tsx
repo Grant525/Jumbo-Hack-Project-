@@ -194,11 +194,11 @@ export default function QuestionPage() {
               onClick={handleGenerate}
               disabled={loading}
             >
-              {loading ? "Generating…" : "✨ Generate both"}
+              {loading ? "Generating…" : "✨ Generate reference + starter"}
             </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
-              Generates a {sourceLang} solution and a {targetLang} starter
+              Fills the {sourceLang} editor with a full solution, and the {targetLang} editor with starter code (boilerplate only — no solution)
             </p>
           </div>
 
@@ -236,6 +236,7 @@ export default function QuestionPage() {
               language={sourceLang.toLowerCase()}
               starterCode={referenceCode}
               onChange={setReferenceCode}
+              fillHeight
             />
             {referenceOutput && (
               <div className={`qp-output ${refError ? "error" : "ok"}`}>
@@ -262,6 +263,7 @@ export default function QuestionPage() {
               language={targetLang.toLowerCase()}
               starterCode={targetCode}
               onChange={setTargetCode}
+              fillHeight
             />
             {targetOutput && (
               <div className={`qp-output ${targetError ? "error" : "ok"}`}>
