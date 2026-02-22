@@ -82,8 +82,7 @@ export default function Lessons() {
           <a href="/settings" className="nav-link">Profile</a>
         </nav>
         <div className="lessons-header-right">
-          </div>
-          <div className="lessons-avatar">
+           <div className="lessons-avatar">
             {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
           </div>
         </div>
