@@ -1,6 +1,6 @@
 # Jumbo-Hack-Project-
 
-The Project: Our team saught to provide a new approach to learning new coding languages, based around how schools teach spoken languages. We created a website to encourage and guide the user through their journey to learning a new language using a known one as reference. Rosetta supports 6 popular programming languages, offers 35 problems of increasing difficulty, and offers all the built in tools to write and run code to improve as a programmer!
+The Project: Our team sought to provide a new approach to learning new coding languages, based around how schools teach spoken languages. We created a website to encourage and guide the user through their journey to learning a new language using a known one as reference. Rosetta supports 6 popular programming languages, offers 35 problems of increasing difficulty, and offers all the built in tools to write and run code to improve as a programmer!
 
 Team Name: Rosetta
 The Team: Anubhav Sinha, AJ Romeo, Grant Caile, Carlos Schober
