@@ -279,7 +279,7 @@ export default function QuestionPage() {
               disabled={loadingPractice}
               style={{ marginTop: "8px", opacity: 0.85 }}
             >
-              {loadingPractice ? "Generating..." : "✦ Generate Similar Problem"}
+              {loadingPractice ? "Generating..." : "Generate Similar Problem"}
             </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
