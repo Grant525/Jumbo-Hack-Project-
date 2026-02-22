@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import { questions } from "./questions.ts";
->>>>>>> 1fbc096fb5565498093bcbebd09f69c76c33bc0f
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
