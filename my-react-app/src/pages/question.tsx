@@ -65,7 +65,7 @@ export default function QuestionPage() {
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
 
   useEffect(() => {
-    if (!question) return;
+    if (!question || !profile) return;
     setLoadingRef(true);
     setReferenceCode("");
     fetch("/api/generate-reference", {
@@ -121,33 +121,27 @@ export default function QuestionPage() {
     setRefError(false);
     setTargetError(false);
 
-  try {
+    try {
       const [ref, target] = await Promise.all([
         runWithPiston(sourceLang, referenceCode),
         runWithPiston(targetLang, targetCode),
       ]);
 
-      setReferenceOutput(ref.stderr ? ref.stderr : ref.stdout);
-      setTargetOutput(target.stderr ? target.stderr : target.stdout);
+      setReferenceOutput(ref.stderr || ref.stdout);
+      setTargetOutput(target.stderr || target.stdout);
       setRefError(!!ref.stderr);
       setTargetError(!!target.stderr);
 
       if (!ref.stderr && !target.stderr) {
-        const refOut    = normalize(ref.stdout);
-        const targetOut = normalize(target.stdout);
-
-        if (!refOut && !targetOut) {
-          setResult("fail");
-          setReferenceOutput("(no output — is your code complete?)");
-          setTargetOutput("(no output — is your code complete?)");
-          setRefError(true);
-          setTargetError(true);
-        } else {
-          const pass = refOut === targetOut;
-          setResult(pass ? "pass" : "fail");
-          if (pass) await completeLesson(String(question.id));
-        }
+        const pass = normalize(ref.stdout) === normalize(target.stdout);
+        setResult(pass ? "pass" : "fail");
+        if (pass) await completeLesson(String(question.id));
       }
+    } catch {
+      setReferenceOutput("Error connecting to execution engine.");
+      setTargetOutput("Error connecting to execution engine.");
+      setRefError(true);
+      setTargetError(true);
     } finally {
       setRunning(false);
     }
@@ -179,7 +173,12 @@ export default function QuestionPage() {
             <h2 className="qp-problem-title">{question.title}</h2>
             <p className="qp-problem-desc">{question.description}</p>
 
-          
+            {question.example_output && (
+              <div className="qp-expected">
+                <p className="qp-expected-label">Expected output</p>
+                <pre className="qp-expected-code">{question.example_output}</pre>
+              </div>
+            )}
 
             {question.constraints?.length > 0 && (
               <div className="qp-constraints">
@@ -189,7 +188,6 @@ export default function QuestionPage() {
             )}
           </div>
 
-
           <div className="qp-generate-section">
             <button
               className="qp-generate-btn"
@@ -198,21 +196,12 @@ export default function QuestionPage() {
             >
               {loading ? "Generating..." : "Generate Code"}
             </button>
-
             {genError && <p className="qp-gen-error">{genError}</p>}
-
             <p className="qp-generate-hint">
               {loadingRef
                 ? `Loading ${sourceLang} reference...`
                 : `Fills the ${targetLang} editor with starter code (boilerplate only - no solution)`}
             </p>
-
-            {question.example_output && (
-              <div className="qp-expected">
-                <p className="qp-expected-label">Expected output</p>
-                <pre className="qp-expected-code">{question.example_output}</pre>
-              </div>
-            )}
           </div>
 
           {result === "pass" && (
