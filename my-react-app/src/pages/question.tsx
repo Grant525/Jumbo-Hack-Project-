@@ -8,6 +8,7 @@ import "./question.css";
 
 const LANGUAGE_VERSIONS: Record<string, string> = {
   python:     "3.10.0",
+  javascript: "18.15.0",
   java:       "15.0.2",
   cpp:        "10.2.0",
   rust:       "1.68.2",
@@ -64,23 +65,7 @@ export default function QuestionPage() {
 
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
 
-  useEffect(() => {
-    if (!question || !profile) return;
-    setLoadingRef(true);
-    setReferenceCode("");
-    fetch("/api/generate-reference", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        problem: question.description,
-        knownLanguage: sourceLang,
-      }),
-    })
-      .then(res => res.json())
-      .then(({ code }) => setReferenceCode(code))
-      .catch(err => console.error("Error loading reference:", err))
-      .finally(() => setLoadingRef(false));
-  }, [question?.id, sourceLang]);
+
 
   if (!question) return (
     <div className="qp-notfound">
@@ -93,20 +78,32 @@ export default function QuestionPage() {
     setLoading(true);
     setGenError("");
     try {
-      const res = await fetch("/api/generate-starter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          problem: question.starter_code_prompt.replace("{language}", targetLang),
-          targetLanguage: targetLang,
+      const [refRes, starterRes] = await Promise.all([
+        fetch("/api/generate-reference", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            problem: question.description,
+            knownLanguage: sourceLang,
+          }),
         }),
-      });
-      if (!res.ok) throw new Error("API error");
-      const { code } = await res.json();
-      setTargetCode(code);
+        fetch("/api/generate-starter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            problem: question.starter_code_prompt.replace("{language}", targetLang),
+            targetLanguage: targetLang,
+          }),
+        }),
+      ]);
+      if (!refRes.ok || !starterRes.ok) throw new Error("API error");
+      const { code: refCode } = await refRes.json();
+      const { code: startCode } = await starterRes.json();
+      setReferenceCode(refCode);
+      setTargetCode(startCode);
     } catch (err: any) {
-      setGenError(err.message ?? "Failed to generate starter code");
-      console.error("Error generating starter code:", err);
+      setGenError(err.message ?? "Failed to generate code");
+      console.error("Error generating code:", err);
     } finally {
       setLoading(false);
     }
