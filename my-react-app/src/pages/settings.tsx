@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useProfile } from "../user/useProfile";
 import { useUser } from "../user/useUser";
 import { supabase } from "../supabase";
+import React from "react";
 import "./settings.css";
 
 const LANGUAGES = ["Python", "JavaScript", "TypeScript", "Go", "Rust", "C", "C++", "Java", "Ruby", "Swift"];
