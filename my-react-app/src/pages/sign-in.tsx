@@ -7,7 +7,7 @@ export default function SignIn() {
       <div className="signin-bg-grid" />
       <div className="signin-card">
         <div className="signin-logo">
-          <span className="signin-logo-icon">{"</>"}</span>
+          <span className="signin-logo-icon">{"◈"}</span>
           <span className="signin-logo-text">Rosetta</span>
         </div>
         <p className="signin-tagline">
