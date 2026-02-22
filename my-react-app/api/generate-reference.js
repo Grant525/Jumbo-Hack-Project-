@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "user",
-            content: `Generate a complete, clean, and well-commented solution for the following problem in ${knownLanguage}. Only output the code block, nothing else.\n\nProblem: ${problem}`,
+            content: `Generate a complete, clean, and well-commented solution for the following problem in ${knownLanguage}. Only output the raw code with no markdown formatting or code fences.\n\nProblem: ${problem}`,
           },
         ],
       }),
@@ -34,7 +34,8 @@ export default async function handler(req, res) {
     }
 
     const data = JSON.parse(text);
-    const code = data.content[0].text;
+    const raw = data.content[0].text;
+    const code = raw.replace(/^```[\w]*\n/gm, "").replace(/\n?```$/gm, "").trim();
     res.status(200).json({ code });
   } catch (err) {
     console.log("Caught error:", err.message);
