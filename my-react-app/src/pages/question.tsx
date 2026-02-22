@@ -18,7 +18,7 @@ const LANGUAGE_VERSIONS: Record<string, string> = {
 
 async function runWithPiston(language: string, code: string) {
   const lang = language.toLowerCase();
-  const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+  const res = await fetch("https://piston.helioho.st/api/v2/execute", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
