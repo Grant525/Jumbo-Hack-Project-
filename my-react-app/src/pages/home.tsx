@@ -74,7 +74,7 @@ const SECTIONS: Section[] = [
   },
 ];
 
-const STREAK_DAYS = ["M","T","W","T","F","S","S"];
+const STREAK_DAYS = ["M","T","W","Th","F","Sa","Su"];
 const STREAK_DONE = [true, true, true, false, false, false, false];
 const ZIGZAG      = [2, 1, 2, 3, 2, 1, 2, 3]; // column 1–3
 
@@ -238,26 +238,72 @@ function SectionBlock({ section, onSelect }: { section: Section; onSelect: (l: L
   const allDone   = section.lessons.every(l => l.status === "complete");
   const anyActive = section.lessons.some(l => l.status !== "locked");
 
+  const CIRCLE_SIZE = 108;
+  const ROW_HEIGHT  = 160;
+  const COL_WIDTH   = 120;
+  const COLS        = 3;
+
+  const getX = (idx: number) => {
+    const col = ZIGZAG[idx % ZIGZAG.length] - 1;
+    return col * COL_WIDTH + COL_WIDTH / 2;
+  };
+  const getY = (idx: number) => idx * ROW_HEIGHT + CIRCLE_SIZE / 2;
+
+  const totalWidth  = COLS * COL_WIDTH;
+  const totalHeight = section.lessons.length * ROW_HEIGHT;
+
   return (
     <div className={`section-block ${allDone ? "all-done" : ""} ${!anyActive ? "all-locked" : ""}`}>
       <div className="section-header">
         <span className="section-title">{section.title}</span>
-        {allDone   && <span className="sec-badge done-badge">✓ Complete</span>}
+        {allDone    && <span className="sec-badge done-badge">✓ Complete</span>}
         {!anyActive && <span className="sec-badge locked-badge">🔒 Locked</span>}
       </div>
 
-      <div className="section-tree">
+      <div style={{ position: "relative", width: totalWidth, margin: "0 auto" }}>
+        <svg
+          style={{ position: "absolute", top: 0, left: 0, pointerEvents: "none" }}
+          width={totalWidth}
+          height={totalHeight}
+        >
+          {section.lessons.map((lesson, idx) => {
+            if (idx === 0) return null;
+            const x1 = getX(idx - 1);
+            const y1 = getY(idx - 1);
+            const x2 = getX(idx);
+            const y2 = getY(idx);
+            const lit = lesson.status !== "locked";
+            return (
+              <line
+                key={idx}
+                x1={x1} y1={y1}
+                x2={x2} y2={y2}
+                stroke={lit ? "var(--accent)" : "var(--border)"}
+                strokeWidth={2}
+                strokeLinecap="round"
+              />
+            );
+          })}
+        </svg>
+
         {section.lessons.map((lesson, idx) => {
-          const col = ZIGZAG[idx % ZIGZAG.length];
+          const x = getX(idx);
+          const y = getY(idx);
           return (
-            <div key={lesson.id} className="tree-row" style={{ "--col": col } as React.CSSProperties}>
-              {idx > 0 && (
-                <div className={`connector ${lesson.status !== "locked" ? "connector-lit" : ""}`} />
-              )}
+            <div
+              key={lesson.id}
+              style={{
+                position: "absolute",
+                left: x - CIRCLE_SIZE / 2,
+                top: y - CIRCLE_SIZE / 2,
+              }}
+            >
               <LessonNode lesson={lesson} onClick={() => onSelect(lesson)} />
             </div>
           );
         })}
+
+        <div style={{ height: totalHeight }} />
       </div>
     </div>
   );

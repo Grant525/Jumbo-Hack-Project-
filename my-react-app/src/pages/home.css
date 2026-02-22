@@ -126,11 +126,23 @@ html, body { width: 100%; min-height: 100vh; background: var(--bg); overflow-x: 
 }
 .tree-row {
   grid-column: calc((var(--col) - 1) * 2 + 1) / calc((var(--col) - 1) * 2 + 4);
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.connector { width: 2px; height: 40px; background: var(--border); border-radius: 2px; }
-.connector-lit { background: rgba(192,99,58,.35); }
+.connector {
+  width: 2px;
+  height: 50px;
+  background: var(--border);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
 
+.connector-lit {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(192,99,58,.5);
+}
 /* ─── Lesson node ────────────────────────────────────────────────────────── */
 .lesson-node {
   position: relative; width: 108px; height: 108px;
