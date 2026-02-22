@@ -71,10 +71,8 @@ export default function Settings() {
         </nav>
 
         <div className="lessons-header-right">
-          <div className="lessons-avatar">
-            {(profile?.username ?? user?.email ?? "?")
-              .slice(0, 2)
-              .toUpperCase()}
+          <div className="lessons-avatar" onClick={() => navigate("/settings")} style={{ cursor: "pointer" }}>
+            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
           </div>
         </div>
       </header>
