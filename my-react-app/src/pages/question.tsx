@@ -21,7 +21,7 @@ async function runWithJudge0(language: string, code: string) {
 }
 
 function normalize(s: string) {
-  return s.trim().replace(/\r\n/g, "\n");
+  return s.trim().replace(/\r\n/g, "\n").toLowerCase();
 }
 
 export default function QuestionPage() {
