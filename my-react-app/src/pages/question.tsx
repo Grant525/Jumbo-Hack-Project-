@@ -138,8 +138,8 @@ export default function QuestionPage() {
         runWithJudge0(targetLang, targetCode),
       ]);
 
-      setReferenceOutput(ref.stderr || ref.stdout);
-      setTargetOutput(target.stderr || target.stdout);
+      setReferenceOutput(ref.stderr || ref.stdout || "(no output)");
+      setTargetOutput(target.stderr || target.stdout || "(no output)");
       setRefError(!!ref.stderr);
       setTargetError(!!target.stderr);
 
