@@ -47,7 +47,6 @@ export default function QuestionPage() {
 
   const question = questions.find((q) => q.id === Number(id));
 
-  // Use profile languages, fall back to Python/Rust
   const sourceLang = profile?.source_language ?? "Python";
   const targetLang = profile?.target_language ?? "Rust";
 
@@ -82,7 +81,7 @@ export default function QuestionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            problem: question.starter_code_prompt.replace("{language}", sourceLang),
+            problem: question.description,  // plain description, no conflicting instructions
             knownLanguage: sourceLang,
           }),
         }),
@@ -147,7 +146,6 @@ export default function QuestionPage() {
     <div className="qp-root">
       <div className="qp-bg-grid" />
 
-      {/* Header */}
       <header className="qp-header">
         <button className="qp-back" onClick={() => navigate("/lessons")}>← Lessons</button>
         <div className="qp-header-center">
@@ -164,8 +162,6 @@ export default function QuestionPage() {
       </header>
 
       <div className="qp-body">
-
-        {/* Problem sidebar */}
         <aside className="qp-sidebar">
           <div className="qp-problem-card">
             <p className="qp-problem-label">Problem</p>
@@ -187,7 +183,6 @@ export default function QuestionPage() {
             )}
           </div>
 
-          {/* Generate button */}
           <div className="qp-generate-section">
             <button
               className="qp-generate-btn"
@@ -202,7 +197,6 @@ export default function QuestionPage() {
             </p>
           </div>
 
-          {/* Result banner */}
           {result === "pass" && (
             <div className="qp-result pass">
               <span>🎉</span>
@@ -223,10 +217,7 @@ export default function QuestionPage() {
           )}
         </aside>
 
-        {/* Split editors */}
         <main className="qp-editors">
-
-          {/* Left: reference (familiar language) */}
           <div className="qp-editor-col">
             <div className="qp-editor-header">
               <span className="qp-editor-lang">{sourceLang}</span>
@@ -246,7 +237,6 @@ export default function QuestionPage() {
             )}
           </div>
 
-          {/* Right: target (new language) */}
           <div className="qp-editor-col">
             <div className="qp-editor-header">
               <span className="qp-editor-lang">{targetLang}</span>
@@ -272,7 +262,6 @@ export default function QuestionPage() {
               </div>
             )}
           </div>
-
         </main>
       </div>
     </div>
