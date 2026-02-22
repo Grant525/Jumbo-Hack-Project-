@@ -51,9 +51,24 @@ export default function QuestionPage() {
   const [result, setResult] = useState<"pass" | "fail" | null>(null);
   const [genError, setGenError] = useState("");
 
+  // Practice problem state
+  const [practiceQuestion, setPracticeQuestion] = useState<{
+    title: string;
+    description: string;
+    example_output: string;
+    starter_code_prompt: string;
+    constraints?: string[];
+  } | null>(null);
+  const [loadingPractice, setLoadingPractice] = useState(false);
+
   const fetchedFor = useRef<string | null>(null);
 
   const alreadyDone = question ? isCompleted(String(question.id)) : false;
+
+  // Use practice question if one has been generated, otherwise use the real question
+  const activeQuestion = practiceQuestion
+    ? { ...question!, ...practiceQuestion }
+    : question;
 
   useEffect(() => {
     if (!question || !sourceLang) return;
@@ -94,7 +109,7 @@ export default function QuestionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          problem: question.starter_code_prompt.replace("{language}", targetLang),
+          problem: activeQuestion!.starter_code_prompt.replace("{language}", targetLang),
           targetLanguage: targetLang,
         }),
       });
@@ -105,6 +120,51 @@ export default function QuestionPage() {
       setGenError(err.message ?? "Failed to generate starter code");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGeneratePractice = async () => {
+    setLoadingPractice(true);
+    setGenError("");
+    try {
+      const res = await fetch("/api/generate-practice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: question.title,
+          description: question.description,
+          chapter: question.chapter,
+        }),
+      });
+      if (!res.ok) throw new Error("API error");
+      const { practice } = await res.json();
+      setPracticeQuestion(practice);
+      // Reset both editors and outputs for the new problem
+      setTargetCode("");
+      setReferenceCode("");
+      setReferenceOutput("");
+      setTargetOutput("");
+      setResult(null);
+      setRefError(false);
+      setTargetError(false);
+      // Re-generate reference code for the new problem
+      setLoadingRef(true);
+      fetch("/api/generate-reference", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          problem: practice.description,
+          knownLanguage: sourceLang,
+        }),
+      })
+        .then((r) => r.json())
+        .then(({ code }) => setReferenceCode(code))
+        .catch((err) => console.error("Error loading reference:", err))
+        .finally(() => setLoadingRef(false));
+    } catch (err: any) {
+      setGenError(err.message ?? "Failed to generate practice problem");
+    } finally {
+      setLoadingPractice(false);
     }
   };
 
@@ -131,7 +191,8 @@ export default function QuestionPage() {
       if (!ref.stderr && !target.stderr) {
         const pass = normalize(ref.stdout) === normalize(target.stdout);
         setResult(pass ? "pass" : "fail");
-        if (pass) {
+        if (pass && !practiceQuestion) {
+          // Only mark the real question complete, not practice variants
           await completeLesson(String(question.id));
           await updateStreak();
         }
@@ -157,10 +218,17 @@ export default function QuestionPage() {
         <div className="qp-header-center">
           <span className="qp-chapter">{question.chapter}</span>
           <span className="qp-sep">›</span>
-          <span className="qp-title">{question.title}</span>
+          <span className="qp-title">
+            {practiceQuestion ? practiceQuestion.title : question.title}
+            {practiceQuestion && (
+              <span className="qp-practice-badge">Practice</span>
+            )}
+          </span>
         </div>
         <div className="qp-header-right">
-          {alreadyDone && <span className="qp-done-pill">Complete</span>}
+          {alreadyDone && !practiceQuestion && (
+            <span className="qp-done-pill">Complete</span>
+          )}
           <div className="qp-avatar">
             {(profile?.username ?? "?").slice(0, 2).toUpperCase()}
           </div>
@@ -170,22 +238,26 @@ export default function QuestionPage() {
       <div className="qp-body">
         <aside className="qp-sidebar">
           <div className="qp-problem-card">
-            <p className="qp-problem-label">Problem</p>
-            <h2 className="qp-problem-title">{question.title}</h2>
-            <p className="qp-problem-desc">{question.description}</p>
+            <p className="qp-problem-label">
+              {practiceQuestion ? "Practice Problem" : "Problem"}
+            </p>
+            <h2 className="qp-problem-title">{activeQuestion!.title}</h2>
+            <p className="qp-problem-desc">{activeQuestion!.description}</p>
 
-            {question.example_output && (
+            {activeQuestion!.example_output && (
               <div className="qp-expected">
                 <p className="qp-expected-label">Expected output</p>
-                <pre className="qp-expected-code">{question.example_output}</pre>
+                <pre className="qp-expected-code">
+                  {activeQuestion!.example_output}
+                </pre>
               </div>
             )}
 
-            {question.constraints?.length > 0 && (
+            {activeQuestion!.constraints?.length > 0 && (
               <div className="qp-constraints">
                 <p className="qp-expected-label">Constraints</p>
                 <ul>
-                  {question.constraints.map((c: string, i: number) => (
+                  {activeQuestion!.constraints.map((c: string, i: number) => (
                     <li key={i}>{c}</li>
                   ))}
                 </ul>
@@ -201,6 +273,14 @@ export default function QuestionPage() {
             >
               {loading ? "Generating..." : "Generate Starter Code"}
             </button>
+            <button
+              className="qp-generate-btn"
+              onClick={handleGeneratePractice}
+              disabled={loadingPractice}
+              style={{ marginTop: "8px", opacity: 0.85 }}
+            >
+              {loadingPractice ? "Generating..." : "✦ Generate Similar Problem"}
+            </button>
             {genError && <p className="qp-gen-error">{genError}</p>}
             <p className="qp-generate-hint">
               {loadingRef
@@ -213,7 +293,10 @@ export default function QuestionPage() {
             <div className="qp-result pass">
               <span>Correct!</span>
               <div>
-                <p className="qp-result-title">Both outputs match. Lesson complete.</p>
+                <p className="qp-result-title">
+                  Both outputs match.{" "}
+                  {practiceQuestion ? "Great practice!" : "Lesson complete."}
+                </p>
               </div>
             </div>
           )}
