@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { questions, groupByChapter, Question } from "./question"; // <-- import from questions.ts
 import "./lessons.css";
-import React from "react";
 
 // Mock: which question IDs the user has completed
 const COMPLETED_IDS = new Set([1, 2, 3]);

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Lessons from "./pages/lessons";
-import Question from "./pages/question";
+import Question from "./pages/question.tsx";
 import SignIn from "./pages/sign-in";
 import Settings from "./pages/settings";
 import ProtectedRoute from "./ProtectedRoute";
@@ -30,13 +30,13 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route 
-          path="/settings" 
+        <Route
+          path="/settings"
           element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-          } 
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/question/:id"
@@ -46,7 +46,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/ " replace />} />
+        <Route path="*" element={<Navigate to="/sign-in" replace />} />
       </Routes>
     </BrowserRouter>
   );
