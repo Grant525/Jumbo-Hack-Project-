@@ -229,9 +229,11 @@ export default function QuestionPage() {
           {alreadyDone && !practiceQuestion && (
             <span className="qp-done-pill">Complete</span>
           )}
-          <div className="qp-avatar">
-            {(profile?.username ?? "?").slice(0, 2).toUpperCase()}
-          </div>
+        <div className="lessons-header-right">
+          <span className="question-username">
+            {profile?.username ?? user?.email ?? ""}
+          </span>
+        </div>
         </div>
       </header>
 
