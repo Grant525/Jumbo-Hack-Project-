@@ -9,29 +9,49 @@ import "./lessons.css";
 export default function Lessons() {
   const navigate = useNavigate();
   const { user } = useUser();
-  const { profile } = useProfile();
+  const { profile, loading, error, updateProfile } = useProfile();
   const chapters = useMemo(() => groupByChapter(questions), []);
   const chapterNames = Object.keys(chapters);
   const [activeChapter, setActiveChapter] = useState(chapterNames[0]);
 
-  const completedIds: Set<number> = useMemo(() => new Set(profile?.completed_questions ?? []), [profile]);
+  const completedIds: Set<number> = useMemo(
+    () => new Set(profile?.completed_questions ?? []),
+    [profile],
+  );
 
   const total = questions.length;
   const completed = completedIds.size;
   const pct = Math.round((completed / total) * 100);
 
   const chapterQuestions = chapters[activeChapter] ?? [];
-  const chapterDone = chapterQuestions.filter((q) => completedIds.has(q.id)).length;
+  const chapterDone = chapterQuestions.filter((q) =>
+    completedIds.has(q.id),
+  ).length;
   const chapterPct = Math.round((chapterDone / chapterQuestions.length) * 100);
 
-  const languages = ["Python", "JavaScript", "Java", "C++", "Rust", "Go", "Ruby"];
-  const [fromLang, setFromLang] = useState(profile?.source_language ?? languages[0]);
-  const [toLang, setToLang]     = useState(profile?.target_language ?? languages[1]);
+  const languages = [
+    "Python",
+    "JavaScript",
+    "Java",
+    "C++",
+    "Rust",
+    "Go",
+    "Ruby",
+  ];
+  const setFromLang = (lang: string) => {
+    updateProfile({ source_language: lang });
+  };
+
+  const setToLang = (lang: string) => {
+    updateProfile({ target_language: lang });
+  };
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
 
   const STREAK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
-  const STREAK_DONE = STREAK_DAYS.map((_, idx) => idx < (profile?.current_streak ?? 0));
+  const STREAK_DONE = STREAK_DAYS.map(
+    (_, idx) => idx < (profile?.current_streak ?? 0),
+  );
 
   return (
     <div className="lessons-root">
@@ -43,16 +63,25 @@ export default function Lessons() {
           <span className="lessons-logo-text">CodeQuest</span>
         </div>
         <nav className="lessons-nav">
-          <a href="/" className="nav-link">Learn</a>
-          <a href="/lessons" className="nav-link active">Practice</a>
-          <a href="#" className="nav-link">Leaderboard</a>
+          <a href="/" className="nav-link">
+            Learn
+          </a>
+          <a href="/lessons" className="nav-link active">
+            Practice
+          </a>
+          <a href="#" className="nav-link">
+            Leaderboard
+          </a>
         </nav>
         <div className="lessons-header-right">
           <div className="lessons-streak-pill">
-            <span>🔥</span><span>{profile?.current_streak ?? 0}</span>
+            <span>🔥</span>
+            <span>{profile?.current_streak ?? 0}</span>
           </div>
           <div className="lessons-avatar" onClick={() => navigate("/settings")}>
-            {(profile?.username ?? user?.email ?? "?").slice(0, 2).toUpperCase()}
+            {(profile?.username ?? user?.email ?? "?")
+              .slice(0, 2)
+              .toUpperCase()}
           </div>
         </div>
       </header>
@@ -73,10 +102,15 @@ export default function Lessons() {
               >
                 <div className="chapter-btn-top">
                   <span className="chapter-btn-name">{name}</span>
-                  <span className="chapter-btn-count">{done}/{qs.length}</span>
+                  <span className="chapter-btn-count">
+                    {done}/{qs.length}
+                  </span>
                 </div>
                 <div className="chapter-btn-bar">
-                  <div className="chapter-btn-fill" style={{ width: `${p}%` }} />
+                  <div
+                    className="chapter-btn-fill"
+                    style={{ width: `${p}%` }}
+                  />
                 </div>
               </button>
             );
@@ -88,20 +122,28 @@ export default function Lessons() {
           <div className="sidebar-card lang-card">
             <p className="sidebar-label">Current path</p>
             <div className="lang-pair">
-
               {/* FROM */}
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip from"
-                  onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
+                  onClick={() => {
+                    setShowFromDropdown(!showFromDropdown);
+                    setShowToDropdown(false);
+                  }}
                 >
                   <span className="lang-chip-icon">🐍</span>
-                  <span>{fromLang}</span>
+                  <span>{profile?.source_language ?? "..."}</span>
                 </button>
                 {showFromDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => { setFromLang(lang); setShowFromDropdown(false); }}>
+                      <button
+                        key={lang}
+                        onClick={() => {
+                          setFromLang(lang);
+                          setShowFromDropdown(false);
+                        }}
+                      >
                         {lang}
                       </button>
                     ))}
@@ -115,24 +157,35 @@ export default function Lessons() {
               <div style={{ position: "relative" }}>
                 <button
                   className="lang-chip to"
-                  onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
+                  onClick={() => {
+                    setShowToDropdown(!showToDropdown);
+                    setShowFromDropdown(false);
+                  }}
                 >
                   <span className="lang-chip-icon">⚙️</span>
-                  <span>{toLang}</span>
+                  <span>{profile?.target_language ?? "..."}</span>
                 </button>
                 {showToDropdown && (
                   <div className="language-dropdown">
                     {languages.map((lang) => (
-                      <button key={lang} onClick={() => { setToLang(lang); setShowToDropdown(false); }}>
+                      <button
+                        key={lang}
+                        onClick={() => {
+                          setToLang(lang);
+                          setShowToDropdown(false);
+                        }}
+                      >
                         {lang}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
-
             </div>
-            <button className="lang-change-btn" onClick={() => navigate("/settings")}>
+            <button
+              className="lang-change-btn"
+              onClick={() => navigate("/settings")}
+            >
               Change language pair
             </button>
           </div>
@@ -147,13 +200,18 @@ export default function Lessons() {
             </div>
             <div className="streak-week">
               {STREAK_DAYS.map((d, i) => (
-                <div key={i} className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}>
+                <div
+                  key={i}
+                  className={`streak-pip ${STREAK_DONE[i] ? "done" : ""}`}
+                >
                   <span>{STREAK_DONE[i] ? "🔥" : "·"}</span>
                   <span className="pip-day">{d}</span>
                 </div>
               ))}
             </div>
-            <p className="streak-sub">Complete today's lesson to keep your streak alive</p>
+            <p className="streak-sub">
+              Complete today's lesson to keep your streak alive
+            </p>
           </div>
         </aside>
 
@@ -162,16 +220,31 @@ export default function Lessons() {
           <div className="chapter-heading">
             <div>
               <h1 className="chapter-title">{activeChapter}</h1>
-              <p className="chapter-sub">{chapterDone} of {chapterQuestions.length} questions complete</p>
+              <p className="chapter-sub">
+                {chapterDone} of {chapterQuestions.length} questions complete
+              </p>
             </div>
             <div className="chapter-progress-ring">
               <svg viewBox="0 0 48 48" width="56" height="56">
-                <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" strokeWidth="4"/>
                 <circle
-                  cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" strokeWidth="4"
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  stroke="var(--border)"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="4"
                   strokeDasharray={`${2 * Math.PI * 20}`}
                   strokeDashoffset={`${2 * Math.PI * 20 * (1 - chapterPct / 100)}`}
-                  strokeLinecap="round" transform="rotate(-90 24 24)"
+                  strokeLinecap="round"
+                  transform="rotate(-90 24 24)"
                   style={{ transition: "stroke-dashoffset .6s ease" }}
                 />
               </svg>
@@ -181,7 +254,9 @@ export default function Lessons() {
 
           <div className="overall-bar-row">
             <span className="overall-bar-label">Overall lesson progress</span>
-            <span className="overall-bar-pct">{completed}/{total}</span>
+            <span className="overall-bar-pct">
+              {completed}/{total}
+            </span>
           </div>
           <div className="overall-bar-track">
             <div className="overall-bar-fill" style={{ width: `${pct}%` }} />
@@ -190,7 +265,10 @@ export default function Lessons() {
           <div className="question-list">
             {chapterQuestions.map((q, idx) => {
               const done = completedIds.has(q.id);
-              const available = done || idx === 0 || completedIds.has(chapterQuestions[idx - 1]?.id);
+              const available =
+                done ||
+                idx === 0 ||
+                completedIds.has(chapterQuestions[idx - 1]?.id);
               return (
                 <button
                   key={q.id}
@@ -198,14 +276,18 @@ export default function Lessons() {
                   onClick={() => available && navigate(`/question/${q.id}`)}
                   disabled={!available}
                 >
-                  <div className={`q-number ${done ? "done" : available ? "available" : "locked"}`}>
+                  <div
+                    className={`q-number ${done ? "done" : available ? "available" : "locked"}`}
+                  >
                     {done ? "✓" : idx + 1}
                   </div>
                   <div className="q-content">
                     <div className="q-top">
                       <span className="q-title">{q.title}</span>
                       {done && <span className="q-done-badge">Complete</span>}
-                      {!available && <span className="q-locked-badge">🔒 Locked</span>}
+                      {!available && (
+                        <span className="q-locked-badge">🔒 Locked</span>
+                      )}
                     </div>
                     <p className="q-desc">{q.description}</p>
                     {q.example_output && (
@@ -215,7 +297,9 @@ export default function Lessons() {
                       </div>
                     )}
                   </div>
-                  {available && <span className="q-arrow">{done ? "↺" : "→"}</span>}
+                  {available && (
+                    <span className="q-arrow">{done ? "↺" : "→"}</span>
+                  )}
                 </button>
               );
             })}
