@@ -528,7 +528,11 @@ body {
   font-family: var(--sans); font-size: .76rem; font-weight: 700;
   color: var(--text); cursor: pointer;
   transition: border-color .15s, background .15s;
+  width: 130px;        
+  justify-content: center;
 }
+
+
 .lang-chip:hover { border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.from  { color: var(--accent); border-color: var(--border-hi); background: var(--accent-lo); }
 .lang-chip.to    { color: var(--accent2); }
